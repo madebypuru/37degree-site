@@ -1,0 +1,16 @@
+Placeholder photos pulled from Pinterest search results (i.pinimg.com) for local mood only.
+They belong to their original creators: do NOT publish the site with these. Replace with real 37degree photos before launch.
+Filenames map to events in js/data.js (photos).
+
+start-1.jpg  https://i.pinimg.com/736x/b4/fe/b3/b4feb382d5272c23b59677ff1a70495c.jpg
+start-2.jpg  https://i.pinimg.com/736x/3f/f0/74/3ff0748eb1e5a9b388cdf4cc2e9a10e4.jpg
+start-3.jpg  https://i.pinimg.com/736x/47/c8/2c/47c82ccc26d95d4ca35e6f9c0bd528ca.jpg
+puru-1.jpg  https://i.pinimg.com/736x/04/ee/59/04ee594dca13479ce0c74e5fbf3dfb1e.jpg
+puru-2.jpg  https://i.pinimg.com/736x/29/2f/91/292f91d6bf5d6c4a997aa543ade2ebed.jpg
+puru-3.jpg  https://i.pinimg.com/736x/8a/b2/61/8ab2618a7070f644631131d5526252c6.jpg
+haneef-1.jpg  https://i.pinimg.com/736x/3d/20/0f/3d200f2098e92e9ef3bc74b09fbc3829.jpg
+haneef-2.jpg  https://i.pinimg.com/736x/8c/96/19/8c961975e97cc70ace0a08696abff627.jpg
+haneef-3.jpg  https://i.pinimg.com/736x/2b/56/3c/2b563c1c753394ff93a63c9587f0a769.jpg
+iics-1.jpg  https://i.pinimg.com/736x/c0/6e/4e/c06e4ec071370d8815296d9ba3436607.jpg
+iics-2.jpg  https://i.pinimg.com/736x/8c/bc/26/8cbc26d168db7d0ef14a90e92bfee3cd.jpg
+iics-3.jpg  https://i.pinimg.com/736x/40/43/ce/4043ce6fb2f078627b275e901dc5d5a6.jpg

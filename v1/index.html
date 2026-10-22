@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="../">
+  <title>37degree — Studio Calendar</title>
+  <meta name="description" content="Our calendar. How 37degree started, and every project we've shipped since — on the day it happened.">
+  <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital@1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="v1/css/site.css">
+</head>
+<body>
+  <header class="toolbar">
+    <a class="brand" href="v1/" aria-label="37degree home">
+      <svg viewBox="140 140 560 560" width="22" height="22" aria-hidden="true"><path fill="#FF3600" d="M172.635 281.507c-15.807 0-28.621 12.79-28.621 28.568v80.357c0 15.778 12.814 28.568 28.621 28.568h80.25c15.808 0 28.622-12.79 28.622-28.568V281.507zm137.494-137.493c-15.808 0-28.622 12.79-28.622 28.568v108.925H419V144.014zm137.493 412.479c-15.807 0-28.622 12.791-28.622 28.569v80.356c0 15.778 12.815 28.569 28.622 28.569h80.25c15.807 0 28.622-12.791 28.622-28.569V556.493zM419 144.014v137.493h137.494V172.582c0-15.778-12.815-28.568-28.622-28.568zm137.494 137.493V419h137.493V310.075c0-15.778-12.815-28.568-28.622-28.568zm0 137.493v137.493h108.871c15.807 0 28.622-12.79 28.622-28.568V419z"/></svg>
+      <span>37degree</span>
+    </a>
+    <div class="nav">
+      <button class="btn btn--ghost btn--sm" data-go="today">Today</button>
+      <div class="stepper">
+        <button class="icon-btn" data-go="prev" aria-label="Earlier">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M8.5 3 4.5 7l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="icon-btn" data-go="next" aria-label="Later">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="m5.5 3 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="month-label" aria-live="polite"><span class="m">August</span> <span class="y">2024</span></div>
+    </div>
+    <div class="toolbar__right">
+      <button class="link-btn" data-go="work">Work</button>
+      <button class="link-btn" data-go="start">Story</button>
+      <a class="btn btn--primary btn--sm" href="mailto:puru@37degr.ee?cc=haneef@37degr.ee&amp;subject=Work%20with%2037degree">Work with us!</a>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="timeline" tabindex="0" aria-label="Studio calendar, scroll sideways">
+      <div class="track"></div>
+    </div>
+    <div class="agenda" aria-label="Studio calendar"></div>
+  </main>
+
+  <div class="dynbar" role="toolbar" aria-label="Zoom">
+    <button class="icon-btn dynbar__zoom" data-zoom="-1" aria-label="Zoom out">
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="dynbar__mid">
+      <div class="seg" role="radiogroup" aria-label="Zoom level">
+        <span class="seg__handle" aria-hidden="true"></span>
+        <button role="radio" data-view="highlights">Highlights</button>
+        <button role="radio" data-view="months">Months</button>
+        <button role="radio" data-view="days">Days</button>
+      </div>
+      <div class="owner" aria-live="polite"><span class="owner__av"></span><span class="owner__label"></span></div>
+    </div>
+    <button class="icon-btn dynbar__zoom" data-zoom="1" aria-label="Zoom in">
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10M6 1v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <span class="dynbar__div" aria-hidden="true"></span>
+    <div class="minimap" aria-label="Position in the timeline" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="minimap__ticks"></div>
+      <div class="minimap__win"></div>
+    </div>
+  </div>
+
+  <div class="scrim" hidden></div>
+  <div class="flylayer" aria-hidden="true"></div>
+  <aside class="sheet" role="dialog" aria-modal="true" aria-label="Case study" hidden></aside>
+  <div class="pop" role="dialog" hidden></div>
+
+  <script src="js/data.js"></script>
+  <script src="v1/js/app.js"></script>
+</body>
+</html>
