@@ -280,6 +280,11 @@ window.CMS = {
    "services": [
     "Branding",
     "Website"
+   ],
+   "photos": [
+    "assets/img/mock/goatfish-1.jpg",
+    "assets/img/mock/goatfish-2.jpg",
+    "assets/img/mock/goatfish-3.jpg"
    ]
   },
   {
@@ -305,6 +310,11 @@ window.CMS = {
     "Event",
     "Branding",
     "Copy"
+   ],
+   "photos": [
+    "assets/img/mock/sez-1.jpg",
+    "assets/img/mock/sez-2.jpg",
+    "assets/img/mock/sez-3.jpg"
    ]
   },
   {
@@ -320,6 +330,11 @@ window.CMS = {
     "Print",
     "Web app",
     "Motion"
+   ],
+   "photos": [
+    "assets/img/mock/sec-1.jpg",
+    "assets/img/mock/sec-2.jpg",
+    "assets/img/mock/sec-3.jpg"
    ]
   },
   {
@@ -367,6 +382,11 @@ window.CMS = {
    "summary": "App design onboarding for Proactive Path, with ZenREAI and Plus1.",
    "services": [
     "Product design"
+   ],
+   "photos": [
+    "assets/img/mock/proactive-1.jpg",
+    "assets/img/mock/proactive-2.jpg",
+    "assets/img/mock/proactive-3.jpg"
    ]
   },
   {
@@ -380,6 +400,11 @@ window.CMS = {
     "Video",
     "Motion",
     "Pitch deck"
+   ],
+   "photos": [
+    "assets/img/mock/lab0-1.jpg",
+    "assets/img/mock/lab0-2.jpg",
+    "assets/img/mock/lab0-3.jpg"
    ]
   },
   {
@@ -391,6 +416,11 @@ window.CMS = {
    "summary": "Event design for Superteam Australia.",
    "services": [
     "Event"
+   ],
+   "photos": [
+    "assets/img/mock/superteam-1.jpg",
+    "assets/img/mock/superteam-2.jpg",
+    "assets/img/mock/superteam-3.jpg"
    ]
   },
   {
@@ -402,6 +432,11 @@ window.CMS = {
    "summary": "Product design for Aria Music.",
    "services": [
     "Product design"
+   ],
+   "photos": [
+    "assets/img/mock/aria-1.jpg",
+    "assets/img/mock/aria-2.jpg",
+    "assets/img/mock/aria-3.jpg"
    ]
   },
   {
@@ -429,7 +464,12 @@ window.CMS = {
     "Strategy",
     "Motion"
    ],
-   "end": "2026-10-15"
+   "end": "2026-10-15",
+   "photos": [
+    "assets/img/mock/omnipair-1.jpg",
+    "assets/img/mock/omnipair-2.jpg",
+    "assets/img/mock/omnipair-3.jpg"
+   ]
   },
   {
    "id": "sec-4-world-cup-player-card-web-app-3b84",
@@ -442,7 +482,12 @@ window.CMS = {
    "services": [
     "Web app"
    ],
-   "parent": "solana-ecosystem-call-marketing-desi-f7c7"
+   "parent": "solana-ecosystem-call-marketing-desi-f7c7",
+   "photos": [
+    "assets/img/mock/sec4-1.jpg",
+    "assets/img/mock/sec4-2.jpg",
+    "assets/img/mock/sec4-3.jpg"
+   ]
   },
   {
    "id": "footify-football-card-generator-camp-2be3",
@@ -454,6 +499,11 @@ window.CMS = {
    "services": [
     "Campaign",
     "Web app"
+   ],
+   "photos": [
+    "assets/img/mock/footify-1.jpg",
+    "assets/img/mock/footify-2.jpg",
+    "assets/img/mock/footify-3.jpg"
    ]
   },
   {
@@ -467,7 +517,12 @@ window.CMS = {
     "Print",
     "Campaign"
    ],
-   "parent": "solana-ecosystem-call-marketing-desi-f7c7"
+   "parent": "solana-ecosystem-call-marketing-desi-f7c7",
+   "photos": [
+    "assets/img/mock/secjuly-1.jpg",
+    "assets/img/mock/secjuly-2.jpg",
+    "assets/img/mock/secjuly-3.jpg"
+   ]
   },
   {
    "id": "lab0ai-pwc-the-pitch-deck-c336",
@@ -479,7 +534,12 @@ window.CMS = {
    "services": [
     "Pitch deck"
    ],
-   "parent": "lab0ai-launch-product-films-79ef"
+   "parent": "lab0ai-launch-product-films-79ef",
+   "photos": [
+    "assets/img/mock/lab0pwc-1.jpg",
+    "assets/img/mock/lab0pwc-2.jpg",
+    "assets/img/mock/lab0pwc-3.jpg"
+   ]
   },
   {
    "id": "9nidhi-naming-intro-deck-df30",
@@ -491,6 +551,11 @@ window.CMS = {
    "services": [
     "Naming",
     "Pitch deck"
+   ],
+   "photos": [
+    "assets/img/mock/9nidhi-1.jpg",
+    "assets/img/mock/9nidhi-2.jpg",
+    "assets/img/mock/9nidhi-3.jpg"
    ]
   },
   {
@@ -505,7 +570,12 @@ window.CMS = {
     "Website",
     "Copy"
    ],
-   "parent": "solana-ecosystem-call-marketing-desi-f7c7"
+   "parent": "solana-ecosystem-call-marketing-desi-f7c7",
+   "photos": [
+    "assets/img/mock/sec5-1.jpg",
+    "assets/img/mock/sec5-2.jpg",
+    "assets/img/mock/sec5-3.jpg"
+   ]
   },
   {
    "id": "deccan-ai-the-bumblebee-launch-film-987d",
@@ -519,7 +589,12 @@ window.CMS = {
     "Video",
     "Branding"
    ],
-   "end": "2026-10-15"
+   "end": "2026-10-15",
+   "photos": [
+    "assets/img/mock/bumblebee-1.jpg",
+    "assets/img/mock/bumblebee-2.jpg",
+    "assets/img/mock/bumblebee-3.jpg"
+   ]
   },
   {
    "id": "almanac-product-launch-films-62d5",
@@ -534,7 +609,12 @@ window.CMS = {
     "Motion",
     "Print"
    ],
-   "end": "2026-09-10"
+   "end": "2026-09-10",
+   "photos": [
+    "assets/img/mock/almanac-1.jpg",
+    "assets/img/mock/almanac-2.jpg",
+    "assets/img/mock/almanac-3.jpg"
+   ]
   },
   {
    "id": "borderless-unp-explainer-storyboards-43f1",
@@ -545,6 +625,11 @@ window.CMS = {
    "summary": "Explainer video storyboards in the deBridge style.",
    "services": [
     "Video"
+   ],
+   "photos": [
+    "assets/img/mock/borderless-1.jpg",
+    "assets/img/mock/borderless-2.jpg",
+    "assets/img/mock/borderless-3.jpg"
    ]
   },
   {
@@ -557,6 +642,11 @@ window.CMS = {
    "services": [
     "Branding",
     "Website"
+   ],
+   "photos": [
+    "assets/img/mock/devx-1.jpg",
+    "assets/img/mock/devx-2.jpg",
+    "assets/img/mock/devx-3.jpg"
    ]
   },
   {
@@ -568,6 +658,11 @@ window.CMS = {
    "summary": "An intro video storyboard for the Superteam AU podcast.",
    "services": [
     "Video"
+   ],
+   "photos": [
+    "assets/img/mock/firstlight-1.jpg",
+    "assets/img/mock/firstlight-2.jpg",
+    "assets/img/mock/firstlight-3.jpg"
    ]
   }
  ]

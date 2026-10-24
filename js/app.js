@@ -185,7 +185,7 @@
   }
 
   /* ── Columns ──────────────────────────────────────── */
-  let view = 'days';
+  let view = 'highlights'; // open on the edited cut; Days and Months are one click away
 
   function columnsFor(v) {
     const list = v === 'highlights' ? ALL.filter((e) => e.highlight) : ALL;
@@ -490,7 +490,7 @@
   }
 
   function setOwner(av, label, tint) {
-    bar.className = ['dynbar', tint].filter(Boolean).join(' ');
+    bar.className = ['dynbar', tint, bar.classList.contains('is-tucked') && 'is-tucked'].filter(Boolean).join(' ');
     const a = $('.dyn-av');
     a.className = 'dyn-av' + (av.logo ? ' is-logo' : '');
     a.innerHTML = av.logo ? logoHTML(av.logo, 9) : av.img ? `<img src="${av.img}" alt="">` : av.mono;
@@ -711,136 +711,267 @@
     return () => clearTimeout(t);
   }
 
-  /* ── Work: the side sheet ─────────────────────────── */
+  /* ── Work: a sheet of paper slid up from the bottom ── */
+  // set in the calendar's own type: card dates, white work cards, the pink testimonial note
+  const MARK = '<svg viewBox="140 140 560 560" width="14" height="14" aria-hidden="true"><path fill="#FF3600" d="M172.635 281.507c-15.807 0-28.621 12.79-28.621 28.568v80.357c0 15.778 12.814 28.568 28.621 28.568h80.25c15.808 0 28.622-12.79 28.622-28.568V281.507zm137.494-137.493c-15.808 0-28.622 12.79-28.622 28.568v108.925H419V144.014zm137.493 412.479c-15.807 0-28.622 12.791-28.622 28.569v80.356c0 15.778 12.815 28.569 28.622 28.569h80.25c15.807 0 28.622-12.791 28.622-28.569V556.493zM419 144.014v137.493h137.494V172.582c0-15.778-12.815-28.568-28.622-28.568zm137.494 137.493V419h137.493V310.075c0-15.778-12.815-28.568-28.622-28.568zm0 137.493v137.493h108.871c15.807 0 28.622-12.79 28.622-28.568V419z"/></svg>';
+
   function daysHTML(d) {
     const n = d.total;
     return `<div class="days" style="--n:${n}">
       <div class="days__head">${Array.from({ length: n }, (_, i) => `<span>D${i + 1}</span>`).join('')}</div>
       <div class="days__grid" style="grid-template-columns:repeat(${n}, 1fr)">${d.items.map((it, i) =>
-        `<div class="days__bar" style="grid-column:${it.from} / ${it.to + 1};animation-delay:${200 + i * 140}ms">${it.label}<span>Day ${it.from}–${it.to}</span></div>`).join('')}</div>
+        `<div class="days__bar" style="grid-column:${it.from} / ${it.to + 1};animation-delay:${200 + i * 140}ms">${it.label}${it.to - it.from >= 2 ? `<span>Day ${it.from}–${it.to}</span>` : ''}</div>`).join('')}</div>
     </div>`;
   }
+  const galleryHTML = (imgs) => `<div class="pp-gallery ${imgs.length === 1 ? 'one' : imgs.length === 3 ? 'three' : 'two'}">${imgs.map((s) => `<img src="${s}" alt="" loading="lazy">`).join('')}</div>`;
   function blockHTML(b) {
-    const g = b.img ? `<div class="gallery ${b.img.length === 1 ? 'one' : b.img.length === 3 ? 'three' : ''}">${b.img.map((s) => `<img src="${s}" alt="" loading="lazy">`).join('')}</div>` : '';
-    return `<section id="sec-${b.id}">
+    return `<section class="pp-sec" id="sec-${b.id}">
       <h2>${b.h}</h2>
       ${(b.p || []).map((t) => `<p>${t}</p>`).join('')}
-      ${b.list ? `<ul class="items">${b.list.map(([t, d]) => `<li><b>${t}</b><span>${d}</span></li>`).join('')}</ul>` : ''}
+      ${b.list ? `<ul class="pp-points">${b.list.map(([t, d]) => `<li><b>${t}</b><span>${d}</span></li>`).join('')}</ul>` : ''}
       ${b.days ? daysHTML(b.days) : ''}
-      ${g}
+      ${b.img ? galleryHTML(b.img) : ''}
       ${b.video ? `<video src="${b.video}" controls playsinline preload="none" poster="assets/img/side-cover.png"></video>` : ''}
-      ${b.metrics ? `<div class="metrics">${b.metrics.map(([n, l]) => `<div class="metric"><div class="metric__num">${n}</div><div class="metric__label">${l}</div></div>`).join('')}</div>` : ''}
-      ${b.quote ? `<blockquote><p>“${b.quote.text}”</p><span class="meta">${b.quote.who} · ${b.quote.role}</span></blockquote>` : ''}
-      ${b.scorecard ? `<div class="score">${b.scorecard.map(([t, d]) => `<div>${t}<span><i></i>Delivered · ${d}</span></div>`).join('')}</div>` : ''}
+      ${b.metrics ? `<div class="pp-results">${b.metrics.map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join('')}</div>` : ''}
+      ${b.quote ? `<figure class="pp-quote"><blockquote>“${b.quote.text}”</blockquote><figcaption>${b.quote.who}, ${b.quote.role}</figcaption></figure>` : ''}
+      ${b.scorecard ? `<div class="pp-score">${b.scorecard.map(([t, d]) => `<div><span>${t}</span><b>${d}</b></div>`).join('')}</div>` : ''}
     </section>`;
   }
-  function sheetHTML(C) {
-    const next = CASES[CASE_ORDER[(CASE_ORDER.indexOf(C.id) + 1) % CASE_ORDER.length]];
-    const live = C.live ? `<div><dt>Live</dt><dd><a href="${C.live}" target="_blank" rel="noopener">${C.live.replace(/^https?:\/\//, '')} ↗</a></dd></div>` : '';
-    return `<div class="sheet__bar">
-        ${C.logo ? logoHTML(C.logo, 17, C.client) : `<span class="client">${C.client}</span>`}
-        <span class="pill">${C.duration}</span><span class="meta">${fmtRange(C.start, C.end)}</span>
-        <button class="note__x" data-close aria-label="Close">${icon.x}</button>
+  // the next piece of work: one quiet row
+  function nextHTML(n) {
+    return `<button class="pp-next" ${n.attr}>
+        <span class="pp-next__k">Next</span>
+        <span class="pp-next__t">${strip(n.title)}</span>
+        <span class="pp-next__c">${n.client} · ${n.len}</span>
+        <span class="pp-next__go" aria-hidden="true">→</span>
+      </button>`;
+  }
+  // the end of the paper: what's next, the ask, and the signature pressed into the page
+  function endHTML(next) {
+    return `<div class="pp-end">
+        ${nextHTML(next)}
+        <div class="pp-cta"><span>Have something to launch?</span><a class="pp-btn" href="${MAIL}">Work with us</a></div>
       </div>
-      <div class="sheet__body">
-        <div class="tags">${C.tags.map((t) => `<span class="pill">${t}</span>`).join('')}</div>
-        <h1>${C.title}</h1>
-        <p class="lede">${C.lede}</p>
-        <dl class="metagrid">${C.meta.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}${live}</dl>
-        <img class="cover" src="${C.cover}" alt="">
-        ${C.blocks.map(blockHTML).join('')}
-        <button class="sheet__next" data-case-next="${next.id}"><span><span class="meta">Next · ${next.duration}</span><div class="t">${next.title}</div></span><span aria-hidden="true">→</span></button>
-        <div class="sheet__cta"><span class="t">Your launch could be <em>next</em>.</span><a class="btn" href="${MAIL}">Work with us</a></div>
+      <div class="pp-sign" aria-label="Thanks, Puru and Haneef">
+        <span class="pp-sign__by">With love, Puru &amp; Haneef</span>
+        <span class="pp-sign__word" aria-hidden="true">Thanks</span>
       </div>`;
+  }
+  // one quiet line on top: who, and when
+  function headHTML(client, a, b, len) {
+    const when = b ? fmtRange(a, b) : fullDate(a);
+    return `<p class="pp-meta"><span class="pp-client">${client}</span><span>${when}${len ? ` · ${len}` : ''}</span></p>`;
+  }
+  function nextCase(C) {
+    const n = CASES[CASE_ORDER[(CASE_ORDER.indexOf(C.id) + 1) % CASE_ORDER.length]];
+    return { attr: `data-case-next="${n.id}"`, client: n.client, title: n.title, len: n.duration };
+  }
+  function sheetHTML(C) {
+    // the numbers row already says the result, so the list doesn't repeat it
+    const facts = [...C.meta.filter(([k]) => !(C.results && k === 'Result')), ...(C.live ? [['Live', `<a href="${C.live}" target="_blank" rel="noopener">${C.live.replace(/^https?:\/\//, '')} ↗</a>`]] : [])];
+    return `<article class="paper">
+        ${headHTML(C.client, C.start, C.end, C.duration)}
+        <header class="pp-hero">
+          <h1>${strip(C.title)}</h1>
+          <p class="pp-lede">${C.lede}</p>
+        </header>
+        <dl class="pp-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+        ${C.results ? `<div class="pp-results">${C.results.map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join('')}</div>` : ''}
+        ${C.blocks.map(blockHTML).join('')}
+        ${endHTML(nextCase(C))}
+      </article>`;
   }
 
   // a project or moment from Notion: everything comes from its row and page body
   const WORKS = ALL.filter((e) => e.type === 'case' || e.type === 'project');
   function projectSheetHTML(ev) {
     const parent = ev.parent && BY_ID[ev.parent];
-    const anchor = parent || ev;
-    const next = WORKS[(WORKS.indexOf(anchor) + 1) % WORKS.length] || WORKS[0];
-    const nextTitle = next.type === 'case' ? CASES[next.case].title : next.title;
-    const nextAttr = next.type === 'case' ? `data-case-next="${next.case}"` : `data-open-id="${next.id}"`;
-    const nextLen = next.type === 'case' ? CASES[next.case].duration : next.end ? durationOf(next.date, next.end) : fullDate(next.date);
-    const when = ev.end ? fmtRange(ev.date, ev.end) : fullDate(ev.date);
-    const meta = [
+    const n = WORKS[(WORKS.indexOf(parent || ev) + 1) % WORKS.length] || WORKS[0];
+    const next = n.type === 'case'
+      ? { attr: `data-case-next="${n.case}"`, client: CASES[n.case].client, title: CASES[n.case].title, len: CASES[n.case].duration }
+      : { attr: `data-open-id="${n.id}"`, client: n.client || '37degree', title: n.title, len: n.end ? durationOf(n.date, n.end) : fullDate(n.date) };
+    const facts = [
       ['Client', ev.client],
-      ['When', when],
       ['Services', (ev.services || []).join(', ')],
       ['Part of', parent && `<button class="linkish" data-open-id="${parent.id}">${strip(parent.title)} →</button>`],
       ['Live', ev.live && `<a href="${ev.live}" target="_blank" rel="noopener">${ev.live.replace(/^https?:\/\/(www\.)?/, '')} ↗</a>`],
     ].filter(([, v]) => v);
-    const [cover, ...rest] = ev.photos || [];
-    return `<div class="sheet__bar">
-        <span class="client">${ev.client || '37degree'}</span>
-        ${ev.end ? `<span class="pill">${durationOf(ev.date, ev.end)}</span>` : ''}<span class="meta">${when}</span>
-        <button class="note__x" data-close aria-label="Close">${icon.x}</button>
-      </div>
-      <div class="sheet__body">
-        ${tagsHTML(ev)}
-        <h1>${ev.title}</h1>
-        ${ev.summary ? `<p class="lede">${ev.summary}</p>` : ''}
-        <dl class="metagrid">${meta.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
-        ${cover ? `<img class="cover" src="${cover}" alt="">` : ''}
-        ${rest.length ? `<div class="gallery ${rest.length === 1 ? 'one' : ''}">${rest.map((s) => `<img src="${s}" alt="" loading="lazy">`).join('')}</div>` : ''}
-        ${ev.body ? `<section class="prose">${ev.body}</section>` : ''}
-        <button class="sheet__next" ${nextAttr}><span><span class="meta">Next · ${nextLen}</span><div class="t">${nextTitle}</div></span><span aria-hidden="true">→</span></button>
-        <div class="sheet__cta"><span class="t">Your launch could be <em>next</em>.</span><a class="btn" href="${MAIL}">Work with us</a></div>
-      </div>`;
+    const photos = ev.photos || [];
+    return `<article class="paper">
+        ${headHTML(ev.client || '37degree', ev.date, ev.end, ev.end ? durationOf(ev.date, ev.end) : '')}
+        <header class="pp-hero">
+          <h1>${strip(ev.title)}</h1>
+          ${ev.summary ? `<p class="pp-lede">${ev.summary}</p>` : ''}
+        </header>
+        <dl class="pp-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+        ${photos.length > 4 ? `<section class="pp-sec">${galleryHTML(photos.slice(4))}</section>` : ''}
+        ${ev.body ? `<section class="pp-sec pp-prose">${ev.body}</section>` : ''}
+        ${endHTML(next)}
+      </article>`;
   }
 
-  function openProject(ev, srcEl) {
-    if (!ev) return;
-    closeAll(true);
-    const card = srcEl || $(`.card[data-id="${ev.id}"]`, mq.matches ? agenda : track);
-    sheet.innerHTML = projectSheetHTML(ev);
-    sheet.scrollTop = 0;
+  // each sheet remembers where you were in it; others always open at the top
+  const sheetScroll = new Map();
+  function showSheet(html, id) {
+    sheet.classList.remove('is-in', 'is-leaving');
+    sheet.innerHTML = `<button class="sheet__x" data-close aria-label="Close">${icon.x}</button>${html}`;
     sheet.hidden = false;
+    sheet.scrollTop = sheetScroll.get(id) || 0; // only works once visible
     scrim.hidden = false;
-    const fly = card && ev.type === 'project' && ev.photos ? flyOut(card, { stack: ev.photos.slice(0, 3) }) : null;
+    bar.classList.add('is-tucked');
     requestAnimationFrame(() => requestAnimationFrame(() => { scrim.classList.add('is-in'); sheet.classList.add('is-in'); }));
-    if (!mq.matches) bar.style.left = `${Math.max(140, (innerWidth - Math.min(720, innerWidth)) / 2)}px`;
-    open = { kind: 'sheet', id: ev.id, el: card, fly };
-    setOwner({ mono: (ev.client || '37')[0] }, ev.client || 'By 37degree');
-    markVisited(ev.id);
-    history.replaceState(null, '', `${location.pathname}${location.search}#work/${ev.id}`);
-    setTimeout(() => { const x = $('[data-close]', sheet); x && x.focus({ preventScroll: true }); }, 50);
+    setTimeout(() => { const x = $('.sheet__x', sheet); x && x.focus({ preventScroll: true }); }, 50);
+    // the signature writes itself once you reach the end of the page
+    const sign = $('.pp-sign', sheet);
+    if (sign) {
+      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { sign.classList.add('is-signed'); io.disconnect(); } }, { root: sheet, threshold: 0.25 });
+      io.observe(sign);
+    }
   }
 
-  // the project's screens leave the card and fan out beside the sheet
-  const FAN = [{ x: -0.3, y: -0.46, r: -6 }, { x: 0.3, y: -0.06, r: 5 }, { x: -0.06, y: 0.48, r: -2 }];
-  function flyOut(card, C) {
-    if (!card || reduced.matches || mq.matches) return null;
-    const frame = $('.frame', card) || card;
+  // ?layout=center keeps the paper in the middle with screens in both margins;
+  // by default the paper sits on the right and the left half is a stage for the work
+  const CENTERED = new URLSearchParams(location.search).get('layout') === 'center';
+  if (CENTERED) document.body.classList.add('sheet-center');
+  const stageWidth = () => {
+    const paper = !CENTERED && !mq.matches && $('.paper', sheet);
+    return paper ? paper.getBoundingClientRect().left : 0;
+  };
+
+  // the work's screens leave the card and settle beside the paper
+  const SPOTS = CENTERED
+    ? [{ side: -1, y: 0.3, r: -6 }, { side: 1, y: 0.4, r: 5 }, { side: -1, y: 0.72, r: 3 }, { side: 1, y: 0.8, r: -4 }]
+    : [{ x: 0.3, y: 0.3, r: -6 }, { x: 0.68, y: 0.42, r: 5 }, { x: 0.34, y: 0.72, r: 3 }, { x: 0.7, y: 0.82, r: -4 }];
+  function flyOut(card, shots) {
+    if (!card || !shots || !shots.length || reduced.matches || mq.matches) return null;
+    const paper = $('.paper', sheet);
+    const frame = $('.frame', card) || $('.stack', card) || $('.thumb', card) || card;
     const r = frame.getBoundingClientRect();
-    if (r.right < 0 || r.left > innerWidth) return null;
-    const L = innerWidth - Math.min(720, innerWidth);
-    if (L < 380) return null;
-    const tw = Math.min(400, L * 0.54);
-    const cx = L / 2, cy = innerHeight / 2;
+    if (!paper || r.right < 0 || r.left > innerWidth) return null;
+    const gutter = (innerWidth - paper.offsetWidth) / 2;
+    const stage = stageWidth();
+    const tw = CENTERED ? Math.min(gutter - 48, 340) : Math.min(stage * 0.42, 360);
+    if (tw < 150) return null;
+    const th = tw * 0.66;
     const start = rectKeys(r, '10px');
-    const anims = C.stack.map((src, i) => {
+    const anims = shots.slice(0, SPOTS.length).map((src, i) => {
       const img = document.createElement('img');
       img.src = src;
       flyLayer.appendChild(img);
-      const th = tw * 0.62, f = FAN[i % FAN.length];
-      const end = { left: `${cx + f.x * tw - tw / 2}px`, top: `${cy + f.y * th - th / 2}px`, width: `${tw}px`, height: `${th}px`, borderRadius: '10px' };
+      const s = SPOTS[i];
+      const cx = CENTERED ? (s.side < 0 ? gutter / 2 : innerWidth - gutter / 2) : stage * s.x;
+      const end = { left: `${cx - tw / 2}px`, top: `${innerHeight * s.y - th / 2}px`, width: `${tw}px`, height: `${th}px`, borderRadius: '10px' };
       return img.animate(
-        [{ ...start, transform: 'rotate(0deg)', opacity: i === 0 ? 1 : 0 }, { ...end, transform: `rotate(${f.r}deg)`, opacity: 1 }],
-        { duration: 640, delay: i * 60, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
+        [{ ...start, transform: 'rotate(0deg)', opacity: i === 0 ? 1 : 0 }, { ...end, transform: `rotate(${s.r}deg)`, opacity: 1 }],
+        { duration: 680, delay: 120 + i * 70, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
     });
     card.classList.add('is-flown');
     return { card, anims };
   }
+  // click any image of the work to see it whole: on the left stage, or full screen on phones and the centred layout
+  const viewer = document.createElement('div');
+  viewer.className = 'viewer';
+  viewer.hidden = true;
+  viewer.innerHTML = '<img class="viewer__pic" alt=""><span class="viewer__n"></span>';
+  document.body.appendChild(viewer);
+  let viewing = null; // { list, i }
+  const sheetPics = () => [...new Set([...$$('.flylayer img:not(.print-fly)'), ...$$('.paper img')].map((i) => i.getAttribute('src')))];
+  function stageBox() {
+    const w = stageWidth();
+    return w ? { left: 0, top: 0, width: w, height: innerHeight } : { left: 0, top: 0, width: innerWidth, height: innerHeight };
+  }
+  // dir 1: the current image leaves to the left and the next comes in from the right; -1 the other way
+  async function showPic(i, fromEl, dir = 1) {
+    const { list } = viewing;
+    viewing.i = (i + list.length) % list.length;
+    const src = list[viewing.i];
+    const probe = new Image();
+    probe.src = src;
+    await probe.decode().catch(() => {});
+    if (!viewing) return;
+    const S = stageBox(), pad = mq.matches ? 16 : 48;
+    const k = Math.min((S.width - pad * 2) / (probe.naturalWidth || 4), (S.height - pad * 2) / (probe.naturalHeight || 3), 1.6);
+    const w = (probe.naturalWidth || 4) * k, h = (probe.naturalHeight || 3) * k;
+    const to = { left: S.left + (S.width - w) / 2, top: S.top + (S.height - h) / 2, width: w, height: h };
+    const img = $('.viewer__pic', viewer);
+    const had = viewing.shown;
+    viewing.shown = true;
+    if (had && !reduced.matches) {
+      const old = img.cloneNode();
+      old.classList.remove('viewer__pic');
+      viewer.appendChild(old);
+      const r = img.getBoundingClientRect();
+      const out = dir > 0 ? -(r.right + 40) : innerWidth - r.left + 40;
+      const gone = () => old.remove();
+      old.animate([{ transform: 'none' }, { transform: `translateX(${out}px) rotate(${dir * -3}deg)` }], { duration: 560, easing: 'cubic-bezier(.5,0,.2,1)', fill: 'forwards' }).finished.then(gone, gone);
+    }
+    img.src = src;
+    $('.viewer__n', viewer).textContent = list.length > 1 ? `${viewing.i + 1} / ${list.length} · ${mq.matches ? 'swipe' : '← →'} to browse` : '';
+    Object.assign(img.style, { left: `${to.left}px`, top: `${to.top}px`, width: `${w}px`, height: `${h}px` });
+    if (reduced.matches) return;
+    if (fromEl) img.animate([rectKeys(fromEl.getBoundingClientRect(), '8px'), rectKeys(to, '8px')], { duration: 520, delay: had ? 60 : 0, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+    else if (had) img.animate([{ transform: `translateX(${dir > 0 ? S.width - to.left + 40 : -(to.left + w + 40)}px)` }, { transform: 'none' }], { duration: 560, delay: 60, easing: 'cubic-bezier(.3,0,.1,1)', fill: 'backwards' });
+    else img.animate([{ opacity: 0, transform: 'scale(.97)' }, { opacity: 1, transform: 'none' }], { duration: 240, easing: 'ease-out' });
+  }
+  function openViewer(src, fromEl) {
+    if (viewing) return showPic(Math.max(0, viewing.list.indexOf(src)), fromEl);
+    const list = sheetPics();
+    viewing = { list, i: 0, shown: false };
+    const S = stageBox();
+    viewer.style.width = `${S.width}px`;
+    viewer.classList.toggle('is-full', S.width === innerWidth);
+    viewer.hidden = false;
+    requestAnimationFrame(() => viewer.classList.add('is-in'));
+    flyLayer.classList.add('is-dim');
+    showPic(Math.max(0, list.indexOf(src)), fromEl);
+  }
+  // phones: swipe left for the next image, right for the previous; a tap still closes
+  let swipeX = null;
+  viewer.addEventListener('touchstart', (e) => { swipeX = e.touches[0].clientX; }, { passive: true });
+  viewer.addEventListener('touchend', (e) => {
+    const dx = swipeX === null ? 0 : e.changedTouches[0].clientX - swipeX;
+    swipeX = null;
+    if (!viewing || Math.abs(dx) < 40) return;
+    e.preventDefault(); // no click, so the swipe doesn't close the viewer
+    showPic(viewing.i + (dx < 0 ? 1 : -1), null, dx < 0 ? 1 : -1);
+  });
+  function closeViewer(instant) {
+    if (!viewing) return;
+    viewing = null;
+    viewer.classList.remove('is-in');
+    flyLayer.classList.remove('is-dim');
+    const hide = () => { if (!viewing) viewer.hidden = true; };
+    instant ? hide() : setTimeout(hide, 220);
+  }
+
   function flyBack(f, instant) {
     if (!f) return;
     const clones = f.anims.map((a) => a.effect.target);
     const done = () => { clones.forEach((c) => c.remove()); f.card.classList.remove('is-flown'); };
     if (instant) return done();
-    f.anims.forEach((a) => { a.updatePlaybackRate(1.3); a.reverse(); });
-    Promise.all(f.anims.map((a) => a.finished)).then(done, done);
-    setTimeout(done, 900);
+    // every screen heads home at once, at the same pace the sheet drops
+    const pick = (k) => ({ left: k.left, top: k.top, width: k.width, height: k.height, borderRadius: k.borderRadius, transform: k.transform, opacity: k.opacity });
+    const back = f.anims.map((a) => {
+      const [from, to] = a.effect.getKeyframes().map(pick);
+      const anim = a.effect.target.animate([to, from], { duration: 480, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'both' });
+      a.cancel();
+      return anim;
+    });
+    Promise.all(back.map((x) => x.finished)).then(done, done);
+    setTimeout(done, 700);
+  }
+
+
+  function openProject(ev, srcEl) {
+    if (!ev) return;
+    closeAll(true);
+    const card = srcEl || $(`.card[data-id="${ev.id}"]`, mq.matches ? agenda : track);
+    showSheet(projectSheetHTML(ev), ev.id);
+    const fly = card && ev.photos ? flyOut(card, ev.photos) : null;
+    open = { kind: 'sheet', id: ev.id, el: card, fly };
+    setOwner({ mono: (ev.client || '37')[0] }, ev.client || 'By 37degree');
+    markVisited(ev.id);
+    history.replaceState(null, '', `${location.pathname}${location.search}#work/${ev.id}`);
   }
 
   function openCase(id, section, srcEl, opts = {}) {
@@ -848,18 +979,12 @@
     if (!C) return;
     closeAll(true);
     const caseCard = $(`.card--case[data-case="${id}"]`, mq.matches ? agenda : track);
-    sheet.innerHTML = sheetHTML(C);
-    sheet.scrollTop = 0;
-    sheet.hidden = false;
-    scrim.hidden = false;
-    const fly = opts.noFly ? null : flyOut(caseCard, C);
-    requestAnimationFrame(() => requestAnimationFrame(() => { scrim.classList.add('is-in'); sheet.classList.add('is-in'); }));
-    if (!mq.matches) bar.style.left = `${Math.max(140, (innerWidth - Math.min(720, innerWidth)) / 2)}px`;
+    showSheet(sheetHTML(C), id);
+    const fly = opts.noFly ? null : flyOut(caseCard, C.stack);
     open = { kind: 'sheet', id, el: srcEl || caseCard, fly };
     setOwner(C.logo ? { logo: C.logo } : { mono: C.client[0] }, C.short);
     markVisited(caseCard && caseCard.dataset.id, srcEl && srcEl.dataset.id);
     history.replaceState(null, '', `${location.pathname}${location.search}#work/${id}`);
-    setTimeout(() => { const x = $('[data-close]', sheet); x && x.focus({ preventScroll: true }); }, 50);
     if (section) {
       setTimeout(() => {
         const sec = $(`#sec-${section}`, sheet);
@@ -873,13 +998,21 @@
   }
 
   function closeSheet(o, instant) {
-    sheet.classList.remove('is-in');
+    closeViewer(true);
+    sheetScroll.set(o.id, sheet.scrollTop);
+    // the whole sheet drops straight down from where you are, while the screens fly home
+    sheet.classList.add('is-leaving');
     scrim.classList.remove('is-in');
     bar.style.left = '';
+    bar.classList.remove('is-tucked');
     $$('video', sheet).forEach((v) => v.pause());
     flyBack(o.fly, instant);
-    const hide = () => { if (!open || open.kind !== 'sheet') { sheet.hidden = true; scrim.hidden = true; } };
-    instant ? hide() : setTimeout(hide, 500);
+    const hide = () => {
+      if (open && open.kind === 'sheet') return;
+      sheet.hidden = true; scrim.hidden = true;
+      sheet.classList.remove('is-in', 'is-leaving');
+    };
+    instant ? hide() : setTimeout(hide, 520);
     history.replaceState(null, '', location.pathname + location.search);
     !instant && o.el && o.el.focus({ preventScroll: true });
   }
@@ -895,9 +1028,13 @@
   /* ── Events ───────────────────────────────────────── */
   document.addEventListener('click', (e) => {
     const t = e.target;
+    if (viewing && t.closest('.viewer')) return closeViewer();
+    const pic = open && open.kind === 'sheet' && t.closest('.paper img, .flylayer img:not(.print-fly)');
+    if (pic) return openViewer(pic.getAttribute('src'), pic);
     const v = t.closest('[data-view]');
     if (v) return setView(v.dataset.view);
-    if (t.closest('[data-close]') || t === focusEl || t === scrim) return closeAll();
+    // clicking the margins around the paper puts it away
+    if (t.closest('[data-close]') || t === focusEl || t === scrim || t === sheet) return closeAll();
     const nextBtn = t.closest('[data-case-next]');
     if (nextBtn) {
       const id = nextBtn.dataset.caseNext;
@@ -926,6 +1063,10 @@
   });
 
   document.addEventListener('keydown', (e) => {
+    if (viewing) {
+      if (e.key === 'Escape') { e.preventDefault(); return closeViewer(); }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); return showPic(viewing.i + (e.key === 'ArrowRight' ? 1 : -1), null, e.key === 'ArrowRight' ? 1 : -1); }
+    }
     if (e.key === 'Escape' && open) { e.preventDefault(); closeAll(); }
     // − and + zoom out and in, like a calendar app
     const inField = e.target instanceof Element && e.target.closest('input, textarea, select');

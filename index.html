@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital@1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital@1&family=Mrs+Saint+Delafield&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
   <script>try { const t = localStorage.getItem('37cal.theme'); if (t) document.documentElement.dataset.theme = t; } catch (_) {}</script>
 </head>
@@ -57,5 +57,16 @@
   <script src="js/data.js"></script>
   <script src="js/cms.js"></script>
   <script src="js/app.js"></script>
+  <!-- inner shadow for the engraved signature at the end of a case study -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="engrave" x="-5%" y="-10%" width="110%" height="130%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4" result="blur"/>
+      <feOffset in="blur" dy="3.5" result="shifted"/>
+      <feComposite in="SourceAlpha" in2="shifted" operator="out" result="rim"/>
+      <feFlood flood-color="#000" flood-opacity=".2"/>
+      <feComposite in2="rim" operator="in" result="inner"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="inner"/></feMerge>
+    </filter>
+  </svg>
 </body>
 </html>

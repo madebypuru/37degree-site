@@ -44,6 +44,7 @@ const CASES = {
     tags: ['Product Management', 'Product Design', 'Strategy'],
     start: '2025-01-13', end: '2025-07-14',
     duration: '6 months',
+    results: [['6 mo', 'From concept to a product in daily use'], ['2 mo', 'To a working alpha inside Teams'], ['4', 'Data sources answered from one chat']],
     cover: 'assets/img/kam-cover.png',
     stack: ['assets/img/kam-cover.png', 'assets/img/kam-03.png', 'assets/img/kam-07.png'],
     meta: [
@@ -93,6 +94,7 @@ const CASES = {
     tags: ['Brand Launch', 'Website', 'Motion Design'],
     start: '2025-09-08', end: '2025-09-20',
     duration: '10 days',
+    results: [['$1M+', 'Pipeline from three days on the floor'], ['10 days', 'From no brand to a live booth'], ['5', 'Deliverables, designed and shipped']],
     cover: 'assets/img/side-cover.png',
     stack: ['assets/img/side-cover.png', 'assets/img/side-05.png', 'assets/img/side-07.png'],
     video: 'assets/video/sidecar-explainer.mp4',
@@ -139,6 +141,7 @@ const CASES = {
     tags: ['Product Launch', 'Website Design'],
     start: '2026-02-09', end: '2026-02-12',
     duration: '4 days',
+    results: [['4 days', 'From brief to a page ready to ship'], ['4', 'Buyer personas served by one page'], ['5', 'Buyer questions, each with its own section']],
     live: 'https://deccan.ai/enterprise-os',
     cover: 'assets/img/dec-cover.png',
     stack: ['assets/img/dec-cover.png', 'assets/img/dec-02.png', 'assets/img/dec-05.png'],
