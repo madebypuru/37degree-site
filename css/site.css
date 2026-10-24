@@ -736,7 +736,8 @@ body.sheet-center .paper { width: clamp(520px, 50vw, 760px); margin: 0 auto; }
   .dyn-seg button[data-view="months"], .minimap, .dyn-seg + .dyn-div { display: none; }
   .ag-outro { padding: 28px 2px; }
   .ag-outro .outro { padding: 0; }
-  .sheet { --pad: 20px; padding: 7vh 0 22vh; left: 0; width: auto; }
+  /* full width on phones, so it takes touches itself: iOS won't scroll a container that ignores them */
+  .sheet { --pad: 20px; padding: 7vh 0 22vh; left: 0; width: auto; pointer-events: auto; }
   .paper { width: calc(100vw - 16px); margin: 0 auto; }
   .sheet__x { top: 10px; right: 10px; }
   .pp-meta { flex-direction: column; gap: 0; padding-top: 24px; }
