@@ -851,7 +851,7 @@
     const gutter = (innerWidth - paper.offsetWidth) / 2;
     const stage = stageWidth();
     const tw = CENTERED ? Math.min(gutter - 48, 340) : Math.min(stage * 0.42, 360);
-    if (tw < 150) return null;
+    if (tw < 120) return null;
     const th = tw * 0.66;
     const start = rectKeys(r, '10px');
     const anims = shots.slice(0, SPOTS.length).map((src, i) => {

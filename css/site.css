@@ -549,7 +549,7 @@ button.card.has-photos:hover .stack img:nth-child(2) { transform: translate(var(
 .flylayer img { position: fixed; margin: 0; object-fit: cover; object-position: top; border-radius: var(--r-inner); border: 1px solid rgba(18, 18, 18, .08); box-shadow: 0 2px 12px rgba(18, 18, 18, .18); background: var(--paper); will-change: transform, opacity; }
 .sheet {
   --pad: 56px;
-  --paper-w: clamp(480px, 46vw, 700px);
+  --paper-w: clamp(560px, 54vw, 880px);
   --dock: clamp(48px, 9vw, 160px); /* the paper sits well in from the right edge, nearer the reader's eye line */
   position: fixed; inset: 0; z-index: 70;
   /* the paper docks right and the left is a stage for the work; the extra width lets the paper's shadow fade out instead of being clipped */
