@@ -684,6 +684,7 @@
     const fromRect = el.getBoundingClientRect();
     const pill = el.classList.contains('dyn-cta'); // from "Work with us": grow out of the pill, fade back into it
     closeAll(true);
+    note.style.transform = note.style.transition = focusEl.style.opacity = '';
     const tint = tintOf(ev);
     note.className = ['note', ev.type === 'snippets' && 'note--story', tint].filter(Boolean).join(' ');
     ghost.className = ['ghost', tint].filter(Boolean).join(' ');
@@ -1104,38 +1105,59 @@
     }
   }
 
-  // phones: at the top of a sheet, pulling down drags it with your finger; let go far enough and it closes
-  let pull = null;
-  sheet.addEventListener('touchstart', (e) => {
-    pull = mq.matches && sheet.scrollTop <= 0 && e.touches.length === 1 ? { y: e.touches[0].clientY, d: 0 } : null;
-  }, { passive: true });
-  sheet.addEventListener('touchmove', (e) => {
-    if (!pull) return;
-    const d = e.touches[0].clientY - pull.y;
-    if (d <= 0 && !pull.d) { pull = null; return; } // a normal scroll up into the sheet
-    e.preventDefault(); // no rubber-band: the sheet itself moves
-    pull.d = Math.max(0, d);
-    sheet.style.transition = 'none';
-    sheet.style.transform = `translateY(${pull.d}px)`;
-    scrim.style.opacity = String(Math.max(0, 1 - pull.d / 500));
-  }, { passive: false });
-  const release = () => {
-    if (!pull) return;
-    const { d } = pull;
-    pull = null;
-    if (!d) return;
-    scrim.style.opacity = '';
-    if (d > 110 && open && open.kind === 'sheet') {
-      // hand over to the close: it carries on down from where your finger left it
-      sheet.style.transition = sheet.style.transform = '';
-      return closeAll();
-    }
-    sheet.style.transition = 'transform .35s cubic-bezier(.2,.8,.2,1)';
-    sheet.style.transform = '';
-    setTimeout(() => { if (!pull) sheet.style.transition = ''; }, 380);
-  };
-  sheet.addEventListener('touchend', release);
-  sheet.addEventListener('touchcancel', release);
+  // phones: at the top of a pop-up, pulling down drags it with your finger; let go far enough and it closes, else it springs back
+  function pullToClose(el, { kind, move, backdrop, close }) {
+    let pull = null;
+    const set = (d) => { move(d); backdrop.style.opacity = d ? String(Math.max(0, 1 - d / 500)) : ''; };
+    el.addEventListener('touchstart', (e) => {
+      pull = mq.matches && open && open.kind === kind && el.scrollTop <= 0 && e.touches.length === 1 ? { y: e.touches[0].clientY, d: 0 } : null;
+    }, { passive: true });
+    el.addEventListener('touchmove', (e) => {
+      if (!pull) return;
+      const d = e.touches[0].clientY - pull.y;
+      if (d <= 0 && !pull.d) { pull = null; return; } // a normal scroll up into it
+      e.preventDefault(); // no rubber-band: the pop-up itself moves
+      pull.d = Math.max(0, d);
+      el.style.transition = 'none';
+      set(pull.d);
+    }, { passive: false });
+    const release = (e) => {
+      if (!pull) return;
+      const { d } = pull;
+      pull = null;
+      if (!d) return;
+      e.preventDefault(); // a pull isn't a tap: don't let it click what's under the finger
+      if (d > 110 && open && open.kind === kind) return close(d);
+      el.style.transition = 'transform .35s cubic-bezier(.2,.8,.2,1)';
+      set(0);
+      setTimeout(() => { if (!pull) el.style.transition = ''; }, 380);
+    };
+    el.addEventListener('touchend', release);
+    el.addEventListener('touchcancel', release);
+  }
+  pullToClose(sheet, {
+    kind: 'sheet',
+    backdrop: scrim,
+    move: (d) => { sheet.style.transform = d ? `translateY(${d}px)` : ''; },
+    // hand over to the usual close: it carries on down from where your finger left it
+    close: () => { scrim.style.opacity = ''; sheet.style.transition = sheet.style.transform = ''; closeAll(); },
+  });
+  pullToClose(note, {
+    kind: 'note',
+    backdrop: focusEl,
+    move: (d) => { note.style.transform = d ? `translate(-50%, calc(-50% + ${d}px))` : ''; },
+    // a note you pull away keeps going down and off the screen, then closes
+    close: (d) => {
+      focusEl.style.opacity = '';
+      focusEl.classList.remove('is-in');
+      note.style.transition = note.style.transform = '';
+      const o = open; // only ever close the note that was pulled, even if this lands late
+      const done = () => { if (open === o) closeAll(true); };
+      note.animate([{ transform: `translate(-50%, calc(-50% + ${d}px))` }, { transform: 'translate(-50%, calc(-50% + 100vh))' }],
+        { duration: 320, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }).finished.then(done, done);
+      setTimeout(done, 400);
+    },
+  });
 
   function closeSheet(o, instant) {
     closeViewer(true);
