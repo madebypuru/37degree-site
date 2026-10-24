@@ -1031,6 +1031,14 @@
     if (viewing && t.closest('.viewer')) return closeViewer();
     const pic = open && open.kind === 'sheet' && t.closest('.paper img, .flylayer img:not(.print-fly)');
     if (pic) return openViewer(pic.getAttribute('src'), pic);
+    // "Work with us" opens the new-event invite, lifting off the bar's button; the mailto stays as the fallback
+    const cta = t.closest('.dyn-cta, .pp-btn');
+    if (cta) {
+      e.preventDefault();
+      const slot = ALL.find((x) => x.type === 'slot');
+      closeAll(true);
+      return openNote(slot, $('.dyn-cta'));
+    }
     const v = t.closest('[data-view]');
     if (v) return setView(v.dataset.view);
     // clicking the margins around the paper puts it away
