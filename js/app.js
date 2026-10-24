@@ -82,6 +82,11 @@
     return p.y === q.y ? `${p.d} ${MON[p.m - 1]} – ${q.d} ${MON[q.m - 1]} ${q.y}` : `${p.d} ${MON[p.m - 1]} ${p.y} – ${q.d} ${MON[q.m - 1]} ${q.y}`;
   }
   const icon = {
+    // Phosphor
+    arrow: '<svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"/></svg>',
+    note: '<svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,160l-56,56V160Z" opacity="0.2"/><path d="M88,96a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H96A8,8,0,0,1,88,96Zm8,40h64a8,8,0,0,0,0-16H96a8,8,0,0,0,0,16Zm32,16H96a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16ZM224,48V156.69A15.86,15.86,0,0,1,219.31,168L168,219.31A15.86,15.86,0,0,1,156.69,224H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48ZM48,208H152V160a8,8,0,0,1,8-8h48V48H48Zm120-40v28.7L196.69,168Z"/></svg>',
+    folder: '<svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,88V200.89a7.11,7.11,0,0,1-7.11,7.11H40a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H93.33a8,8,0,0,1,4.8,1.6L128,80h88A8,8,0,0,1,224,88Z" opacity="0.2"/><path d="M216,72H130.67L102.93,51.2a16.12,16.12,0,0,0-9.6-3.2H40A16,16,0,0,0,24,64V200a16,16,0,0,0,16,16H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72Zm0,128H40V64H93.33L123.2,86.4A8,8,0,0,0,128,88h88Z"/></svg>',
+    card: '<svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,56V200a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8H216A8,8,0,0,1,224,56Z" opacity="0.2"/><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM80,84A12,12,0,1,1,68,72,12,12,0,0,1,80,84Zm40,0a12,12,0,1,1-12-12A12,12,0,0,1,120,84Z"/></svg>',
     x: '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="m2 2 8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
     play: '<svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"/></svg>',
     plus: '<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10M6 1v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
@@ -114,12 +119,20 @@
   const FOLDERS = !new URLSearchParams(location.search).has('cards'); // v3: folders by default, ?cards for the white cards
   if (FOLDERS) document.body.classList.add('use-folders');
   const isFolder = (ev) => FOLDERS && (ev.type === 'case' || ev.type === 'slot' || (ev.type === 'project' && ev.photos));
+  // the client on the folder: the symbol from their logo if we have one (a client whose name starts with it), else their initial
+  function clientAvatar(client) {
+    const l = LOGOS.find((x) => x.mk && client.toLowerCase().startsWith(x.name.split(' ')[0].toLowerCase()));
+    if (!l) return `<span class="fold__av">${client.trim()[0] || '·'}</span>`;
+    const abs = new URL(l.src, document.baseURI).href;
+    return `<span class="fold__av"><i class="fold__mk" role="img" aria-label="${l.name}" style="--src:url('${abs}');--mk:${l.mk}"></i></span>`;
+  }
   function folderHTML({ papers = [], pill = '', name = '', title, sub, empty }) {
     const tint = papers[0] ? ` data-tint="${papers[0]}"` : '';
+    const who = name ? `<span class="fold__who">${clientAvatar(name)}<span class="fold__av fold__av--us"><img src="assets/img/mark.svg" alt="37degree"></span></span>` : '';
     return `<div class="fold${empty ? ' fold--empty' : ''}"${tint}>
         <i class="fold__back"></i>
         <div class="fold__papers">${papers.slice(0, 3).map((src) => `<img src="${src}" alt="" loading="lazy">`).join('')}</div>
-        <div class="fold__front"><i class="fold__glass"></i>${empty ? `<span class="plus">${icon.plus}</span>` : ''}${name ? `<span class="fold__name">${name}</span>` : ''}${pill ? `<span class="fold__pill">${pill}</span>` : ''}</div>
+        <div class="fold__front"><i class="fold__glass"></i>${empty ? `<span class="plus">${icon.plus}</span>` : ''}${who}${pill ? `<span class="fold__pill">${pill}</span>` : ''}</div>
       </div>
       <div class="fold__label"><div class="card__title">${title}</div><div class="card__date">${sub}</div></div>`;
   }
@@ -133,9 +146,9 @@
       const when = `${p.d} ${MONTHS[p.m - 1]}`;
       if (ev.type === 'case') {
         const C = CASES[ev.case];
-        inner = folderHTML({ papers: C.stack || [C.cover], pill: C.duration, name: C.client, title: C.title, sub: when });
+        inner = folderHTML({ papers: C.stack || [C.cover], pill: C.duration, name: C.client, title: C.title, sub: `${C.client} · ${when}` });
       } else if (ev.type === 'project') {
-        inner = folderHTML({ papers: ev.photos, pill: ev.end ? durationOf(ev.date, ev.end) : '', name: ev.client, title: ev.title, sub: when });
+        inner = folderHTML({ papers: ev.photos, pill: ev.end ? durationOf(ev.date, ev.end) : '', name: ev.client || '', title: ev.title, sub: [ev.client, when].filter(Boolean).join(' · ') });
       } else inner = folderHTML({ empty: true, title: ev.title, sub: 'Your launch · pick a week' });
     } else switch (ev.type) {
       case 'quote':
@@ -323,7 +336,7 @@
 
   const introCopy = `<h1>Our story, <em>by the day</em>.</h1>
     <p>37degree is a design-led growth studio for Tech &amp; AI companies. Notes are how we got here. Work is what we've shipped.</p>
-    <div class="legend"><span><i class="n"></i>Notes</span><span><i class="w"></i>Work</span></div>`;
+    <div class="legend"><span>${icon.note}Notes</span><span>${FOLDERS ? icon.folder : icon.card}Work</span></div>`;
 
   function outroHTML() {
     const row = (P) => `<a href="${P.links[0].href}"><span class="avatar avatar--md">${P.mono}</span><span><b>${P.links[0].label}</b><span>${P.role}</span></span></a>`;
@@ -562,7 +575,7 @@
       case 'snippets':
         return `<div class="story">
             <div class="story__bars">${SNIPPETS.map(() => '<i><b></b></i>').join('')}</div>
-            ${SNIPPETS.map((s) => `<img src="${s}" alt="">`).join('')}
+            ${SNIPPETS.map((s) => `<figure class="story__f" style="--src:url('${new URL(s, document.baseURI).href}')"><img src="${s}" alt=""></figure>`).join('')}
             <div class="story__nav"><button data-prev aria-label="Previous"></button><button data-next aria-label="Next"></button></div>
           </div>${footHTML(ev, 'Motion snippets · 37degree')}`;
       case 'slot':
@@ -654,6 +667,16 @@
     const dx = r.left + r.width / 2 - (to.left + to.width / 2), dy = r.top + r.height / 2 - (to.top + to.height / 2);
     return `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(${sc})`;
   }
+  // where the note sits when it is still the card: scaled to the card's width, top edges together,
+  // cropped to the card's height. The text is real the whole way, so nothing pops in.
+  function cardState(r) {
+    const n = note.getBoundingClientRect(), s = r.width / n.width;
+    const dx = r.left - (n.left + n.width / 2) + (s * n.width) / 2, dy = r.top - (n.top + n.height / 2) + (s * n.height) / 2;
+    const cut = Math.max(0, n.height - r.height / s);
+    return { transform: `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(${s})`, clipPath: `inset(0 0 ${cut}px 0 round ${16 / s}px)` };
+  }
+  // the clip opens past the edges at the end so the note's shadow is there as it lands
+  const noteState = () => ({ transform: 'translate(-50%, -50%)', clipPath: 'inset(-80px -80px -80px -80px round 24px)' });
   const rectKeys = (r, radius) => ({ left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, borderRadius: radius });
 
   function openNote(ev, el) {
@@ -662,7 +685,7 @@
     const pill = el.classList.contains('dyn-cta'); // from "Work with us": grow out of the pill, fade back into it
     closeAll(true);
     const tint = tintOf(ev);
-    note.className = ['note', ev.type === 'snippets' && 'note--wide', tint].filter(Boolean).join(' ');
+    note.className = ['note', ev.type === 'snippets' && 'note--story', tint].filter(Boolean).join(' ');
     ghost.className = ['ghost', tint].filter(Boolean).join(' ');
     note.innerHTML = noteHTML(ev);
     note.setAttribute('aria-label', labelFor(ev));
@@ -682,18 +705,14 @@
       note.animate([{ transform: pillTransform(fromRect), opacity: 0 }, { opacity: 1, offset: 0.2 }, { transform: 'translate(-50%, -50%)', opacity: 1 }],
         { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
     } else {
-      note.classList.add('is-ghosting');
-      const from = fromRect, to = note.getBoundingClientRect();
-      ghost.hidden = false;
+      // the card itself grows into the note, words and all
+      note.classList.add('is-growing', 'is-in');
       el.classList.add('is-lifted');
       // the prints peeking out of the card fly up into the deck
       const landed = ev.photos ? flyPrints(el) : null;
       if (landed) setTimeout(landed, 980);
-      const a = ghost.animate([rectKeys(from, '16px'), rectKeys(to, '24px')], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
-      open.ghostAnim = a;
-      const settle = () => open && open.ev === ev && note.classList.contains('is-ghosting') && reveal();
-      a.finished.then(settle, () => {});
-      setTimeout(settle, 700);
+      const grow = () => note.classList.remove('is-growing');
+      note.animate([cardState(fromRect), noteState()], { duration: 460, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' }).finished.then(grow, grow);
     }
 
     if (ev.type === 'snippets') open.cleanup = runStory($('.story', note));
@@ -708,6 +727,13 @@
     setTimeout(() => { const f = $('[data-close]', note); f && f.focus({ preventScroll: true }); }, 50);
   }
 
+  // a card coming back from a note settles into place with a small rise instead of popping back
+  function land(el) {
+    if (!el.classList.contains('is-lifted')) return;
+    el.classList.remove('is-lifted');
+    el.classList.add('is-back');
+    setTimeout(() => el.classList.remove('is-back'), 450);
+  }
   function closeNote(o, instant) {
     o.cleanup && o.cleanup();
     focusEl.classList.remove('is-in');
@@ -715,10 +741,10 @@
     const finish = () => {
       if (done) return;
       done = true;
-      if (!open || open.el !== o.el) o.el.classList.remove('is-lifted');
+      if (!open || open.el !== o.el) land(o.el);
       if (open && open.kind === 'note') return;
       note.getAnimations().forEach((a) => a.cancel());
-      note.hidden = true; note.innerHTML = ''; note.classList.remove('is-in', 'is-ghosting');
+      note.hidden = true; note.innerHTML = ''; note.classList.remove('is-in', 'is-ghosting', 'is-growing');
       ghost.hidden = true; focusEl.hidden = true;
     };
     if (instant || reduced.matches || !document.contains(o.el)) return finish();
@@ -731,21 +757,19 @@
       setTimeout(finish, 700);
       return;
     }
-    note.classList.remove('is-in');
-    setTimeout(() => {
-      if (open) return finish();
-      const from = note.getBoundingClientRect(), to = o.el.getBoundingClientRect();
-      note.classList.add('is-ghosting');
-      ghost.hidden = false;
-      ghost.animate([rectKeys(from, '24px'), rectKeys(to, '16px')], { duration: 360, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' })
-        .finished.then(finish, finish);
-      setTimeout(finish, 700);
-    }, 140);
+    // the note shrinks back into its card, words still on it; the card fades up underneath as it lands
+    const r = o.el.getBoundingClientRect();
+    if (!r.width || r.right < 0 || r.left > innerWidth) return finish();
+    note.getAnimations().forEach((a) => a.cancel());
+    note.animate([{ ...noteState(), opacity: 1 }, { opacity: 1, offset: 0.65 }, { ...cardState(r), opacity: 0 }],
+      { duration: 420, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }).finished.then(finish, finish);
+    setTimeout(() => { if (!open || open.el !== o.el) land(o.el); }, 230);
+    setTimeout(finish, 700);
     o.el.focus({ preventScroll: true });
   }
 
   function runStory(root) {
-    const imgs = $$('img', root), bars = $$('.story__bars i', root);
+    const imgs = $$('.story__f', root), bars = $$('.story__bars i', root);
     let i = 0, t;
     const show = (n) => {
       i = (n + imgs.length) % imgs.length;
@@ -789,19 +813,26 @@
     </section>`;
   }
   // the next piece of work: one quiet row
+  // the next piece of work as a tile you can press: its cover, what it is, and a round arrow
   function nextHTML(n) {
     return `<button class="pp-next" ${n.attr}>
-        <span class="pp-next__k">Next</span>
-        <span class="pp-next__t">${strip(n.title)}</span>
-        <span class="pp-next__c">${n.client} · ${n.len}</span>
-        <span class="pp-next__go" aria-hidden="true">→</span>
+        ${n.pic ? `<span class="pp-next__pic"><img src="${n.pic}" alt="" loading="lazy"></span>` : ''}
+        <span class="pp-next__txt">
+          <span class="pp-next__k">Next ${n.kind}</span>
+          <span class="pp-next__t">${strip(n.title)}</span>
+          <span class="pp-next__c">${n.client} · ${n.len}</span>
+        </span>
+        <span class="pp-next__go">${icon.arrow}</span>
       </button>`;
   }
   // the end of the paper: what's next, the ask, and the signature pressed into the page
   function endHTML(next) {
     return `<div class="pp-end">
         ${nextHTML(next)}
-        <div class="pp-cta"><span>Have something to launch?</span><a class="pp-btn" href="${MAIL}">Work with us</a></div>
+        <div class="pp-cta">
+          <div><p class="pp-cta__t">Have something to launch?</p><p class="pp-cta__s">Pick a week and tell us what you’re building.</p></div>
+          <a class="pp-btn" href="${MAIL}">Work with us ${icon.arrow}</a>
+        </div>
       </div>
       <div class="pp-sign" aria-label="Thanks, Puru and Haneef">
         <span class="pp-sign__by">With love, Puru &amp; Haneef</span>
@@ -815,7 +846,7 @@
   }
   function nextCase(C) {
     const n = CASES[CASE_ORDER[(CASE_ORDER.indexOf(C.id) + 1) % CASE_ORDER.length]];
-    return { attr: `data-case-next="${n.id}"`, client: n.client, title: n.title, len: n.duration };
+    return { attr: `data-case-next="${n.id}"`, kind: 'case study', pic: n.cover, client: n.client, title: n.title, len: n.duration };
   }
   function sheetHTML(C) {
     // the numbers row already says the result, so the list doesn't repeat it
@@ -839,8 +870,8 @@
     const parent = ev.parent && BY_ID[ev.parent];
     const n = WORKS[(WORKS.indexOf(parent || ev) + 1) % WORKS.length] || WORKS[0];
     const next = n.type === 'case'
-      ? { attr: `data-case-next="${n.case}"`, client: CASES[n.case].client, title: CASES[n.case].title, len: CASES[n.case].duration }
-      : { attr: `data-open-id="${n.id}"`, client: n.client || '37degree', title: n.title, len: n.end ? durationOf(n.date, n.end) : fullDate(n.date) };
+      ? { attr: `data-case-next="${n.case}"`, kind: 'case study', pic: CASES[n.case].cover, client: CASES[n.case].client, title: CASES[n.case].title, len: CASES[n.case].duration }
+      : { attr: `data-open-id="${n.id}"`, kind: 'project', pic: n.photos && n.photos[0], client: n.client || '37degree', title: n.title, len: n.end ? durationOf(n.date, n.end) : fullDate(n.date) };
     const facts = [
       ['Client', ev.client],
       ['Services', (ev.services || []).join(', ')],
@@ -865,11 +896,14 @@
   const sheetScroll = new Map();
   function showSheet(html, id) {
     sheet.classList.remove('is-in', 'is-leaving');
+    sheet.style.transform = sheet.style.transition = scrim.style.opacity = '';
     sheet.innerHTML = `<button class="sheet__x" data-close aria-label="Close">${icon.x}</button>${html}`;
     sheet.hidden = false;
     sheet.scrollTop = sheetScroll.get(id) || 0; // only works once visible
     scrim.hidden = false;
     bar.classList.add('is-tucked');
+    // its sections rise in one after another as the paper arrives, so nothing lands all at once
+    $$('.paper > *', sheet).forEach((c, i) => c.style.setProperty('--i', Math.min(i, 6)));
     requestAnimationFrame(() => requestAnimationFrame(() => { scrim.classList.add('is-in'); sheet.classList.add('is-in'); }));
     setTimeout(() => { const x = $('.sheet__x', sheet); x && x.focus({ preventScroll: true }); }, 50);
     // the signature writes itself once you reach the end of the page
@@ -1070,6 +1104,39 @@
     }
   }
 
+  // phones: at the top of a sheet, pulling down drags it with your finger; let go far enough and it closes
+  let pull = null;
+  sheet.addEventListener('touchstart', (e) => {
+    pull = mq.matches && sheet.scrollTop <= 0 && e.touches.length === 1 ? { y: e.touches[0].clientY, d: 0 } : null;
+  }, { passive: true });
+  sheet.addEventListener('touchmove', (e) => {
+    if (!pull) return;
+    const d = e.touches[0].clientY - pull.y;
+    if (d <= 0 && !pull.d) { pull = null; return; } // a normal scroll up into the sheet
+    e.preventDefault(); // no rubber-band: the sheet itself moves
+    pull.d = Math.max(0, d);
+    sheet.style.transition = 'none';
+    sheet.style.transform = `translateY(${pull.d}px)`;
+    scrim.style.opacity = String(Math.max(0, 1 - pull.d / 500));
+  }, { passive: false });
+  const release = () => {
+    if (!pull) return;
+    const { d } = pull;
+    pull = null;
+    if (!d) return;
+    scrim.style.opacity = '';
+    if (d > 110 && open && open.kind === 'sheet') {
+      // hand over to the close: it carries on down from where your finger left it
+      sheet.style.transition = sheet.style.transform = '';
+      return closeAll();
+    }
+    sheet.style.transition = 'transform .35s cubic-bezier(.2,.8,.2,1)';
+    sheet.style.transform = '';
+    setTimeout(() => { if (!pull) sheet.style.transition = ''; }, 380);
+  };
+  sheet.addEventListener('touchend', release);
+  sheet.addEventListener('touchcancel', release);
+
   function closeSheet(o, instant) {
     closeViewer(true);
     sheetScroll.set(o.id, sheet.scrollTop);
@@ -1169,7 +1236,7 @@
   document.addEventListener('click', (e) => {
     const t = e.target;
     if (viewing && t.closest('.viewer')) return closeViewer();
-    const pic = open && open.kind === 'sheet' && t.closest('.paper img, .flylayer img:not(.print-fly)');
+    const pic = open && open.kind === 'sheet' && !t.closest('.pp-next') && t.closest('.paper img, .flylayer img:not(.print-fly)');
     if (pic) return openViewer(pic.getAttribute('src'), pic);
     // "Work with us" opens the new-event invite, lifting off the bar's button; the mailto stays as the fallback
     const cta = t.closest('.dyn-cta, .pp-btn');
@@ -1186,6 +1253,7 @@
     const nextBtn = t.closest('[data-case-next]');
     if (nextBtn) {
       const id = nextBtn.dataset.caseNext;
+      sheetScroll.delete(id); // Next always starts the next piece from the top
       closeAll(true);
       if (!mq.matches) scrollToDate(CASES[id].start);
       return requestAnimationFrame(() => openCase(id));
@@ -1196,6 +1264,7 @@
     if (openBtn && !dragMoved) {
       const target = BY_ID[openBtn.dataset.openId];
       if (!target) return;
+      if (openBtn.classList.contains('pp-next')) sheetScroll.delete(target.type === 'case' ? target.case : target.id);
       if (target.type === 'case') return openCase(target.case);
       if (open && open.kind === 'sheet' && !mq.matches) scrollToDate(target.date);
       return requestAnimationFrame(() => openProject(target));
