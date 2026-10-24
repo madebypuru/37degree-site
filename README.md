@@ -8,7 +8,7 @@ Static site, no build step:
 python3 -m http.server 4370
 ```
 
-then open http://localhost:4370 (v2, the main site) or http://localhost:4370/v1/ (the first take). Live at https://madebypuru.github.io/37degree-site/.
+then open http://localhost:4370 (v3, the main site), http://localhost:4370/v2/ (white work cards) or http://localhost:4370/v1/ (the first take). Live at https://madebypuru.github.io/37degree-site/.
 
 v2 is the cleaner take: no toolbar, a three-line intro, and two kinds of item. **Notes** are pastel sticky notes: how the studio got here. They open centred with the page blurred, in their own colour. **Work** is white cards: what's been shipped. It opens the case-study side panel. Note colours follow the kind of note (story yellow, people blue, testimonials pink, milestones green, logos purple, snippets orange). Any event can override its colour with `color: 'pink'` etc. in `js/data.js`.
 
@@ -43,9 +43,10 @@ How it works: `scripts/sync-notion.mjs` reads only that database through a Notio
 
 ## Files
 
-- `index.html`, `css/site.css`, `js/app.js`: v2, the main site
+- `index.html`, `css/site.css`, `js/app.js`: v3, the main site. Work shows as glass folders tinted in the note pastels; add `?cards` to see the white work cards instead
+- `v2/`: the previous main site (white work cards), a frozen copy of its page, styles and script that reads the same content
 - `js/data.js`: **all content** (events, case studies, people, testimonials, logos), shared by both versions
-- `v1/`: the first take, kept for comparison (`/v2/` redirects to the root)
+- `v1/`: the first take, kept for comparison
 - `assets/img`, `assets/video` — pulled from the current 37degr.ee case studies
 
 ## Editing content

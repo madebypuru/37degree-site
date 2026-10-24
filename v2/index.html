@@ -1,6 +1,73 @@
 <!doctype html>
-<meta charset="utf-8">
-<title>37degree</title>
-<meta http-equiv="refresh" content="0; url=../">
-<script>location.replace('../' + location.search + location.hash);</script>
-<a href="../">37degree calendar</a>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <base href="../">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>37degree — Calendar</title>
+  <meta name="description" content="Our calendar. How 37degree started, and everything we've shipped since — on the day it happened.">
+  <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital@1&family=Mrs+Saint+Delafield&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="v2/css/site.css">
+  <script>try { const t = localStorage.getItem('37cal.theme'); if (t) document.documentElement.dataset.theme = t; } catch (_) {}</script>
+</head>
+<body>
+  <div class="strip">
+    <span class="mark" aria-label="37degree">
+      <svg viewBox="140 140 560 560" width="16" height="16" aria-hidden="true"><path fill="#FF3600" d="M172.635 281.507c-15.807 0-28.621 12.79-28.621 28.568v80.357c0 15.778 12.814 28.568 28.621 28.568h80.25c15.808 0 28.622-12.79 28.622-28.568V281.507zm137.494-137.493c-15.808 0-28.622 12.79-28.622 28.568v108.925H419V144.014zm137.493 412.479c-15.807 0-28.622 12.791-28.622 28.569v80.356c0 15.778 12.815 28.569 28.622 28.569h80.25c15.807 0 28.622-12.791 28.622-28.569V556.493zM419 144.014v137.493h137.494V172.582c0-15.778-12.815-28.568-28.622-28.568zm137.494 137.493V419h137.493V310.075c0-15.778-12.815-28.568-28.622-28.568zm0 137.493v137.493h108.871c15.807 0 28.622-12.79 28.622-28.568V419z"/></svg>
+      37degree
+    </span>
+    <button class="theme-btn" aria-label="Switch light or dark">
+      <svg class="moon" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.6A5.8 5.8 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      <svg class="sun" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <main class="stage">
+    <div class="timeline" tabindex="0" aria-label="Studio calendar, scroll sideways"><div class="track"></div></div>
+    <div class="agenda" aria-label="Studio calendar"></div>
+  </main>
+
+  <div class="dynbar">
+    <a class="dyn-cta" href="mailto:puru@37degr.ee?cc=haneef@37degr.ee&amp;subject=Work%20with%2037degree">Work with us</a>
+    <span class="dyn-div" aria-hidden="true"></span>
+    <div class="dyn-seg" role="radiogroup" aria-label="Zoom level">
+      <span class="dyn-ind" aria-hidden="true"></span>
+      <button role="radio" data-view="days">Days</button>
+      <button role="radio" data-view="months">Months</button>
+      <button role="radio" data-view="highlights">Highlights</button>
+    </div>
+    <span class="dyn-div" aria-hidden="true"></span>
+    <div class="minimap" role="slider" tabindex="0" aria-label="Position in the timeline" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="minimap__ticks"></div>
+      <div class="minimap__win"></div>
+    </div>
+    <div class="dyn-owner" aria-live="polite"><i class="dyn-av"></i><span class="dyn-who"></span></div>
+  </div>
+
+  <div class="focus" hidden></div>
+  <div class="ghost" hidden></div>
+  <div class="note" role="dialog" aria-modal="true" hidden></div>
+
+  <div class="scrim" hidden></div>
+  <div class="flylayer" aria-hidden="true"></div>
+  <aside class="sheet" role="dialog" aria-modal="true" aria-label="Case study" hidden></aside>
+
+  <script src="js/data.js"></script>
+  <script src="js/cms.js"></script>
+  <script src="v2/js/app.js"></script>
+  <!-- inner shadow for the engraved signature at the end of a case study -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="engrave" x="-5%" y="-10%" width="110%" height="130%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4" result="blur"/>
+      <feOffset in="blur" dy="3.5" result="shifted"/>
+      <feComposite in="SourceAlpha" in2="shifted" operator="out" result="rim"/>
+      <feFlood flood-color="#000" flood-opacity=".2"/>
+      <feComposite in2="rim" operator="in" result="inner"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="inner"/></feMerge>
+    </filter>
+  </svg>
+</body>
+</html>

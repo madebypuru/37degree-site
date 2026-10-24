@@ -81,6 +81,7 @@ window.CMS = {
   {
    "id": "team-trusted-by-the-likes-of-3e10",
    "date": "2024-10-07",
+   "highlight": true,
    "tbc": true,
    "type": "logos",
    "title": "team trusted by the likes of"
@@ -128,6 +129,7 @@ window.CMS = {
   {
    "id": "dont-build-a-new-destination-a229",
    "date": "2025-02-03",
+   "highlight": true,
    "tbc": true,
    "type": "quote",
    "title": "Don’t build a new <em>destination</em>."
@@ -165,6 +167,7 @@ window.CMS = {
   {
    "id": "motion-snippets-5e39",
    "date": "2025-06-02",
+   "highlight": true,
    "tbc": true,
    "type": "snippets",
    "title": "motion snippets"
@@ -188,6 +191,18 @@ window.CMS = {
    "type": "case",
    "case": "sidecar",
    "end": "2025-09-20"
+  },
+  {
+   "id": "sudhanshu-7f60",
+   "date": "2025-09-08",
+   "highlight": true,
+   "tbc": true,
+   "type": "testimonial",
+   "who": {
+    "name": "Sudhanshu",
+    "role": "CEO, Sidecar",
+    "quote": "In 10 days, 37degree gave us a full brand launch: landing page, booth, video, everything. The quality was there and we felt super confident and ready."
+   }
   },
   {
    "id": "sidecar-we-launch-at-iics-can-you-do-aed2",
@@ -289,7 +304,8 @@ window.CMS = {
   },
   {
    "id": "prado-fc94",
-   "date": "2026-01-28",
+   "date": "2026-01-01",
+   "highlight": true,
    "tbc": true,
    "type": "testimonial",
    "who": {
@@ -320,7 +336,6 @@ window.CMS = {
   {
    "id": "solana-ecosystem-call-marketing-desi-f7c7",
    "date": "2026-03-01",
-   "highlight": true,
    "type": "project",
    "title": "Solana Ecosystem Call: marketing <em>design</em> retainer",
    "client": "Solana Ecosystem Call",
@@ -357,6 +372,7 @@ window.CMS = {
   {
    "id": "every-section-answers-one-buyer-ques-6a23",
    "date": "2026-03-23",
+   "highlight": true,
    "tbc": true,
    "type": "quote",
    "title": "Every section answers one buyer <em>question</em>."
@@ -426,6 +442,7 @@ window.CMS = {
   {
    "id": "aria-music-product-design-a4fc",
    "date": "2026-04-03",
+   "highlight": true,
    "type": "project",
    "title": "Aria Music: <em>product</em> design",
    "client": "Aria Music",
@@ -441,7 +458,8 @@ window.CMS = {
   },
   {
    "id": "omar-alsafadi-7e9c",
-   "date": "2026-04-28",
+   "date": "2026-04-03",
+   "highlight": true,
    "tbc": true,
    "type": "testimonial",
    "who": {
@@ -509,6 +527,7 @@ window.CMS = {
   {
    "id": "sec-july-billboard-series-for-22-sup-c954",
    "date": "2026-07-01",
+   "highlight": true,
    "type": "moment",
    "title": "SEC July <em>billboard</em> series for ~22 Superteam chapters",
    "client": "Solana Ecosystem Call",
@@ -527,6 +546,7 @@ window.CMS = {
   {
    "id": "lab0ai-pwc-the-pitch-deck-c336",
    "date": "2026-08-01",
+   "highlight": true,
    "type": "moment",
    "title": "lab0.ai × PwC: the pitch <em>deck</em>",
    "client": "lab0.ai (YC)",

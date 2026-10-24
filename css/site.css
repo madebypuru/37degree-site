@@ -233,7 +233,7 @@ button.card:active { transform: scale(.95); }
 .work-card .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .6s var(--ease); }
 .work-card:hover .thumb img { transform: scale(1.05); }
 .work-card .play { width: 26px; height: 26px; border-radius: var(--r-pill); background: var(--paper); border: 1px solid var(--line-2); display: grid; place-items: center; position: relative; z-index: 1; }
-.work-card .poster { position: absolute; right: -62%; top: 10px; bottom: 10px; width: 58%; border-radius: var(--r-inner); overflow: hidden; border: 1px solid var(--line-2); transition: right .45s var(--spring); }
+.work-card .poster { position: absolute; right: -62%; top: 10px; bottom: 10px; width: 58%; border-radius: var(--r-inner); overflow: hidden; transition: right .45s var(--spring); }
 .work-card .poster img { width: 100%; height: 100%; object-fit: cover; }
 .work-card:hover .poster { right: 10px; }
 .work-card .row { position: relative; z-index: 1; }
@@ -244,7 +244,7 @@ button.card:active { transform: scale(.95); }
 .card--case .case-top .client { font: 600 13px/1 var(--font-sans); letter-spacing: -0.01em; }
 .card--case .case-top .pill { padding: 4px 8px; font-size: 11px; background: var(--paper); border-color: transparent; }
 .card--case .card__title { font: 500 17px/1.22 var(--font-sans); letter-spacing: -0.02em; }
-.card--case .frame { flex: 1; min-height: 0; border-radius: var(--r-inner); overflow: hidden; border: 1px solid var(--line-2); background: var(--paper); }
+.card--case .frame { flex: 1; min-height: 0; border-radius: var(--r-inner); overflow: hidden; background: var(--paper); }
 .card--case .frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .7s var(--ease); }
 .card--case:hover .frame img { transform: scale(1.04); }
 .card--case.is-flown .frame { visibility: hidden; }
@@ -257,7 +257,7 @@ button.card:active { transform: scale(.95); }
 .stack img {
   position: absolute; left: 8%; top: 6px; width: 84%; height: calc(100% - 12px);
   object-fit: cover; border-radius: var(--r-inner);
-  border: 1px solid rgba(18, 18, 18, .08); box-shadow: 0 1px 3px rgba(18, 18, 18, .14);
+  box-shadow: 0 1px 3px rgba(18, 18, 18, .14);
   transition: transform .35s var(--spring);
 }
 .stack img:nth-child(1) { transform: rotate(-4deg); }
@@ -485,7 +485,6 @@ button.mrow:hover { background: var(--paper-2); }
 .deck img {
   position: absolute; width: 228px; height: 285px;
   object-fit: cover; border-radius: 14px;
-  border: 5px solid #FBFAF8; /* prints stay white in both themes */
   background: #FBFAF8;
   box-shadow: 0 2px 6px rgba(18, 18, 18, .12), 0 14px 30px rgba(18, 18, 18, .12);
   transition: transform .45s var(--spring);
@@ -495,7 +494,6 @@ button.mrow:hover { background: var(--paper-2); }
   font: 500 11px/1 var(--font-sans); letter-spacing: .04em; color: var(--fg, var(--muted)); opacity: .7; white-space: nowrap;
 }
 .note .deck + .note__body { padding-top: 22px; }
-.card .stack img { border-color: color-mix(in srgb, var(--paper-2) 70%, transparent); }
 
 /* photos peek up from the bottom edge of the card, rise on hover, fly out on click */
 .card.has-photos { justify-content: flex-start; }
@@ -507,7 +505,7 @@ button.mrow:hover { background: var(--paper-2); }
 button.card.has-photos:hover .stack { --py: 24%; --sx: 26px; }
 .card.has-photos .stack img {
   left: 0; top: 0; width: 100%; height: 100%;
-  border: 3px solid #FBFAF8; border-radius: 12px;
+  border-radius: 12px;
   box-shadow: 0 1px 2px rgba(18, 18, 18, .12), 0 8px 18px rgba(18, 18, 18, .12);
   transition: transform .5s var(--spring);
 }
@@ -518,7 +516,7 @@ button.card.has-photos:hover .stack img:nth-child(2) { transform: translate(var(
 .card.has-photos .stack img:nth-child(3) { transform: translate(0, var(--py)) rotate(-1deg); }
 .flylayer img.print-fly {
   position: fixed; margin: 0; object-fit: cover;
-  border: 4px solid #FBFAF8; border-radius: 12px; background: #FBFAF8;
+  border-radius: 12px;
   box-shadow: 0 2px 6px rgba(18, 18, 18, .14), 0 16px 34px rgba(18, 18, 18, .16);
 }
 
@@ -546,7 +544,7 @@ button.card.has-photos:hover .stack img:nth-child(2) { transform: translate(var(
 .scrim { position: fixed; inset: 0; z-index: 50; background: var(--veil); backdrop-filter: blur(10px) saturate(.9); -webkit-backdrop-filter: blur(10px) saturate(.9); opacity: 0; transition: opacity .4s; }
 .scrim.is-in { opacity: 1; }
 .flylayer { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
-.flylayer img { position: fixed; margin: 0; object-fit: cover; object-position: top; border-radius: var(--r-inner); border: 1px solid rgba(18, 18, 18, .08); box-shadow: 0 2px 12px rgba(18, 18, 18, .18); background: var(--paper); will-change: transform, opacity; }
+.flylayer img { position: fixed; margin: 0; object-fit: cover; object-position: top; border-radius: var(--r-inner); box-shadow: 0 2px 12px rgba(18, 18, 18, .18); background: var(--paper); will-change: transform, opacity; }
 .sheet {
   --pad: 56px;
   --paper-w: clamp(560px, 54vw, 880px);
@@ -626,7 +624,7 @@ button.card.has-photos:hover .stack img:nth-child(2) { transform: translate(var(
 .pp-gallery.two { grid-template-columns: 1fr 1fr; }
 .pp-gallery.three { grid-template-columns: 1.4fr 1fr; }
 .pp-gallery.three img:first-child { grid-row: span 2; height: 100%; object-fit: cover; }
-.pp-gallery img { width: 100%; border-radius: 8px; border: 1px solid var(--line-2); background: var(--paper); }
+.pp-gallery img { width: 100%; border-radius: 8px; background: var(--paper); }
 .pp-sec video { width: 100%; margin-top: 32px; border-radius: 8px; background: #000; }
 .pp-quote { margin: 32px 0 0; padding-left: 16px; border-left: 2px solid var(--ink); }
 .pp-quote blockquote { margin: 0; font: 400 16px/1.6 var(--font-sans); color: var(--body); }
@@ -638,7 +636,7 @@ button.card.has-photos:hover .stack img:nth-child(2) { transform: translate(var(
 .pp-prose h3 { margin: 24px 0 8px; font: 500 15px/1.4 var(--font-sans); }
 .pp-prose ul, .pp-prose ol { margin: 0 0 20px; padding-left: 18px; font: 400 15px/1.65 var(--font-sans); color: var(--body); }
 .pp-prose figure { margin: 24px 0; }
-.pp-prose figure img { width: 100%; border-radius: 8px; border: 1px solid var(--line-2); }
+.pp-prose figure img { width: 100%; border-radius: 8px; }
 .pp-prose figcaption { margin-top: 8px; font: 400 13px/1.5 var(--font-sans); color: var(--muted); }
 .pp-prose hr { border: 0; border-top: 1px solid var(--line-2); margin: 32px 0; }
 .pp-prose .callout { padding: 12px 16px; border-radius: 8px; background: var(--paper); }
@@ -724,13 +722,15 @@ body.sheet-center .paper { width: clamp(520px, 50vw, 760px); margin: 0 auto; }
   .ag-day.is-today .ag-date b { color: var(--brand); }
   .ag-cards { display: grid; gap: 6px; min-width: 0; }
   .ag-cards .card { margin: 0; min-height: 76px; }
+  /* notes stop short of the full row (70% wide, never narrower than a folder) and sit centred, like the folders */
+  .ag-cards .note-card, .ag-cards .work-card--note { justify-self: center; width: 70%; min-width: min(100%, 280px); }
   .ag-cards .card--case { min-height: 220px; }
   .ag-cards .card--snippets { min-height: 170px; }
   .ag-cards .card:has(.stack) { min-height: 240px; }
   .deck { height: 280px; }
   .deck img { width: 196px; height: 245px; }
   .ag-cards .work-card:has(.thumb) { min-height: 180px; }
-  .ag-cards .card--quote { font-size: 22px; min-height: 0; padding: 4px 0; }
+  .ag-cards .card--quote { font-size: 22px; min-height: 0; padding: 4px 0; text-align: center; justify-content: center; }
   .ag-cards .card--slot { min-height: 120px; }
   .ag-cards .card.has-photos { min-height: 210px; }
   .dyn-seg button[data-view="months"], .minimap, .dyn-seg + .dyn-div { display: none; }
@@ -757,4 +757,129 @@ body.sheet-center .paper { width: clamp(520px, 50vw, 760px); margin: 0 auto; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* work as glass folders, the project's screens peeking out of the top */
+.card.card--folder {
+  --fh: 210; --fs: 50%;
+  /* lightness of the back, the glass and the label: pastel by day, deep tints by night, like the notes */
+  --fb1: 84%; --fb2: 76%; --fg1: 96%; --fg2: 82%; --fn: 97%; --ft: 24%;
+  background: transparent; border: 0; box-shadow: none;
+  --fold-w: 280px;
+  padding: 4px 4px 6px; gap: 10px; justify-content: center; overflow: visible;
+}
+.card--folder .fold { position: relative; flex: none; width: var(--fold-w); max-width: 100%; aspect-ratio: 1.06; align-self: center; } /* every folder the same size and shape */
+
+/* the back: a soft flap with a rounded tab on the left */
+.fold__back {
+  position: absolute; inset: 22% 4% 0; border-radius: 20px;
+  background: linear-gradient(hsl(var(--fh) var(--fs) var(--fb1)), hsl(var(--fh) var(--fs) var(--fb2)));
+}
+.fold__back::before {
+  content: ""; position: absolute; left: 0; top: -13px; width: 42%; height: 28px;
+  border-radius: 14px 18px 0 0; background: hsl(var(--fh) var(--fs) var(--fb1));
+}
+
+.fold__papers { position: absolute; left: 24%; right: 24%; top: 12%; bottom: 38%; pointer-events: none; }
+.fold__papers img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(18, 18, 18, .12), 0 6px 16px rgba(18, 18, 18, .14);
+  transition: transform .5s var(--spring);
+}
+.fold__papers img:nth-child(1) { transform: translate(-14%, 8%) rotate(-7deg); }
+.fold__papers img:nth-child(2) { transform: translate(14%, 4%) rotate(6deg); }
+.fold__papers img:nth-child(3) { transform: translate(0, 12%) rotate(-1deg); }
+button.card--folder:hover .fold__papers img:nth-child(1) { transform: translate(-20%, -6%) rotate(-10deg); }
+button.card--folder:hover .fold__papers img:nth-child(2) { transform: translate(20%, -10%) rotate(9deg); }
+button.card--folder:hover .fold__papers img:nth-child(3) { transform: translate(0, -4%) rotate(-1deg); }
+.card--folder.is-flown .fold__papers { visibility: hidden; }
+.flylayer img.fold-fly { border-radius: 10px; box-shadow: 0 1px 2px rgba(18, 18, 18, .12), 0 8px 22px rgba(18, 18, 18, .16); }
+
+/* the glass front: one rounded shape whose right half rises on a soft S-curve, blurring the screens behind it */
+.fold__front {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 56%;
+  /* hinged at the bottom and leaning toward you, so the top reads wider: a flap that can open */
+  transform-origin: 50% 100%;
+  transform: perspective(520px) rotateX(-13deg);
+  transition: transform .5s var(--spring);
+}
+/* the shadow is its own blurred element: a filter on the parent would stop the glass blurring what's behind it */
+.fold__front::before {
+  content: ""; position: absolute; left: 8%; right: 8%; bottom: -8px; height: 46%;
+  border-radius: 50%; background: hsl(var(--fh) 30% 30% / .22); filter: blur(14px);
+}
+button.card--folder:hover .fold__front { transform: perspective(520px) rotateX(-26deg); }
+.fold__glass {
+  position: absolute; inset: 0; border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(180deg, hsl(var(--fh) var(--fs) var(--fg1) / .6), hsl(var(--fh) var(--fs) var(--fg2) / .86));
+  -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5);
+  /* the outline (a soft S-curve rising on the right) is traced per folder as a clip-path in app.js */
+}
+/* the label in the middle of the glass */
+.fold__name {
+  position: absolute; left: 50%; top: calc(50% + 8px); translate: -50% -50%; max-width: calc(100% - 28px);
+  padding: 6px 14px; border-radius: var(--r-pill); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font: 500 12px/1.2 var(--font-sans); letter-spacing: -0.005em; color: hsl(var(--fh) var(--fs) var(--ft));
+  background: hsl(var(--fh) var(--fs) var(--fn));
+  box-shadow: 0 1px 1px hsl(var(--fh) var(--fs) 20% / .12), 0 4px 10px hsl(var(--fh) var(--fs) 20% / .14), inset 0 0 0 1px rgba(255, 255, 255, .7);
+}
+.fold__pill {
+  position: absolute; right: 10px; bottom: 9px; padding: 3px 8px; border-radius: var(--r-pill);
+  font: 500 10px/1 var(--font-sans); color: hsl(var(--fh) var(--fs) var(--ft)); background: hsl(var(--fh) var(--fs) var(--fn) / .6);
+}
+.card--folder .fold__label { text-align: center; padding: 0 6px; }
+.card--folder .fold__label .card__title { font: 500 14px/1.3 var(--font-sans); letter-spacing: -0.01em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card--folder .fold__label .card__date { margin-top: 4px; font: 400 12px/1.3 var(--font-sans); letter-spacing: 0; text-transform: none; }
+
+/* the open slot: an empty, see-through folder waiting for yours */
+.fold--empty .fold__back, .fold--empty .fold__back::before { background: color-mix(in srgb, var(--ink) 7%, var(--paper)); }
+.fold--empty .fold__glass { background: color-mix(in srgb, var(--paper-2) 72%, transparent); }
+.fold--empty .fold__front { filter: drop-shadow(0 0 .6px color-mix(in srgb, var(--ink) 35%, transparent)); }
+.fold--empty .fold__front::before { background: rgba(18, 18, 18, .08); }
+.fold--empty .plus {
+  position: absolute; left: 50%; top: calc(50% + 7px); translate: -50% -50%;
+  width: 30px; height: 30px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--paper-2); display: grid; place-items: center;
+  transition: background .2s, color .2s, border-color .2s, transform .35s var(--spring);
+}
+button.card--slot.card--folder:hover .plus { background: var(--brand); border-color: var(--brand); color: #fff; transform: rotate(90deg); }
+
+/* in a month's hero the folder sizes by the column's width, not a fixed height, so it keeps its proportions */
+.mhero:has(.card--folder) { height: auto; }
+.mhero .card { width: 100%; } /* cards are buttons, which shrink to their content unless told otherwise */
+.mhero .card.card--folder { height: auto; }
+.mhero .card--folder .fold { flex: none; width: calc(var(--fold-w) + 24px); height: auto; min-height: 0; aspect-ratio: 1.08; } /* a month's moment stands taller: the flat shape read as a strip in the narrow column */
+
+/* tight rows: fall back to a plain card */
+.is-compact .card.card--folder { background: var(--paper-2); border: 1px solid var(--line-2); padding: 10px 12px; justify-content: center; }
+.is-compact .card--folder .fold { display: none; }
+.is-compact .card--folder .fold__label { text-align: left; padding: 0; }
+.is-compact .card--folder .fold__label .card__date { display: none; }
+
+/* the intro's key: Work is a tiny glass folder, in the tints the folders take */
+.use-folders .legend .w {
+  position: relative; width: 14px; height: 10px; margin-top: 3px; border: 0; border-radius: 3px;
+  background: linear-gradient(135deg, #BFE3C6 0 33%, #EBC9B4 33% 66%, #C3CCF0 66%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 1px 2px rgba(18, 18, 18, .12);
+}
+.use-folders .legend .w::before {
+  content: ""; position: absolute; left: 0; top: -3px; width: 6px; height: 4px; border-radius: 2px 2px 0 0;
+  background: #A9D6B3;
+}
+
+/* with folders, work that isn't a folder (moments, steps, milestones) is a note, in its tint */
+.work-card.work-card--note { background: var(--bg); color: var(--fg); border-color: transparent; }
+.work-card--note .kicker, .work-card--note .card__date { color: var(--fg); opacity: .7; }
+.work-card--note .kicker::before { background: var(--fg); }
+
+/* the empty folder stays square-on: with nothing inside, the lean read as a stretch */
+.fold--empty .fold__front { transform: none; }
+button.card--slot.card--folder:hover .fold__front { transform: perspective(520px) rotateX(-8deg); }
+
+/* folders at night: deep tints of the same hues */
+:root[data-theme="dark"] .card--folder { --fb1: 30%; --fb2: 24%; --fg1: 46%; --fg2: 28%; --fn: 88%; --ft: 18%; --fs: 34%; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .card--folder { --fb1: 30%; --fb2: 24%; --fg1: 46%; --fg2: 28%; --fn: 88%; --ft: 18%; --fs: 34%; }
 }

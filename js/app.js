@@ -33,7 +33,7 @@
   const normalize = (ev) => (ev.type === 'step' && ev.section === 'video' && CASES[ev.case] && CASES[ev.case].video
     ? { ...ev, type: 'video', src: CASES[ev.case].video, poster: CASES[ev.case].cover } : ev);
   const SOURCE = window.CMS && window.CMS.events && window.CMS.events.length ? window.CMS.events : EVENTS;
-  const ALL = [...SOURCE.map(normalize), { id: 'open-slot', date: TODAY, type: 'slot', row: 2, span: 3, highlight: true, title: 'this slot is open' }]
+  const ALL = [...SOURCE.map(normalize), { id: 'open-slot', date: TODAY, type: 'slot', row: 2, span: new URLSearchParams(location.search).has('folders') ? 4 : 3, highlight: true, title: 'this slot is open' }]
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
   const BY_ID = Object.fromEntries(ALL.map((e) => [e.id, e]));
   const CASE_ORDER = Object.keys(CASES).sort((a, b) => (CASES[a].start < CASES[b].start ? -1 : 1));
@@ -90,7 +90,10 @@
   /* ── Cards ────────────────────────────────────────── */
   // notes are sticky notes: each kind gets its own pastel (an event can set `color` to override)
   const TINT = { note: 'yellow', person: 'blue', testimonial: 'pink', milestone: 'green', logos: 'purple', snippets: 'orange' };
-  const tintOf = (ev) => (isWork(ev) || !TINT[ev.type] ? '' : `tint-${ev.color || TINT[ev.type]}`);
+  // with folders on, the work lives in folders, so what's left of it (moments, steps, milestones) reads as notes too
+  const workNote = (ev) => FOLDERS && isWork(ev) && !isFolder(ev);
+  const tintOf = (ev) => (workNote(ev) ? `tint-${ev.color || (ev.type === 'milestone' ? 'green' : 'yellow')}`
+    : isWork(ev) || !TINT[ev.type] ? '' : `tint-${ev.color || TINT[ev.type]}`);
   const DEFAULT_SPAN = { note: 2, milestone: 2, quote: 2, person: 2, case: 4, step: 2, testimonial: 2, video: 2, logos: 2, snippets: 3, slot: 3, project: 2, moment: 2 };
   const tagsHTML = (ev) => (ev.services && ev.services.length ? `<div class="tags">${ev.services.map((s) => `<span class="pill">${s}</span>`).join('')}</div>` : '');
 
@@ -106,12 +109,35 @@
   // the last print in the DOM sits on top, so reverse: the first photo shows first, same as the open deck
   const prints = (ev) => (ev.photos ? `<div class="stack">${ev.photos.slice(0, 3).reverse().map((s) => `<img src="${s}" alt="" loading="lazy">`).join('')}</div>` : '');
 
+  // work becomes glass folders with the project's screens peeking out of the top,
+  // tinted from the work itself; the open slot is an empty folder waiting for yours
+  const FOLDERS = !new URLSearchParams(location.search).has('cards'); // v3: folders by default, ?cards for the white cards
+  if (FOLDERS) document.body.classList.add('use-folders');
+  const isFolder = (ev) => FOLDERS && (ev.type === 'case' || ev.type === 'slot' || (ev.type === 'project' && ev.photos));
+  function folderHTML({ papers = [], pill = '', name = '', title, sub, empty }) {
+    const tint = papers[0] ? ` data-tint="${papers[0]}"` : '';
+    return `<div class="fold${empty ? ' fold--empty' : ''}"${tint}>
+        <i class="fold__back"></i>
+        <div class="fold__papers">${papers.slice(0, 3).map((src) => `<img src="${src}" alt="" loading="lazy">`).join('')}</div>
+        <div class="fold__front"><i class="fold__glass"></i>${empty ? `<span class="plus">${icon.plus}</span>` : ''}${name ? `<span class="fold__name">${name}</span>` : ''}${pill ? `<span class="fold__pill">${pill}</span>` : ''}</div>
+      </div>
+      <div class="fold__label"><div class="card__title">${title}</div><div class="card__date">${sub}</div></div>`;
+  }
+
   function cardHTML(ev) {
     const p = parse(ev.date);
     const date = `<div class="card__date">${p.d} ${MONTHS[p.m - 1]}</div>`;
     const work = isWork(ev);
     let inner = '';
-    switch (ev.type) {
+    if (isFolder(ev)) {
+      const when = `${p.d} ${MONTHS[p.m - 1]}`;
+      if (ev.type === 'case') {
+        const C = CASES[ev.case];
+        inner = folderHTML({ papers: C.stack || [C.cover], pill: C.duration, name: C.client, title: C.title, sub: when });
+      } else if (ev.type === 'project') {
+        inner = folderHTML({ papers: ev.photos, pill: ev.end ? durationOf(ev.date, ev.end) : '', name: ev.client, title: ev.title, sub: when });
+      } else inner = folderHTML({ empty: true, title: ev.title, sub: 'Your launch · pick a week' });
+    } else switch (ev.type) {
       case 'quote':
         inner = `<span>${ev.title}</span>`; break;
       case 'note':
@@ -130,7 +156,7 @@
       }
       case 'testimonial': {
         const T = testiOf(ev);
-        inner = `<q>${T.quote}</q><div class="by"><span class="avatar"><img src="${T.img}" alt=""></span><span><b>${T.name}</b></span></div>`;
+        inner = `<q>${T.quote}</q><div class="by"><span class="avatar">${T.img ? `<img src="${T.img}" alt="">` : T.name[0]}</span><span><b>${T.name}</b>${T.role ? ` · ${T.role}` : ''}</span></div>`;
         break;
       }
       case 'logos':
@@ -172,7 +198,7 @@
     }
     const tag = clickable(ev) ? 'button' : 'div';
     const kind = ev.type === 'quote' || ev.type === 'slot' ? '' : work ? 'work-card' : 'note-card';
-    const cls = ['card', kind, tintOf(ev), `card--${ev.type}`, ev.type === 'project' && 'card--case', ev.photos && 'has-photos', visited.has(ev.id) && 'is-visited', ev.tbc && 'is-tbc'].filter(Boolean).join(' ');
+    const cls = ['card', kind, tintOf(ev), `card--${ev.type}`, ev.type === 'project' && 'card--case', isFolder(ev) && 'card--folder', workNote(ev) && 'work-card--note', ev.photos && !isFolder(ev) && 'has-photos', visited.has(ev.id) && 'is-visited', ev.tbc && 'is-tbc'].filter(Boolean).join(' ');
     const extra = ev.case ? ` data-case="${ev.case}"` : '';
     const label = tag === 'button' ? ` aria-label="${labelFor(ev)}"` : '';
     return `<${tag} class="${cls}" data-id="${ev.id}"${extra}${label}>${inner}</${tag}>`;
@@ -621,9 +647,19 @@
     return () => { clones.forEach((c) => c.remove()); flyLayer.style.zIndex = ''; };
   }
 
+  // where the centred note would sit, scaled down evenly to the size of a button: same shape, just smaller and elsewhere
+  function pillTransform(r) {
+    const to = note.getBoundingClientRect();
+    const sc = Math.max(0.08, r.width / to.width);
+    const dx = r.left + r.width / 2 - (to.left + to.width / 2), dy = r.top + r.height / 2 - (to.top + to.height / 2);
+    return `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(${sc})`;
+  }
   const rectKeys = (r, radius) => ({ left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, borderRadius: radius });
 
   function openNote(ev, el) {
+    // measure the source first: opening swaps the bar's buttons for the owner pill, which would hide a bar button
+    const fromRect = el.getBoundingClientRect();
+    const pill = el.classList.contains('dyn-cta'); // from "Work with us": grow out of the pill, fade back into it
     closeAll(true);
     const tint = tintOf(ev);
     note.className = ['note', ev.type === 'snippets' && 'note--wide', tint].filter(Boolean).join(' ');
@@ -640,9 +676,14 @@
 
     const reveal = () => { note.classList.remove('is-ghosting'); ghost.hidden = true; requestAnimationFrame(() => note.classList.add('is-in')); };
     if (reduced.matches) reveal();
-    else {
+    else if (pill) {
+      // from "Work with us": the card itself, already in its final shape, grows out of the button and moves into place
+      note.classList.add('is-in');
+      note.animate([{ transform: pillTransform(fromRect), opacity: 0 }, { opacity: 1, offset: 0.2 }, { transform: 'translate(-50%, -50%)', opacity: 1 }],
+        { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    } else {
       note.classList.add('is-ghosting');
-      const from = el.getBoundingClientRect(), to = note.getBoundingClientRect();
+      const from = fromRect, to = note.getBoundingClientRect();
       ghost.hidden = false;
       el.classList.add('is-lifted');
       // the prints peeking out of the card fly up into the deck
@@ -676,10 +717,20 @@
       done = true;
       if (!open || open.el !== o.el) o.el.classList.remove('is-lifted');
       if (open && open.kind === 'note') return;
+      note.getAnimations().forEach((a) => a.cancel());
       note.hidden = true; note.innerHTML = ''; note.classList.remove('is-in', 'is-ghosting');
       ghost.hidden = true; focusEl.hidden = true;
     };
     if (instant || reduced.matches || !document.contains(o.el)) return finish();
+    if (o.el.classList.contains('dyn-cta')) {
+      // back into "Work with us": the same card shrinks and moves back, content and all
+      const r = o.el.getBoundingClientRect();
+      if (!r.width) return finish();
+      note.animate([{ transform: 'translate(-50%, -50%)', opacity: 1 }, { opacity: 1, offset: 0.7 }, { transform: pillTransform(r), opacity: 0 }],
+        { duration: 420, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }).finished.then(finish, finish);
+      setTimeout(finish, 700);
+      return;
+    }
     note.classList.remove('is-in');
     setTimeout(() => {
       if (open) return finish();
@@ -845,7 +896,7 @@
   function flyOut(card, shots) {
     if (!card || !shots || !shots.length || reduced.matches || mq.matches) return null;
     const paper = $('.paper', sheet);
-    const frame = $('.frame', card) || $('.stack', card) || $('.thumb', card) || card;
+    const frame = $('.fold__papers', card) || $('.frame', card) || $('.stack', card) || $('.thumb', card) || card;
     const r = frame.getBoundingClientRect();
     if (!paper || r.right < 0 || r.left > innerWidth) return null;
     const gutter = (innerWidth - paper.offsetWidth) / 2;
@@ -854,19 +905,29 @@
     if (tw < 120) return null;
     const th = tw * 0.66;
     const start = rectKeys(r, '10px');
+    // out of a folder, each screen leaves from its own paper: same spot, same tilt
+    const papers = frame.classList.contains('fold__papers') ? $$('img', frame) : null;
+    const from = (i) => (papers && papers[i]
+      ? { ...start, transform: getComputedStyle(papers[i]).transform.replace('none', 'rotate(0deg)'), opacity: 0 }
+      : { ...start, transform: 'rotate(0deg)', opacity: i === 0 ? 1 : 0 });
     const anims = shots.slice(0, SPOTS.length).map((src, i) => {
       const img = document.createElement('img');
       img.src = src;
+      if (papers) img.className = 'fold-fly';
       flyLayer.appendChild(img);
       const s = SPOTS[i];
       const cx = CENTERED ? (s.side < 0 ? gutter / 2 : innerWidth - gutter / 2) : stage * s.x;
       const end = { left: `${cx - tw / 2}px`, top: `${innerHeight * s.y - th / 2}px`, width: `${tw}px`, height: `${th}px`, borderRadius: '10px' };
       return img.animate(
-        [{ ...start, transform: 'rotate(0deg)', opacity: i === 0 ? 1 : 0 }, { ...end, transform: `rotate(${s.r}deg)`, opacity: 1 }],
-        { duration: 680, delay: 120 + i * 70, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
+        papers && papers[i]
+          ? [from(i), { opacity: 1, offset: 0.25 }, { ...end, transform: `rotate(${s.r}deg)`, opacity: 1 }]
+          : [from(i), { ...end, transform: `rotate(${s.r}deg)`, opacity: 1 }],
+        { duration: 680, delay: 120, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' }); // all at once, together with the sheet
     });
-    card.classList.add('is-flown');
-    return { card, anims };
+    // a folder's papers cross-fade into their flying copies instead of vanishing, so nothing jumps over the glass
+    const fades = papers ? papers.map((p) => p.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 80, delay: 120, easing: 'ease-out', fill: 'forwards' })) : null;
+    if (!papers) card.classList.add('is-flown');
+    return { card, anims, frame, papers, fades };
   }
   // click any image of the work to see it whole: on the left stage, or full screen on phones and the centred layout
   const viewer = document.createElement('div');
@@ -947,16 +1008,28 @@
   function flyBack(f, instant) {
     if (!f) return;
     const clones = f.anims.map((a) => a.effect.target);
-    const done = () => { clones.forEach((c) => c.remove()); f.card.classList.remove('is-flown'); };
+    const done = () => { clones.forEach((c) => c.remove()); f.card.classList.remove('is-flown'); f.fades && f.fades.forEach((x) => x.cancel()); };
     if (instant) return done();
     // every screen heads home at once, at the same pace the sheet drops
     const pick = (k) => ({ left: k.left, top: k.top, width: k.width, height: k.height, borderRadius: k.borderRadius, transform: k.transform, opacity: k.opacity });
-    const back = f.anims.map((a) => {
-      const [from, to] = a.effect.getKeyframes().map(pick);
-      const anim = a.effect.target.animate([to, from], { duration: 480, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'both' });
+    // into a folder, each screen lands on its own paper (measured now, in case the card moved or isn't hovered)
+    // and cross-fades into it, so it settles behind the glass instead of popping in
+    const box = f.papers && rectKeys(f.frame.getBoundingClientRect(), '10px');
+    const back = f.anims.map((a, i) => {
+      // first and last keyframes: the way out may have extra steps (a fade) between them
+      const kf = a.effect.getKeyframes().map(pick);
+      const from = kf[0], to = kf[kf.length - 1];
+      const home = f.papers && f.papers[i];
+      const frames = home
+        ? [to, { opacity: 1, offset: 0.7 }, { ...box, transform: getComputedStyle(home).transform.replace('none', 'rotate(0deg)'), opacity: 0 }]
+        : [to, from];
+      const anim = a.effect.target.animate(frames, { duration: 480, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'both' });
       a.cancel();
       return anim;
     });
+    // and the papers fade back in underneath as the copies fade out
+    if (f.papers) f.fades = f.papers.map((p) => { const x = p.animate([{ opacity: 0 }, { opacity: 0, offset: 0.7 }, { opacity: 1 }], { duration: 480, fill: 'forwards' }); return x; })
+      .concat(f.fades || []);
     Promise.all(back.map((x) => x.finished)).then(done, done);
     setTimeout(done, 700);
   }
@@ -1026,6 +1099,73 @@
   }
 
   /* ── Events ───────────────────────────────────────── */
+  // folder glass takes its hue from the most saturated colours in the project's first screen
+  const hues = new Map();
+  const PASTELS = [35, 52, 141, 210, 268, 328]; // the note hues: orange, yellow, green, blue, purple, pink
+  function hueOf(src) {
+    if (!hues.has(src)) hues.set(src, new Promise((done) => {
+      const im = new Image();
+      im.onload = () => {
+        try {
+          const c = document.createElement('canvas');
+          c.width = c.height = 32;
+          const x = c.getContext('2d', { willReadFrequently: true });
+          x.drawImage(im, 0, 0, 32, 32);
+          const d = x.getImageData(0, 0, 32, 32).data;
+          let r = 0, g = 0, b = 0, wt = 0;
+          for (let i = 0; i < d.length; i += 4) {
+            const mx = Math.max(d[i], d[i + 1], d[i + 2]), mn = Math.min(d[i], d[i + 1], d[i + 2]);
+            const l = (mx + mn) / 510, sat = mx ? (mx - mn) / mx : 0;
+            if (l < 0.06 || l > 0.96) continue;
+            const w = sat * sat * sat + 0.002;
+            r += d[i] * w; g += d[i + 1] * w; b += d[i + 2] * w; wt += w;
+          }
+          done(wt ? hsl(r / wt, g / wt, b / wt) : null);
+        } catch (err) { done(null); }
+      };
+      im.onerror = () => done(null);
+      im.src = src;
+    }));
+    return hues.get(src);
+  }
+  function hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn;
+    if (!d) return { h: 0, s: 0 };
+    const s = d / (1 - Math.abs(2 * l - 1));
+    const h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    return { h: Math.round((h * 60 + 360) % 360), s };
+  }
+  function tintFolders() {
+    $$('.fold[data-tint]:not([data-tinted])').forEach((f) => {
+      f.dataset.tinted = '';
+      hueOf(f.dataset.tint).then((t) => {
+        if (!t || t.s < 0.12) return; // greys keep the default soft blue
+        // snap to the nearest note pastel, so folders sit in the same family as the notes
+        const gap = (h) => Math.min(Math.abs(h - t.h), 360 - Math.abs(h - t.h));
+        f.style.setProperty('--fh', PASTELS.reduce((a, b) => (gap(b) < gap(a) ? b : a)));
+      });
+    });
+  }
+  // the glass outline as one path sized to the folder: rounded body, right half rising on a soft S-curve.
+  // a single clip-path keeps the blur and stays seamless when the card scales on hover
+  function foldPath(w, h, rise = 16, r = 22, cw = 44) {
+    const x = w * 0.48;
+    return `M0 ${rise + r}A${r} ${r} 0 0 1 ${r} ${rise}L${x} ${rise}C${x + cw * 0.39} ${rise} ${x + cw * 0.39} 0 ${x + cw * 0.77} 0`
+      + `L${w - r} 0A${r} ${r} 0 0 1 ${w} ${r}L${w} ${h - r}A${r} ${r} 0 0 1 ${w - r} ${h}L${r} ${h}A${r} ${r} 0 0 1 0 ${h - r}Z`;
+  }
+  const shaper = new ResizeObserver((entries) => entries.forEach(({ target, contentRect: { width, height } }) => {
+    if (width && height) target.style.clipPath = `path('${foldPath(width, height)}')`;
+  }));
+  function shapeFolders() {
+    $$('.fold__glass:not([data-shaped])').forEach((g) => { g.dataset.shaped = ''; shaper.observe(g); });
+  }
+  if (FOLDERS) {
+    const refresh = () => { tintFolders(); shapeFolders(); };
+    refresh();
+    new MutationObserver(refresh).observe(document.body, { childList: true, subtree: true });
+  }
+
   document.addEventListener('click', (e) => {
     const t = e.target;
     if (viewing && t.closest('.viewer')) return closeViewer();
