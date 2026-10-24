@@ -6,6 +6,7 @@
   const pad = (n) => String(n).padStart(2, '0');
   const parse = (s) => { const [y, m, d] = s.split('-').map(Number); return { y, m, d }; };
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const strip = (h) => String(h || '').replace(/<[^>]+>/g, '');
   const now = new Date();
   const TODAY = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
   const ROWS = 7;
@@ -28,13 +29,42 @@
   if (new URLSearchParams(location.search).has('draft')) document.body.classList.add('draft');
 
   /* ── Data ─────────────────────────────────────────── */
-  const ALL = [...EVENTS, { id: 'open-slot', date: TODAY, type: 'slot', row: 2, span: 3, highlight: true, title: 'this slot is open' }]
+  // content comes from the Notion "Website calendar" via js/cms.js; data.js EVENTS is the offline fallback
+  const normalize = (ev) => (ev.type === 'step' && ev.section === 'video' && CASES[ev.case] && CASES[ev.case].video
+    ? { ...ev, type: 'video', src: CASES[ev.case].video, poster: CASES[ev.case].cover } : ev);
+  const SOURCE = window.CMS && window.CMS.events && window.CMS.events.length ? window.CMS.events : EVENTS;
+  const ALL = [...SOURCE.map(normalize), { id: 'open-slot', date: TODAY, type: 'slot', row: 2, span: 3, highlight: true, title: 'this slot is open' }]
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
   const BY_ID = Object.fromEntries(ALL.map((e) => [e.id, e]));
   const CASE_ORDER = Object.keys(CASES).sort((a, b) => (CASES[a].start < CASES[b].start ? -1 : 1));
 
   // two kinds of thing on the calendar: notes (how we got here) and work (what we shipped)
-  const isWork = (ev) => ev.type === 'case' || ev.type === 'step' || ev.type === 'video' || !!ev.case;
+  const WORK_TYPES = ['case', 'step', 'video', 'project', 'moment'];
+  const isWork = (ev) => WORK_TYPES.includes(ev.type) || !!ev.case;
+  const isProject = (ev) => ev.type === 'project' || ev.type === 'moment';
+
+  // people and testimonials arrive inline from Notion, or by key from data.js
+  const personOf = (ev) => {
+    if (typeof ev.who !== 'object') return PEOPLE[ev.person];
+    const known = PEOPLE[(ev.who.short || '').toLowerCase()] || {};
+    const links = [...(known.links || []), ...(ev.who.links || [])].filter((l, i, a) => a.findIndex((x) => x.href === l.href) === i);
+    return { ...known, ...ev.who, bio: ev.who.bio || known.bio, links };
+  };
+  const testiOf = (ev) => (typeof ev.who === 'object' ? ev.who : TESTIMONIALS[ev.who]);
+
+  function durationOf(a, b) {
+    const days = Math.round((new Date(b) - new Date(a)) / 864e5) + 1;
+    if (days <= 13) return `${days} days`;
+    if (days <= 60) return `${Math.round(days / 7)} weeks`;
+    return `${Math.round(days / 30.4)} months`;
+  }
+  // multi-day work drawn as bars across the columns: case studies and any project with an end date
+  const RANGES = ALL.filter((e) => e.type === 'case' || (e.type === 'project' && e.end)).map((e) => {
+    const C = e.type === 'case' && CASES[e.case];
+    return C
+      ? { id: e.id, caseId: e.case, start: e.date || C.start, end: e.end || C.end, label: C.short, len: C.duration }
+      : { id: e.id, start: e.date, end: e.end, label: e.client || strip(e.title), len: durationOf(e.date, e.end) };
+  });
   const clickable = (ev) => ev.type !== 'quote' && !(ev.type === 'note' && !ev.detail) && !(ev.type === 'milestone' && !ev.detail && !ev.case);
 
   let visited = new Set();
@@ -51,7 +81,6 @@
     const p = parse(a), q = parse(b);
     return p.y === q.y ? `${p.d} ${MON[p.m - 1]} – ${q.d} ${MON[q.m - 1]} ${q.y}` : `${p.d} ${MON[p.m - 1]} ${p.y} – ${q.d} ${MON[q.m - 1]} ${q.y}`;
   }
-  const strip = (h) => String(h || '').replace(/<[^>]+>/g, '');
   const icon = {
     x: '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="m2 2 8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
     play: '<svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1.2v7.6L8.6 5z" fill="currentColor"/></svg>',
@@ -62,7 +91,8 @@
   // notes are sticky notes: each kind gets its own pastel (an event can set `color` to override)
   const TINT = { note: 'yellow', person: 'blue', testimonial: 'pink', milestone: 'green', logos: 'purple', snippets: 'orange' };
   const tintOf = (ev) => (isWork(ev) || !TINT[ev.type] ? '' : `tint-${ev.color || TINT[ev.type]}`);
-  const DEFAULT_SPAN = { note: 2, milestone: 2, quote: 2, person: 2, case: 4, step: 2, testimonial: 2, video: 2, logos: 2, snippets: 3, slot: 3 };
+  const DEFAULT_SPAN = { note: 2, milestone: 2, quote: 2, person: 2, case: 4, step: 2, testimonial: 2, video: 2, logos: 2, snippets: 3, slot: 3, project: 2, moment: 2 };
+  const tagsHTML = (ev) => (ev.services && ev.services.length ? `<div class="tags">${ev.services.map((s) => `<span class="pill">${s}</span>`).join('')}</div>` : '');
 
   // logos are drawn as masks in the surrounding text colour, sized so wide wordmarks and square marks feel equal
   const LOGO_BY_SRC = Object.fromEntries(LOGOS.map((l) => [l.src, l]));
@@ -90,16 +120,16 @@
         inner = ev.metric
           ? `<div class="num">${ev.metric}</div><div><div class="card__title">${ev.title}</div>${date}</div>`
           : `<div><div class="card__title">${ev.title}</div>${date}</div>`;
-        if (work) inner = `<div class="kicker">${CASES[ev.case].short}</div>` + inner;
+        if (work) inner = `<div class="kicker">${ev.case ? CASES[ev.case].short : ev.client || ''}</div>` + inner;
         break;
       case 'person': {
-        const P = PEOPLE[ev.person];
+        const P = personOf(ev);
         inner = `<div><div class="card__title">${ev.title}</div>${date}</div>
           <div class="by"><span class="avatar">${P.mono}</span><span><b>${P.short}</b> · ${P.role}</span></div>${prints(ev)}`;
         break;
       }
       case 'testimonial': {
-        const T = TESTIMONIALS[ev.who];
+        const T = testiOf(ev);
         inner = `<q>${T.quote}</q><div class="by"><span class="avatar"><img src="${T.img}" alt=""></span><span><b>${T.name}</b></span></div>`;
         break;
       }
@@ -125,6 +155,15 @@
           ${ev.img ? `<div class="thumb"><img src="${ev.img}" alt="" loading="lazy"></div>` : ''}`;
         break;
       }
+      case 'project':
+        inner = `<div class="case-top"><span class="client">${ev.client || ''}</span>${ev.end ? `<span class="pill">${durationOf(ev.date, ev.end)}</span>` : ''}</div>
+          <div><div class="card__title">${ev.title}</div>${date}</div>
+          ${ev.photos ? `<div class="frame"><img src="${ev.photos[0]}" alt="" loading="lazy"></div>` : tagsHTML(ev)}`;
+        break;
+      case 'moment':
+        inner = `<div><div class="kicker">${ev.client || ''}</div><div class="card__title">${ev.title}</div>${date}</div>
+          ${ev.photos ? `<div class="thumb"><img src="${ev.photos[0]}" alt="" loading="lazy"></div>` : ''}`;
+        break;
       case 'video':
         inner = `<div class="row"><span class="play">${icon.play}</span></div>
           <div class="poster"><img src="${ev.poster}" alt="" loading="lazy"></div>
@@ -133,15 +172,15 @@
     }
     const tag = clickable(ev) ? 'button' : 'div';
     const kind = ev.type === 'quote' || ev.type === 'slot' ? '' : work ? 'work-card' : 'note-card';
-    const cls = ['card', kind, tintOf(ev), `card--${ev.type}`, ev.photos && 'has-photos', visited.has(ev.id) && 'is-visited', ev.tbc && 'is-tbc'].filter(Boolean).join(' ');
+    const cls = ['card', kind, tintOf(ev), `card--${ev.type}`, ev.type === 'project' && 'card--case', ev.photos && 'has-photos', visited.has(ev.id) && 'is-visited', ev.tbc && 'is-tbc'].filter(Boolean).join(' ');
     const extra = ev.case ? ` data-case="${ev.case}"` : '';
     const label = tag === 'button' ? ` aria-label="${labelFor(ev)}"` : '';
     return `<${tag} class="${cls}" data-id="${ev.id}"${extra}${label}>${inner}</${tag}>`;
   }
   function labelFor(ev) {
     if (ev.type === 'case') return `Work: ${strip(CASES[ev.case].title)}`;
-    if (ev.type === 'testimonial') return `Note: what ${TESTIMONIALS[ev.who].name} said`;
-    if (ev.type === 'person') return `Note: meet ${PEOPLE[ev.person].name}`;
+    if (ev.type === 'testimonial') return `Note: what ${testiOf(ev).name} said`;
+    if (ev.type === 'person') return `Note: meet ${personOf(ev).name}`;
     return `${isWork(ev) ? 'Work' : 'Note'}: ${strip(ev.title)}, ${fullDate(ev.date)}`;
   }
 
@@ -171,11 +210,13 @@
     });
   }
 
-  function placeDay(events) {
-    let cursor = 1;
+  // cards without a set row start a little lower in some columns, so the week reads staggered like a real calendar
+  const STAGGER = [1, 2, 1, 3];
+  function placeDay(events, idx = 0) {
+    let cursor = STAGGER[idx % STAGGER.length];
     const items = events.map((ev) => {
       const base = ev.type === 'person' || ev.type === 'testimonial' ? 2 : ev.span || DEFAULT_SPAN[ev.type] || 2;
-      const span = Math.min(ev.photos ? Math.max(base, 3) : base, ROWS);
+      const span = Math.min(ev.photos ? Math.max(base, ev.type === 'project' ? 4 : 3) : base, ROWS);
       let row = ev.row || cursor;
       if (row + span - 1 > ROWS) row = Math.max(1, ROWS - span + 1);
       cursor = row + span;
@@ -199,7 +240,7 @@
     const iso = (d) => `${y}-${pad(m)}-${pad(d)}`;
     const byDay = {};
     c.events.forEach((ev) => { (byDay[parse(ev.date).d] = byDay[parse(ev.date).d] || []).push(ev); });
-    const inProject = (d) => CASE_ORDER.some((id) => CASES[id].start <= iso(d) && iso(d) <= CASES[id].end);
+    const inProject = (d) => RANGES.some((r) => r.start <= iso(d) && iso(d) <= r.end);
     let cells = WEEK.map((w) => `<span class="mcal__w">${w}</span>`).join('') + '<span></span>'.repeat((new Date(y, m - 1, 1).getDay() + 6) % 7);
     for (let d = 1, n = new Date(y, m, 0).getDate(); d <= n; d++) {
       const evs = byDay[d] || [];
@@ -212,7 +253,7 @@
         : `<span class="${cls}">${d}</span>`;
     }
     const pick = (fn) => c.events.find(fn);
-    const hero = pick((e) => e.type === 'case') || pick((e) => e.type === 'slot') || pick((e) => e.photos) || pick((e) => e.type === 'snippets') || pick((e) => e.type === 'testimonial');
+    const hero = pick((e) => e.type === 'case') || pick((e) => e.type === 'project' && e.photos) || pick((e) => e.type === 'slot') || pick((e) => e.photos) || pick((e) => e.type === 'snippets') || pick((e) => e.type === 'testimonial');
     const notes = c.events.filter((e) => !isWork(e) && e.type !== 'quote' && e.type !== 'slot').length;
     const works = c.events.filter(isWork).length;
     const sum = [notes && `Notes ${notes}`, works && `Work ${works}`].filter(Boolean).join(' · ');
@@ -226,14 +267,14 @@
   function rowHTML(ev) {
     if (ev.type === 'quote') return `<div class="mquote">${ev.title}</div>`;
     const p = parse(ev.date);
-    const title = ev.type === 'testimonial' ? `${TESTIMONIALS[ev.who].name}: “${TESTIMONIALS[ev.who].quote}”`
+    const title = ev.type === 'testimonial' ? `${testiOf(ev).name}: “${testiOf(ev).quote}”`
       : ev.type === 'case' ? strip(CASES[ev.case].title) : strip(ev.title);
     const tag = clickable(ev) ? 'button' : 'div';
     const cls = ['mrow', isWork(ev) ? 'is-work' : tintOf(ev), visited.has(ev.id) && 'is-visited'].filter(Boolean).join(' ');
     return `<${tag} class="${cls}" data-id="${ev.id}"${tag === 'button' ? ` aria-label="${labelFor(ev)}"` : ''}><i></i><span class="t">${title}</span><span class="d">${MON[p.m - 1]} ${p.d}</span></${tag}>`;
   }
 
-  function colHTML(c) {
+  function colHTML(c, idx) {
     const head = c.isMonth
       ? `<span class="d">${MONTHS[c.p.m - 1]}</span><span class="y">${c.p.y}</span>`
       : `<span class="d">${c.isToday ? 'Today' : `${MON[c.p.m - 1]} ${c.p.d}`}</span><span class="y">${c.isToday ? `${MON[c.p.m - 1]} ${c.p.d}, ${c.p.y}` : c.p.y}</span>`;
@@ -241,7 +282,7 @@
     if (c.isMonth) {
       body = monthHTML(c);
     } else {
-      const { items, lanes } = placeDay(c.events);
+      const { items, lanes } = placeDay(c.events, idx);
       const gridCols = lanes > 1 ? ` style="grid-template-columns:repeat(${lanes}, minmax(0, 1fr))"` : '';
       body = `<div class="col-body"${gridCols}>${items.map((it) => {
         const colPos = lanes > 1 ? (it.solo ? '1 / -1' : `${it.lane + 1}`) : '1';
@@ -273,7 +314,7 @@
     if (mq.matches) return renderAgenda();
     track.innerHTML =
       `<section class="col col--intro"><div class="col-head"></div><div class="intro">${introCopy}</div></section>` +
-      columnsFor(view).map(colHTML).join('') +
+      columnsFor(view).map((c, i) => colHTML(c, i)).join('') +
       `<section class="col col--end"><div class="col-head"></div>${outroHTML()}</section>`;
     layoutBars();
     syncBar();
@@ -284,20 +325,30 @@
     $$('.allday-bar', track).forEach((b) => b.remove());
     if (view === 'highlights') return;
     const cols = $$('.col[data-date]', track);
-    for (const id of CASE_ORDER) {
-      const C = CASES[id];
-      const inRange = cols.filter((c) => c.dataset.end >= C.start && c.dataset.date <= C.end);
+    const lanesEnd = [];
+    const depth = new Map(); // how many bar lanes cross each column
+    for (const r of [...RANGES].sort((a, b) => (a.start < b.start ? -1 : 1))) {
+      const inRange = cols.filter((c) => c.dataset.end >= r.start && c.dataset.date <= r.end);
       if (!inRange.length) continue;
       const a = inRange[0], b = inRange[inRange.length - 1];
+      const left = a.offsetLeft + 10, right = b.offsetLeft + b.offsetWidth - 10;
+      // overlapping projects stack into lanes, like overlapping all-day events
+      let lane = lanesEnd.findIndex((x) => x < left);
+      if (lane === -1) { lane = lanesEnd.length; lanesEnd.push(0); }
+      lanesEnd[lane] = right + 4;
+      inRange.forEach((c) => depth.set(c, Math.max(depth.get(c) || 1, lane + 1)));
       const el = document.createElement('button');
       el.className = 'allday-bar';
-      el.dataset.caseBar = id;
-      el.style.left = `${a.offsetLeft + 10}px`;
-      el.style.width = `${b.offsetLeft + b.offsetWidth - a.offsetLeft - 20}px`;
-      el.innerHTML = `${C.short}<span>${C.duration}</span>`;
-      el.setAttribute('aria-label', `Work: ${C.short}, ${C.duration}`);
+      if (r.caseId) el.dataset.caseBar = r.caseId; else el.dataset.openId = r.id;
+      el.style.left = `${left}px`;
+      el.style.width = `${right - left}px`;
+      el.style.top = `calc(var(--head) + 6px + ${lane * 26}px)`;
+      el.innerHTML = `${r.label}<span>${r.len}</span>`;
+      el.setAttribute('aria-label', `Work: ${r.label}, ${r.len}`);
       track.appendChild(el);
     }
+    // only columns under stacked bars make room for them
+    cols.forEach((c) => c.style.setProperty('--allday', `${(depth.get(c) || 1) * 26 + 4}px`));
   }
 
   function renderAgenda() {
@@ -452,8 +503,8 @@
   let open = null; // { kind: 'note' | 'sheet', el, ... }
 
   function ownerOf(ev) {
-    if (ev.type === 'person') { const P = PEOPLE[ev.person]; return [{ mono: P.mono }, P.name]; }
-    if (ev.type === 'testimonial') { const T = TESTIMONIALS[ev.who]; return [{ img: T.img }, T.name]; }
+    if (ev.type === 'person') { const P = personOf(ev); return [{ mono: P.mono }, P.name]; }
+    if (ev.type === 'testimonial') { const T = testiOf(ev); return [T.img ? { img: T.img } : { mono: T.name[0] }, T.name]; }
     if (ev.type === 'slot') return [{ mono: '+' }, 'New event'];
     return [{ mono: '37' }, 'By 37degree'];
   }
@@ -470,14 +521,14 @@
       case 'milestone':
         return `<div class="note__body">${when}${ev.metric ? `<div class="big">${ev.metric}</div>` : ''}<h3 style="margin-top:0">${ev.title}</h3><p>${ev.detail}</p></div>${footHTML(ev)}`;
       case 'person': {
-        const P = PEOPLE[ev.person];
+        const P = personOf(ev);
         return `${deckHTML(ev)}<div class="note__body profile">${ev.photos ? '' : `<span class="avatar avatar--lg">${P.mono}</span>`}
           <div><span class="meta">${P.role}</span><h3>Meet ${P.short}</h3><p>${P.bio}</p>
           <div class="links">${P.links.map((l) => `<a class="pill" href="${l.href}"${l.href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${l.label}</a>`).join('')}</div></div></div>
           ${footHTML(ev, `Joined ${fullDate(ev.date)}`)}`;
       }
       case 'testimonial': {
-        const T = TESTIMONIALS[ev.who];
+        const T = testiOf(ev);
         return `<div class="note__body">${when}<p class="quote">“${T.quote}”</p></div>${footHTML(ev, `${T.name} · ${T.role}`)}`;
       }
       case 'logos':
@@ -703,6 +754,60 @@
       </div>`;
   }
 
+  // a project or moment from Notion: everything comes from its row and page body
+  const WORKS = ALL.filter((e) => e.type === 'case' || e.type === 'project');
+  function projectSheetHTML(ev) {
+    const parent = ev.parent && BY_ID[ev.parent];
+    const anchor = parent || ev;
+    const next = WORKS[(WORKS.indexOf(anchor) + 1) % WORKS.length] || WORKS[0];
+    const nextTitle = next.type === 'case' ? CASES[next.case].title : next.title;
+    const nextAttr = next.type === 'case' ? `data-case-next="${next.case}"` : `data-open-id="${next.id}"`;
+    const nextLen = next.type === 'case' ? CASES[next.case].duration : next.end ? durationOf(next.date, next.end) : fullDate(next.date);
+    const when = ev.end ? fmtRange(ev.date, ev.end) : fullDate(ev.date);
+    const meta = [
+      ['Client', ev.client],
+      ['When', when],
+      ['Services', (ev.services || []).join(', ')],
+      ['Part of', parent && `<button class="linkish" data-open-id="${parent.id}">${strip(parent.title)} →</button>`],
+      ['Live', ev.live && `<a href="${ev.live}" target="_blank" rel="noopener">${ev.live.replace(/^https?:\/\/(www\.)?/, '')} ↗</a>`],
+    ].filter(([, v]) => v);
+    const [cover, ...rest] = ev.photos || [];
+    return `<div class="sheet__bar">
+        <span class="client">${ev.client || '37degree'}</span>
+        ${ev.end ? `<span class="pill">${durationOf(ev.date, ev.end)}</span>` : ''}<span class="meta">${when}</span>
+        <button class="note__x" data-close aria-label="Close">${icon.x}</button>
+      </div>
+      <div class="sheet__body">
+        ${tagsHTML(ev)}
+        <h1>${ev.title}</h1>
+        ${ev.summary ? `<p class="lede">${ev.summary}</p>` : ''}
+        <dl class="metagrid">${meta.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+        ${cover ? `<img class="cover" src="${cover}" alt="">` : ''}
+        ${rest.length ? `<div class="gallery ${rest.length === 1 ? 'one' : ''}">${rest.map((s) => `<img src="${s}" alt="" loading="lazy">`).join('')}</div>` : ''}
+        ${ev.body ? `<section class="prose">${ev.body}</section>` : ''}
+        <button class="sheet__next" ${nextAttr}><span><span class="meta">Next · ${nextLen}</span><div class="t">${nextTitle}</div></span><span aria-hidden="true">→</span></button>
+        <div class="sheet__cta"><span class="t">Your launch could be <em>next</em>.</span><a class="btn" href="${MAIL}">Work with us</a></div>
+      </div>`;
+  }
+
+  function openProject(ev, srcEl) {
+    if (!ev) return;
+    closeAll(true);
+    const card = srcEl || $(`.card[data-id="${ev.id}"]`, mq.matches ? agenda : track);
+    sheet.innerHTML = projectSheetHTML(ev);
+    sheet.scrollTop = 0;
+    sheet.hidden = false;
+    scrim.hidden = false;
+    const fly = card && ev.type === 'project' && ev.photos ? flyOut(card, { stack: ev.photos.slice(0, 3) }) : null;
+    requestAnimationFrame(() => requestAnimationFrame(() => { scrim.classList.add('is-in'); sheet.classList.add('is-in'); }));
+    if (!mq.matches) bar.style.left = `${Math.max(140, (innerWidth - Math.min(720, innerWidth)) / 2)}px`;
+    open = { kind: 'sheet', id: ev.id, el: card, fly };
+    setOwner({ mono: (ev.client || '37')[0] }, ev.client || 'By 37degree');
+    markVisited(ev.id);
+    history.replaceState(null, '', `${location.pathname}${location.search}#work/${ev.id}`);
+    setTimeout(() => { const x = $('[data-close]', sheet); x && x.focus({ preventScroll: true }); }, 50);
+  }
+
   // the project's screens leave the card and fan out beside the sheet
   const FAN = [{ x: -0.3, y: -0.46, r: -6 }, { x: 0.3, y: -0.06, r: 5 }, { x: -0.06, y: 0.48, r: -2 }];
   function flyOut(card, C) {
@@ -802,11 +907,20 @@
     }
     const caseBar = t.closest('[data-case-bar]');
     if (caseBar && !dragMoved) return openCase(caseBar.dataset.caseBar);
+    const openBtn = t.closest('[data-open-id]');
+    if (openBtn && !dragMoved) {
+      const target = BY_ID[openBtn.dataset.openId];
+      if (!target) return;
+      if (target.type === 'case') return openCase(target.case);
+      if (open && open.kind === 'sheet' && !mq.matches) scrollToDate(target.date);
+      return requestAnimationFrame(() => openProject(target));
+    }
     const card = t.closest('button.card, button.mrow, button[data-day]');
     if (!card || dragMoved) return;
     const ev = BY_ID[card.dataset.id || card.dataset.day];
     if (ev.type === 'case') return openCase(ev.case, null, card);
     if (ev.type === 'video') return openCase('sidecar', 'video', card, { noFly: true, play: true });
+    if (isProject(ev)) return openProject(ev, card);
     if (ev.case) return openCase(ev.case, ev.section, card, { noFly: true });
     openNote(ev, card);
   });
@@ -825,10 +939,16 @@
   mq.addEventListener('change', () => { if (mq.matches && view === 'months') view = 'days'; render(); });
 
   function fromHash() {
-    const m = location.hash.match(/^#work\/(\w+)/);
-    if (!m || !CASES[m[1]] || (open && open.id === m[1])) return;
-    if (!mq.matches) scrollToDate(CASES[m[1]].start);
-    setTimeout(() => openCase(m[1]), 250);
+    const m = location.hash.match(/^#work\/([\w-]+)/);
+    if (!m || (open && open.id === m[1])) return;
+    if (CASES[m[1]]) {
+      if (!mq.matches) scrollToDate(CASES[m[1]].start);
+      return setTimeout(() => openCase(m[1]), 250);
+    }
+    const ev = BY_ID[m[1]];
+    if (!ev || !isProject(ev)) return;
+    if (!mq.matches) scrollToDate(ev.date);
+    setTimeout(() => openProject(ev), 250);
   }
   addEventListener('hashchange', fromHash);
 

@@ -1,0 +1,52 @@
+# Pulls the Notion "Website calendar" (Studio CRM) into js/cms.js and redeploys the site when it changed.
+# Runs every hour, or on demand: Actions → "Sync from Notion" → Run workflow (or `gh workflow run sync-notion.yml`).
+name: Sync from Notion
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: notion-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Pull the Website calendar from Notion
+        run: node scripts/sync-notion.mjs
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+
+      - name: Commit if anything changed
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain js/cms.js assets/img)" ]; then
+            echo "No changes in Notion."
+            exit 0
+          fi
+          git config user.name "37degree-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A js/cms.js assets/img
+          git commit -m "Sync calendar from Notion"
+          git push
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      # pushes made with GITHUB_TOKEN don't always start a Pages build on their own
+      - name: Rebuild GitHub Pages
+        if: steps.commit.outputs.pushed == 'true'
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds"
+        env:
+          GH_TOKEN: ${{ github.token }}

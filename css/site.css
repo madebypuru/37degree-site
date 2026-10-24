@@ -242,6 +242,9 @@ button.card:active { transform: scale(.95); }
 .card--case .frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .7s var(--ease); }
 .card--case:hover .frame img { transform: scale(1.04); }
 .card--case.is-flown .frame { visibility: hidden; }
+.card .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; }
+.card .tags .pill { padding: 3px 8px; font-size: 11px; background: var(--paper); border-color: transparent; color: var(--muted); }
+.allday-bar { transition: border-color .2s, top .3s var(--ease); }
 
 /* stacked prints (snippets) */
 .stack { position: relative; flex: 1; min-height: 70px; }
@@ -559,6 +562,17 @@ button.card.has-photos:hover .stack img:nth-child(2) { transform: translate(var(
 .sheet .metagrid dt { font: 500 11px/1 var(--font-sans); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
 .sheet .metagrid dd { margin: 0; font: 500 14px/1.35 var(--font-sans); }
 .sheet .cover { border-radius: var(--r-big); border: 1px solid var(--line-2); }
+.sheet .linkish { font: inherit; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.sheet .prose { padding-top: 36px; }
+.sheet .prose h3 { margin: 22px 0 8px; font: 500 18px/1.3 var(--font-sans); letter-spacing: -0.01em; }
+.sheet .prose ul, .sheet .prose ol { margin: 0 0 14px; padding-left: 20px; font: 300 16px/1.65 var(--font-sans); max-width: 580px; }
+.sheet .prose figure { margin: 18px 0; }
+.sheet .prose figure img { width: 100%; border-radius: var(--r-card); border: 1px solid var(--line-2); }
+.sheet .prose figcaption { margin-top: 6px; font: 400 12px/1.4 var(--font-sans); color: var(--muted); }
+.sheet .prose hr { border: 0; border-top: 1px solid var(--line-2); margin: 28px 0; }
+.sheet .prose .callout { padding: 14px 16px; border-radius: var(--r-card); background: var(--paper); }
+.sheet .prose blockquote { margin: 18px 0; padding: 18px; border-radius: var(--r-card); background: var(--paper); }
+.sheet .prose blockquote p { margin: 0; font-size: 18px; }
 .sheet section { padding-top: 48px; scroll-margin-top: 72px; }
 .sheet section.is-target h2 { animation: hl 1.6s var(--ease); }
 @keyframes hl { 0%, 40% { color: var(--brand); } }
