@@ -1,0 +1,21 @@
+{
+  "name": "Deccan AI: the Bumblebee *launch* film",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-08-15",
+  "end": "2026-10-15",
+  "client": "Deccan AI",
+  "summary": "A marketing retainer: the Bumblebee Physical AI launch film, a brand book and an illustration system.",
+  "services": [
+    "Video",
+    "Branding"
+  ],
+  "photos": [
+    "assets/img/mock/bumblebee-1.jpg",
+    "assets/img/mock/bumblebee-2.jpg",
+    "assets/img/mock/bumblebee-3.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": false,
+  "publish": true
+}

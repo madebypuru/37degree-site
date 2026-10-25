@@ -1,0 +1,22 @@
+{
+  "name": "Almanac: product + launch *films*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-08-24",
+  "end": "2026-09-10",
+  "client": "Almanac (YC S26)",
+  "summary": "Product and launch films through demo day: a motion pair, a hero rework, the S26 Wiki magazine, and merch.",
+  "services": [
+    "Video",
+    "Motion",
+    "Print"
+  ],
+  "photos": [
+    "assets/img/mock/almanac-1.jpg",
+    "assets/img/mock/almanac-2.jpg",
+    "assets/img/mock/almanac-3.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": false,
+  "publish": true
+}

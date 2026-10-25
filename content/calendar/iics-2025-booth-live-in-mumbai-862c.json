@@ -1,0 +1,15 @@
+{
+  "name": "IICS 2025 · booth live in Mumbai",
+  "card": "Note",
+  "kind": "Note",
+  "date": "2025-09-18",
+  "summary": "200+ exhibitors. 25,000 trade visitors. Three days on the floor.",
+  "photos": [
+    "assets/img/placeholder/iics-1.jpg",
+    "assets/img/placeholder/iics-2.jpg",
+    "assets/img/placeholder/iics-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

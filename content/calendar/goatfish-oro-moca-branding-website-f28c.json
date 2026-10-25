@@ -1,0 +1,21 @@
+{
+  "name": "Goatfish, ORO & MOCA: *branding* + website",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-01-01",
+  "client": "Goatfish · ORO · MOCA",
+  "summary": "Branding and a website across Goatfish, ORO and MOCA.",
+  "services": [
+    "Branding",
+    "Website"
+  ],
+  "photos": [
+    "assets/img/mock/goatfish-1.jpg",
+    "assets/img/mock/goatfish-2.jpg",
+    "assets/img/mock/goatfish-3.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": false,
+  "order": 0,
+  "publish": true
+}

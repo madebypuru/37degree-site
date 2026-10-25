@@ -1,0 +1,21 @@
+{
+  "name": "9nidhi: *naming* + intro deck",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-08-01",
+  "client": "9nidhi",
+  "summary": "Naming and an intro deck.",
+  "services": [
+    "Naming",
+    "Pitch deck"
+  ],
+  "photos": [
+    "assets/img/mock/9nidhi-1.jpg",
+    "assets/img/mock/9nidhi-2.jpg",
+    "assets/img/mock/9nidhi-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "order": 1,
+  "publish": true
+}

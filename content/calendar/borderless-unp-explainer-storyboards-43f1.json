@@ -1,0 +1,19 @@
+{
+  "name": "Borderless UNP: explainer *storyboards*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-09-01",
+  "client": "Borderless UNP (via Goatfish)",
+  "summary": "Explainer video storyboards in the deBridge style.",
+  "services": [
+    "Video"
+  ],
+  "photos": [
+    "assets/img/mock/borderless-1.jpg",
+    "assets/img/mock/borderless-2.jpg",
+    "assets/img/mock/borderless-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

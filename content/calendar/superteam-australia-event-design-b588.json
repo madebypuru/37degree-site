@@ -1,0 +1,20 @@
+{
+  "name": "Superteam Australia: *event* design",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-04-01",
+  "client": "Superteam Australia",
+  "summary": "Event design for Superteam Australia.",
+  "services": [
+    "Event"
+  ],
+  "photos": [
+    "assets/img/mock/superteam-1.jpg",
+    "assets/img/mock/superteam-2.jpg",
+    "assets/img/mock/superteam-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "order": 1,
+  "publish": true
+}

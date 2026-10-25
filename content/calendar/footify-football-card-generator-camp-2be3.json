@@ -1,0 +1,20 @@
+{
+  "name": "Footify: football *card* generator campaign",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-06-25",
+  "client": "Footify.us",
+  "summary": "A football card generator campaign.",
+  "services": [
+    "Campaign",
+    "Web app"
+  ],
+  "photos": [
+    "assets/img/mock/footify-1.jpg",
+    "assets/img/mock/footify-2.jpg",
+    "assets/img/mock/footify-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

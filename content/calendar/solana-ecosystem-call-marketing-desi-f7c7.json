@@ -1,0 +1,22 @@
+{
+  "name": "Solana Ecosystem Call: marketing *design* retainer",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-03-01",
+  "client": "Solana Ecosystem Call",
+  "summary": "An ongoing marketing design retainer since March: billboards, web apps and campaign pieces for the Solana ecosystem.",
+  "services": [
+    "Campaign",
+    "Print",
+    "Web app",
+    "Motion"
+  ],
+  "photos": [
+    "assets/img/mock/sec-1.jpg",
+    "assets/img/mock/sec-2.jpg",
+    "assets/img/mock/sec-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

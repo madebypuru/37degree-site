@@ -1,0 +1,17 @@
+{
+  "name": "Puru starts the studio",
+  "card": "Person",
+  "kind": "Note",
+  "date": "2024-08-19",
+  "client": "Puru Sharma · Founder & Designer",
+  "summary": "Partners with founders and teams to shape brands, products, and experiences from zero to scale. Moves between high-level strategy and fine-grained details.",
+  "live": "https://x.com/madebypuru",
+  "photos": [
+    "assets/img/placeholder/puru-1.jpg",
+    "assets/img/placeholder/puru-2.jpg",
+    "assets/img/placeholder/puru-3.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": true,
+  "publish": true
+}

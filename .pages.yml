@@ -1,0 +1,132 @@
+# Pages CMS (https://pagescms.org): the editor for the site's calendar.
+# Every card is a file in content/calendar/. Saving commits it, and the "Build content" Action rebuilds js/cms.js.
+media:
+  input: assets/img
+  output: assets/img
+
+content:
+  - name: calendar
+    label: Calendar
+    type: collection
+    path: content/calendar
+    format: json
+    filename: "{primary}.json"
+    view:
+      fields: [name, card, date, highlight, publish]
+      primary: name
+      sort: [date, name]
+      search: [name, client, summary]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: name
+        label: Name
+        type: string
+        required: true
+        description: What the card says. Wrap one word in *asterisks* for the italic accent. For a Testimonial, the person's name.
+      - name: card
+        label: Card
+        type: select
+        required: true
+        description: How it looks on the calendar.
+        options:
+          values: [Project, Moment, Milestone, Note, Person, Testimonial, Quote, Logos, Snippets]
+      - name: kind
+        label: Kind
+        type: select
+        description: Work is shipped projects (glass folders, they open a case sheet). Note is the story (pastel sticky notes).
+        options:
+          values: [Work, Note]
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: end
+        label: End date
+        type: date
+        default: ""
+        description: For work that spans weeks. It shows as the duration on the folder.
+        options:
+          format: yyyy-MM-dd
+      - name: client
+        label: Client
+        type: string
+        description: Shown on work. For a Person, "Name · Role". For a Testimonial, their role.
+      - name: summary
+        label: Summary
+        type: text
+        description: One or two lines shown when the card opens. For a Testimonial, the quote. For a Person, their bio.
+      - name: metric
+        label: Metric
+        type: string
+        description: The big number on a Milestone, e.g. $1M+
+      - name: services
+        label: Services
+        type: select
+        options:
+          multiple: true
+          values: [Branding, Website, Product design, Video, Motion, Event, Copy, Naming, Pitch deck, Campaign, Web app, Print, Strategy]
+      - name: photos
+        label: Photos
+        type: image
+        description: The first one is the cover; all of them peek out of the folder and fill the photo deck.
+        options:
+          multiple: true
+          path: assets/img/uploads
+          extensions: [jpg, jpeg, png, webp, gif, avif]
+      - name: live
+        label: Live link
+        type: string
+        description: A full https:// link.
+      - name: part_of
+        label: Part of
+        type: reference
+        description: For a Moment, the project it belongs to (it borrows that client).
+        options:
+          collection: calendar
+          search: name
+          value: "{path}"
+          label: "{name}"
+      - name: case_study
+        label: Case study
+        type: select
+        description: Links to one of the long-form case studies written in the site code.
+        options:
+          values: [kampanion, sidecar, deccan]
+      - name: case_section
+        label: Case section
+        type: string
+        description: Which case-study section a Moment opens at.
+      - name: color
+        label: Color
+        type: select
+        description: Override a note's colour. Leave empty for the default.
+        options:
+          values: [Yellow, Blue, Pink, Green, Purple, Orange]
+      - name: highlight
+        label: Highlight
+        type: boolean
+        description: Also show it in the Highlights view (the default view).
+      - name: placeholder_date
+        label: Date is a placeholder
+        type: boolean
+        description: Placeholder dates show outlined at /?draft
+      - name: order
+        label: Order within the day
+        type: number
+        description: When two cards share a date, lower comes first. Leave empty if it doesn't matter.
+      - name: publish
+        label: Publish
+        type: boolean
+        default: true
+        description: Untick to hide it from the site without deleting it.
+      - name: body
+        label: Write-up
+        type: rich-text
+        description: For a Project or Moment, the write-up shown in its sheet.
+        options:
+          format: html
+          path: assets/img/uploads

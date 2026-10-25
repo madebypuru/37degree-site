@@ -1,0 +1,19 @@
+{
+  "name": "Proactive Path: app design *onboarding*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-03-30",
+  "client": "Proactive Path · ZenREAI + Plus1",
+  "summary": "App design onboarding for Proactive Path, with ZenREAI and Plus1.",
+  "services": [
+    "Product design"
+  ],
+  "photos": [
+    "assets/img/mock/proactive-1.jpg",
+    "assets/img/mock/proactive-2.jpg",
+    "assets/img/mock/proactive-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

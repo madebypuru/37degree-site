@@ -1,0 +1,15 @@
+{
+  "name": "Omar Alsafadi",
+  "card": "Testimonial",
+  "kind": "Note",
+  "date": "2026-04-03",
+  "client": "Founder, Aria Music",
+  "summary": "The best work I have ever gotten!",
+  "photos": [
+    "assets/img/t-omar.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": true,
+  "order": 1,
+  "publish": true
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Aria Music: *product* design",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-04-03",
+  "client": "Aria Music",
+  "summary": "Product design for Aria Music.",
+  "services": [
+    "Product design"
+  ],
+  "photos": [
+    "assets/img/mock/aria-1.jpg",
+    "assets/img/mock/aria-2.jpg",
+    "assets/img/mock/aria-3.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": false,
+  "order": 0,
+  "publish": true
+}

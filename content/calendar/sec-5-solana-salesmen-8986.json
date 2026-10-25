@@ -1,0 +1,21 @@
+{
+  "name": "SEC 5: “Solana *Salesmen*”",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2026-08-10",
+  "client": "Solana Ecosystem Call",
+  "summary": "A satirical GeoCities-style recruitment portal.",
+  "services": [
+    "Website",
+    "Copy"
+  ],
+  "photos": [
+    "assets/img/mock/sec5-1.jpg",
+    "assets/img/mock/sec5-2.jpg",
+    "assets/img/mock/sec5-3.jpg"
+  ],
+  "part_of": "content/calendar/solana-ecosystem-call-marketing-desi-f7c7.json",
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

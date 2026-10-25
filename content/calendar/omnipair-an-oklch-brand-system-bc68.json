@@ -1,0 +1,22 @@
+{
+  "name": "Omnipair: an OKLCH *brand* system",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-06-01",
+  "end": "2026-10-15",
+  "client": "Omnipair",
+  "summary": "A brand retainer: an *OKLCH* gradient brand system, a brand strategy workshop, and motion videos for X (the Dusk teaser, Spot Margin, the $25k LP fee and a product explainer).",
+  "services": [
+    "Branding",
+    "Strategy",
+    "Motion"
+  ],
+  "photos": [
+    "assets/img/mock/omnipair-1.jpg",
+    "assets/img/mock/omnipair-2.jpg",
+    "assets/img/mock/omnipair-3.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": false,
+  "publish": true
+}

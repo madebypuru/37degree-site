@@ -1,0 +1,15 @@
+{
+  "name": "Prado",
+  "card": "Testimonial",
+  "kind": "Note",
+  "date": "2026-01-01",
+  "client": "Founder, Goatfish",
+  "summary": "Puru, you’ve made it so smooth that none of us have any idea, yet the work is getting done.",
+  "photos": [
+    "assets/img/t-prado.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": true,
+  "order": 1,
+  "publish": true
+}

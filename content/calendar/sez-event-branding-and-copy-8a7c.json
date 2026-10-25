@@ -1,0 +1,21 @@
+{
+  "name": "SEZ: *event* branding and copy",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-02-01",
+  "client": "Solana Economic Zone, Dubai",
+  "summary": "Event branding and copy for the Solana Economic Zone in Dubai.",
+  "services": [
+    "Event",
+    "Branding",
+    "Copy"
+  ],
+  "photos": [
+    "assets/img/mock/sez-1.jpg",
+    "assets/img/mock/sez-2.jpg",
+    "assets/img/mock/sez-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

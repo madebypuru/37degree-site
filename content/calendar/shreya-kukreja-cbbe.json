@@ -1,0 +1,14 @@
+{
+  "name": "Shreya Kukreja",
+  "card": "Testimonial",
+  "kind": "Note",
+  "date": "2024-12-09",
+  "client": "Head of Product",
+  "summary": "Brings modern, thoughtful, and enduring designs at a fast pace while bringing creativity and strategic insight to every project. Moves effortlessly between high-level strategy and fine-grained details.",
+  "photos": [
+    "assets/img/t-shreya.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

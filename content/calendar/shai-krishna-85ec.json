@@ -1,0 +1,14 @@
+{
+  "name": "Shai Krishna",
+  "card": "Testimonial",
+  "kind": "Note",
+  "date": "2024-11-11",
+  "client": "Staff Product Designer @Sense",
+  "summary": "I’ve had the chance to check out their design work, and it’s seriously impressive. He has a knack for understanding what users want and translating it into beautiful, functional designs. His attention to detail is remarkable.",
+  "photos": [
+    "assets/img/t-shai.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

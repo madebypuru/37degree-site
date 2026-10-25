@@ -1,0 +1,16 @@
+{
+  "name": "Haneef joins 37degree",
+  "card": "Person",
+  "kind": "Note",
+  "date": "2024-09-16",
+  "client": "Mohamed Haneefa · Product Strategist",
+  "summary": "Runs product strategy and the studio itself: scoping, sequencing, and making sure the work ships on the day it was promised.",
+  "photos": [
+    "assets/img/placeholder/haneef-1.jpg",
+    "assets/img/placeholder/haneef-2.jpg",
+    "assets/img/placeholder/haneef-3.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": true,
+  "publish": true
+}

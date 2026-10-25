@@ -1,0 +1,12 @@
+{
+  "name": "decision: ship the MVP inside Microsoft Teams",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2025-02-03",
+  "case_study": "kampanion",
+  "case_section": "teams",
+  "highlight": false,
+  "placeholder_date": true,
+  "order": 1,
+  "publish": true
+}

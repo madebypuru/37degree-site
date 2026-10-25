@@ -1,0 +1,19 @@
+{
+  "name": "First Light: podcast intro *storyboard*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-10-01",
+  "client": "First Light · Superteam AU podcast",
+  "summary": "An intro video storyboard for the Superteam AU podcast.",
+  "services": [
+    "Video"
+  ],
+  "photos": [
+    "assets/img/mock/firstlight-1.jpg",
+    "assets/img/mock/firstlight-2.jpg",
+    "assets/img/mock/firstlight-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

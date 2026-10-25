@@ -1,0 +1,20 @@
+{
+  "name": "SEC 4: World Cup player *card* web app",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2026-06-15",
+  "client": "Solana Ecosystem Call",
+  "summary": "A World Cup player card web app, styled as 90s noir.",
+  "services": [
+    "Web app"
+  ],
+  "photos": [
+    "assets/img/mock/sec4-1.jpg",
+    "assets/img/mock/sec4-2.jpg",
+    "assets/img/mock/sec4-3.jpg"
+  ],
+  "part_of": "content/calendar/solana-ecosystem-call-marketing-desi-f7c7.json",
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

@@ -1,0 +1,20 @@
+{
+  "name": "DevX Labs: brand + website *sprint*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-09-10",
+  "client": "DevX Labs",
+  "summary": "A brand and website sprint, in progress.",
+  "services": [
+    "Branding",
+    "Website"
+  ],
+  "photos": [
+    "assets/img/mock/devx-1.jpg",
+    "assets/img/mock/devx-2.jpg",
+    "assets/img/mock/devx-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

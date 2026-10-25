@@ -1,0 +1,16 @@
+{
+  "name": "figure out what 37degree could be",
+  "card": "Note",
+  "kind": "Note",
+  "date": "2024-08-05",
+  "summary": "A studio for founders who need design to move the business, not just decorate it. Small team, senior hands, shipped in days, not quarters.",
+  "photos": [
+    "assets/img/placeholder/start-1.jpg",
+    "assets/img/placeholder/start-2.jpg",
+    "assets/img/placeholder/start-3.jpg"
+  ],
+  "highlight": true,
+  "placeholder_date": true,
+  "order": 0,
+  "publish": true
+}

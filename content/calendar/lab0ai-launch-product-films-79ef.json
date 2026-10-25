@@ -1,0 +1,22 @@
+{
+  "name": "lab0.ai: launch + product *films*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-04-01",
+  "client": "lab0.ai (YC)",
+  "summary": "Launch and product showcase videos, followed by the PwC pitch deck in August.",
+  "services": [
+    "Video",
+    "Motion",
+    "Pitch deck"
+  ],
+  "photos": [
+    "assets/img/mock/lab0-1.jpg",
+    "assets/img/mock/lab0-2.jpg",
+    "assets/img/mock/lab0-3.jpg"
+  ],
+  "highlight": false,
+  "placeholder_date": false,
+  "order": 0,
+  "publish": true
+}
