@@ -185,6 +185,12 @@ const TESTIMONIALS = {
 // `h` is the logo's height in the Trusted by row, set by eye so all read the same size: wordmarks 12 to 18, icon-only marks 18 to 20;
 // `mk` is how wide the symbol at the start of the wordmark is (÷ height), so a folder's avatar can show just that;
 // `avatarOnly` keeps a badge too detailed for the Trusted by row out of it; `match` is the start of the client's name, when their first word alone would match someone else too.
+// the studio's own numbers, in the sidebar: 37degree's facts, not a client's results
+const STUDIO_FACTS = [
+  { value: '50+', label: 'projects completed' },
+  { value: '2024', label: 'studio founded' },
+];
+
 const LOGOS = [
   { name: 'Deccan AI', src: 'assets/img/logos/deccan.png', ar: 4.288, h: 18, mk: 0.8 },
   { name: 'Sidecar', src: 'assets/img/logos/sidecar.png', ar: 3.697, h: 17, mk: 1 },

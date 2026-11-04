@@ -1012,7 +1012,6 @@ body.sheet-center .pp-nav { width: clamp(520px, 50vw, 760px); margin: 0 auto 14p
 .side__mid p { margin: 0; font: 400 13px/1.55 var(--font-sans); color: var(--muted); }
 .side__cta { padding: 10px 14px; font-size: 13px; }
 .side__cta svg { width: 13px; height: 13px; }
-.side__label { display: block; margin-bottom: 12px; font: 400 12px/1 var(--font-sans); color: var(--muted); }
 .marquee {
   overflow: hidden; color: var(--ink);
   -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
@@ -1078,7 +1077,7 @@ body[data-showing="projects"] .col--end .col-head { margin-right: calc((504px - 
 .side__peek .card { width: 100%; min-height: 176px; margin: 0; }
 /* one pane of glass, edge to edge across the panel and down to its foot */
 .side__proof > .side__pocket {
-  position: relative; z-index: 1; margin: 0 -32px -32px -18px; padding: 22px 32px 32px 18px; border: 0;
+  position: relative; z-index: 1; margin: 0 -32px -32px -18px; padding: 22px 32px 56px 18px; border: 0;
   background: color-mix(in srgb, var(--paper) 58%, transparent);
   -webkit-backdrop-filter: blur(18px) saturate(1.25); backdrop-filter: blur(18px) saturate(1.25);
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper-2) 80%, transparent), 0 -1px 0 color-mix(in srgb, var(--ink) 5%, transparent), 0 -14px 30px -24px rgba(18, 18, 18, .16);

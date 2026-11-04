@@ -372,18 +372,16 @@
       </div>`;
   }
   function logosHTML() {
-    return `<span class="side__label">Trusted by</span>
-      <div class="marquees">${logoRow(TRUSTED.filter((_, i) => i % 2 === 0))}${logoRow(TRUSTED.filter((_, i) => i % 2), true)}</div>`;
+    return `<div class="marquees" role="group" aria-label="Trusted by">${logoRow(TRUSTED.filter((_, i) => i % 2 === 0))}${logoRow(TRUSTED.filter((_, i) => i % 2), true)}</div>`;
   }
   const statement = 'Design-led growth for Tech &amp; AI <em>companies</em>.';
-  // what the sidebar stands on: two numbers and a client in their own words, all from the calendar's cards
-  const PROOF = ALL.filter((e) => e.type === 'milestone' && ['$1M+', '50+'].includes(e.metric));
+  // what the sidebar stands on: the studio's own numbers and a client in their own words
   const SIDE_QUOTE = ALL.find((e) => e.type === 'testimonial' && e.who && e.who.name === 'Sudhanshu');
   // the sidebar in two halves: the pitch up top with room to breathe, and everything that backs it up together at the foot
   const proofHTML = () => `<div class="side__proof">
       ${SIDE_QUOTE ? `<div class="side__peek">${cardHTML(SIDE_QUOTE)}</div>` : ''}
       <div class="side__pocket">
-        <dl class="side__stats">${PROOF.map((e) => `<div><dt>${strip(e.title)}</dt><dd>${e.metric}</dd></div>`).join('')}</dl>
+        <dl class="side__stats">${STUDIO_FACTS.map((f) => `<div><dt>${f.label}</dt><dd>${f.value}</dd></div>`).join('')}</dl>
         <div class="side__trust">${logosHTML()}</div>
       </div>
     </div>`;
