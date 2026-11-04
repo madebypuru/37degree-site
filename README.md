@@ -71,7 +71,7 @@ A new long-form case study goes in `CASES` in `js/data.js`, plus one Pages CMS c
 
 ## Before going live: confirm these
 
-**Dummy funding facts.** Most Facts on work cards (Raised, Backed by) are stand-ins for layout, tagged `"dummy": true` in `content/calendar/`. They only show on localhost, so the live site shows the real facts or the services instead. Replace each with the real one and untick Dummy in the CMS. Real so far: Deccan AI's round, Y Combinator for Almanac and lab0, Omnipair on Solana, and Sidecar's and KAMpanion's numbers from their case studies.
+**Dummy funding facts.** Most Facts on work cards (Raised, Backed by) are stand-ins for layout, kept in the git-ignored `js/dummy-facts.local.js`, which only localhost loads. They're never committed, so the live site shows the real facts or the services instead. To replace one, add the real fact to the card in the CMS and delete it from that file. Real so far: Deccan AI's round, Y Combinator for Almanac and lab0, Omnipair on Solana, and Sidecar's and KAMpanion's numbers from their case studies.
 
 Open `/?draft` to see every event marked `tbc: true` outlined in orange.
 
