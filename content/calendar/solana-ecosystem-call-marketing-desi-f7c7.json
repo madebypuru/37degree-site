@@ -4,7 +4,7 @@
   "kind": "Work",
   "date": "2026-03-01",
   "client": "Solana Ecosystem Call",
-  "summary": "An ongoing marketing design retainer since March: billboards, web apps and campaign pieces for the Solana ecosystem.",
+  "summary": "An ongoing marketing design retainer since March: a new web tool for every monthly call, plus billboards, posters and social posts for the Solana ecosystem.",
   "services": [
     "Campaign",
     "Print",
@@ -12,9 +12,9 @@
     "Motion"
   ],
   "photos": [
-    "assets/img/mock/sec-1.jpg",
-    "assets/img/mock/sec-2.jpg",
-    "assets/img/mock/sec-3.jpg"
+    "assets/img/work/sec-poster-1.jpg",
+    "assets/img/work/sec-poster-2.jpg",
+    "assets/img/work/sec-poster-3.jpg"
   ],
   "highlight": false,
   "placeholder_date": false,

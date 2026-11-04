@@ -5,18 +5,39 @@
   "date": "2026-06-01",
   "end": "2026-10-15",
   "client": "Omnipair",
-  "summary": "A brand retainer: an *OKLCH* gradient brand system, a brand strategy workshop, and motion videos for X (the Dusk teaser, Spot Margin, the $25k LP fee and a product explainer).",
+  "summary": "A brand retainer: the *OKLCH* gradient brand system and brand book (logo, palette, type, shaders, socials), a brand strategy workshop, and motion videos for X (the Dusk teaser, Spot Margin, the $25k LP fee and a product explainer).",
   "services": [
     "Branding",
     "Strategy",
     "Motion"
   ],
   "photos": [
-    "assets/img/mock/omnipair-1.jpg",
-    "assets/img/mock/omnipair-2.jpg",
-    "assets/img/mock/omnipair-3.jpg"
+    "assets/img/work/omnipair-brandbook-cover.jpg",
+    "assets/img/work/omnipair-logo.jpg",
+    "assets/img/work/omnipair-lockup.jpg",
+    "assets/img/work/omnipair-gradient.jpg",
+    "assets/img/work/omnipair-brand-prism.jpg",
+    "assets/img/work/omnipair-logomark-construction.jpg",
+    "assets/img/work/omnipair-palette.jpg",
+    "assets/img/work/omnipair-colour-system.jpg",
+    "assets/img/work/omnipair-typography.jpg",
+    "assets/img/work/omnipair-shaders-1.jpg",
+    "assets/img/work/omnipair-shaders-2.jpg",
+    "assets/img/work/omnipair-x-profile.jpg",
+    "assets/img/work/omnipair-discord.jpg",
+    "assets/img/work/omnipair-linkedin.jpg",
+    "assets/img/work/omnipair-dusk-teaser-still.jpg",
+    "assets/img/work/omnipair-borrow-still.jpg",
+    "assets/img/work/omnipair-spot-margin-still.jpg"
   ],
   "highlight": true,
   "placeholder_date": false,
-  "publish": true
+  "publish": true,
+  "clips": [
+    "assets/video/work/omnipair-dusk-teaser.mp4",
+    "assets/video/work/omnipair-spot-margin.mp4",
+    "assets/video/work/omnipair-borrow.mp4",
+    "assets/video/work/omnipair-leverage.mp4",
+    "assets/video/work/omnipair-lp-fee.mp4"
+  ]
 }

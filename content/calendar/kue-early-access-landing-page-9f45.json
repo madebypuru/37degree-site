@@ -1,0 +1,25 @@
+{
+  "name": "Kue: early access *landing* page",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-05-15",
+  "client": "Kue",
+  "summary": "The early access page for Kue, which finds the right person in your network for every opportunity.",
+  "services": [
+    "Website"
+  ],
+  "photos": [
+    "assets/img/work/site-kue-1.jpg",
+    "assets/img/work/site-kue-2.jpg",
+    "assets/img/work/site-kue-3.jpg",
+    "assets/img/work/site-kue-4.jpg",
+    "assets/img/work/site-kue-5.jpg"
+  ],
+  "industry": "AI · Networking",
+  "stack": [
+    "Framer"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

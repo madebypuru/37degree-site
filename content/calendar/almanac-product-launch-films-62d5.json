@@ -12,11 +12,16 @@
     "Print"
   ],
   "photos": [
-    "assets/img/mock/almanac-1.jpg",
-    "assets/img/mock/almanac-2.jpg",
-    "assets/img/mock/almanac-3.jpg"
+    "assets/img/work/almanac-i-am-almanac-still.jpg",
+    "assets/img/work/almanac-nothing-left-behind-still.jpg",
+    "assets/img/work/almanac-take-a-week-off-still.jpg"
   ],
   "highlight": true,
   "placeholder_date": false,
-  "publish": true
+  "publish": true,
+  "clips": [
+    "assets/video/work/almanac-i-am-almanac.mp4",
+    "assets/video/work/almanac-nothing-left-behind.mp4",
+    "assets/video/work/almanac-take-a-week-off.mp4"
+  ]
 }

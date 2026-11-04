@@ -1,0 +1,23 @@
+{
+  "name": "SEC 3: Felt Crimes *Division*",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2026-05-25",
+  "client": "Solana Ecosystem Call",
+  "summary": "A noir case-file intake: sign in with X, file your Solana crime, and get your mugshot pinned to the evidence board.",
+  "services": [
+    "Web app",
+    "Copy"
+  ],
+  "photos": [
+    "assets/img/work/sec3-felt-1.jpg",
+    "assets/img/work/sec3-felt-2.jpg",
+    "assets/img/work/sec3-felt-3.jpg",
+    "assets/img/work/sec3-felt-4.jpg",
+    "assets/img/work/sec3-felt-5.jpg"
+  ],
+  "part_of": "content/calendar/solana-ecosystem-call-marketing-desi-f7c7.json",
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

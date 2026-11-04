@@ -1,0 +1,26 @@
+{
+  "name": "SEZ Abu Dhabi: event *website*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2026-10-15",
+  "client": "Solana Economic Zone, Abu Dhabi",
+  "summary": "The site for the Abu Dhabi edition of the Solana Economic Zone: speakers, agenda and sponsorship for founders, investors and policy leaders.",
+  "services": [
+    "Website",
+    "Event"
+  ],
+  "photos": [
+    "assets/img/work/site-sez-abudhabi-1.jpg",
+    "assets/img/work/site-sez-abudhabi-2.jpg",
+    "assets/img/work/site-sez-abudhabi-3.jpg",
+    "assets/img/work/site-sez-abudhabi-4.jpg"
+  ],
+  "live": "https://sezabudhabi.com",
+  "industry": "Crypto · Events",
+  "stack": [
+    "Framer"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

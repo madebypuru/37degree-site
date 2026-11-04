@@ -1,0 +1,22 @@
+{
+  "name": "SEC 6: Toyify, the *Breakpoint* ticket",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2026-08-21",
+  "client": "Solana Ecosystem Call",
+  "summary": "Turn yourself into a boxed action figure to win a Breakpoint 2026 ticket: the toy line drop for SEC's August call.",
+  "services": [
+    "Web app",
+    "Campaign"
+  ],
+  "photos": [
+    "assets/img/work/sec6-toyify-1.jpg",
+    "assets/img/work/sec6-toyify-2.jpg",
+    "assets/img/work/sec6-toyify-3.jpg"
+  ],
+  "live": "https://madebypuru.github.io/toyify/",
+  "part_of": "content/calendar/solana-ecosystem-call-marketing-desi-f7c7.json",
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

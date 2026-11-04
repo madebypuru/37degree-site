@@ -9,9 +9,10 @@
     "Web app"
   ],
   "photos": [
-    "assets/img/mock/sec4-1.jpg",
-    "assets/img/mock/sec4-2.jpg",
-    "assets/img/mock/sec4-3.jpg"
+    "assets/img/work/sec4-footify-1.jpg",
+    "assets/img/work/sec4-footify-2.jpg",
+    "assets/img/work/sec4-footify-3.jpg",
+    "assets/img/work/sec4-footify-4.jpg"
   ],
   "part_of": "content/calendar/solana-ecosystem-call-marketing-desi-f7c7.json",
   "highlight": false,

@@ -10,9 +10,12 @@
     "Website"
   ],
   "photos": [
-    "assets/img/mock/devx-1.jpg",
-    "assets/img/mock/devx-2.jpg",
-    "assets/img/mock/devx-3.jpg"
+    "assets/img/work/devx-site.jpg",
+    "assets/img/work/devx-why-now.jpg",
+    "assets/img/work/devx-pixel-grid.jpg",
+    "assets/img/work/devx-hours.jpg",
+    "assets/img/work/devx-statement.jpg",
+    "assets/img/work/devx-kpi-row.jpg"
   ],
   "highlight": false,
   "placeholder_date": false,

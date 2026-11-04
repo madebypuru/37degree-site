@@ -10,12 +10,11 @@
     "Copy"
   ],
   "photos": [
-    "assets/img/mock/sec5-1.jpg",
-    "assets/img/mock/sec5-2.jpg",
-    "assets/img/mock/sec5-3.jpg"
+    "assets/img/work/sec5-salesmen-1.jpg"
   ],
   "part_of": "content/calendar/solana-ecosystem-call-marketing-desi-f7c7.json",
   "highlight": false,
   "placeholder_date": true,
-  "publish": true
+  "publish": true,
+  "live": "https://solana-salesmen.netlify.app"
 }

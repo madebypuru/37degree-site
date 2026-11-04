@@ -1,0 +1,21 @@
+{
+  "name": "SEC 8: Murder *Board*",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2026-10-19",
+  "client": "Solana Ecosystem Call",
+  "summary": "A Halloween murder mystery: someone killed you at the party, and two of your mutuals did it. Solve it, then share the board.",
+  "services": [
+    "Web app",
+    "Campaign"
+  ],
+  "photos": [
+    "assets/img/work/sec8-murder-1.jpg",
+    "assets/img/work/sec8-murder-2.jpg"
+  ],
+  "live": "https://mutual-suspects.netlify.app",
+  "part_of": "content/calendar/solana-ecosystem-call-marketing-desi-f7c7.json",
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

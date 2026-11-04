@@ -1,0 +1,26 @@
+{
+  "name": "Deccan AI: the *website*",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2026-07-15",
+  "client": "Deccan AI",
+  "summary": "Deccan AI's website: data, evals and post-training for frontier labs, set in a cinematic blue.",
+  "services": [
+    "Website"
+  ],
+  "photos": [
+    "assets/img/work/site-deccan-site-1.jpg",
+    "assets/img/work/site-deccan-site-2.jpg",
+    "assets/img/work/site-deccan-site-3.jpg",
+    "assets/img/work/site-deccan-site-4.jpg",
+    "assets/img/work/site-deccan-site-5.jpg",
+    "assets/img/work/site-deccan-site-6.jpg"
+  ],
+  "stack": [
+    "Framer"
+  ],
+  "part_of": "content/calendar/deccan-ai-the-bumblebee-launch-film-987d.json",
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

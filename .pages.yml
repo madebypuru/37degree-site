@@ -1,8 +1,16 @@
 # Pages CMS (https://pagescms.org): the editor for the site's calendar.
 # Every card is a file in content/calendar/. Saving commits it, and the "Build content" Action rebuilds js/cms.js.
 media:
-  input: assets/img
-  output: assets/img
+  - name: images
+    label: Images
+    input: assets/img
+    output: assets/img
+    categories: [image]
+  - name: clips
+    label: Clips
+    input: assets/video
+    output: assets/video
+    extensions: [mp4, webm, mov]
 
 content:
   - name: calendar
@@ -72,11 +80,29 @@ content:
       - name: photos
         label: Photos
         type: image
-        description: The first one is the cover; all of them peek out of the folder and fill the photo deck.
+        description: The first one is the cover on its Projects block and the first few peek out of the folder. All of them show as tiles in the sheet (phone screens pair up on their own).
         options:
+          media: images
           multiple: true
           path: assets/img/uploads
           extensions: [jpg, jpeg, png, webp, gif, avif]
+      - name: clips
+        label: Clips
+        type: file
+        description: Short silent screen recordings (mp4 or webm). They loop in the sheet's tiles, before the photos.
+        options:
+          media: clips
+          multiple: true
+          path: assets/video/uploads
+      - name: industry
+        label: Industry
+        type: string
+        description: Shown in the sheet's facts, e.g. "Developer tools · AI".
+      - name: stack
+        label: Stack
+        type: string
+        list: true
+        description: Tools it was built with, one per line, e.g. Framer, Figma, After Effects.
       - name: live
         label: Live link
         type: string
@@ -109,7 +135,7 @@ content:
       - name: highlight
         label: Highlight
         type: boolean
-        description: Also show it in the Highlights view (the default view).
+        description: Puts it in Selected work, the short list Projects opens on, and in the Timeline view. Without it, a card still shows under All work in Projects and in Months.
       - name: placeholder_date
         label: Date is a placeholder
         type: boolean
@@ -129,4 +155,5 @@ content:
         description: For a Project or Moment, the write-up shown in its sheet.
         options:
           format: html
+          media: images
           path: assets/img/uploads

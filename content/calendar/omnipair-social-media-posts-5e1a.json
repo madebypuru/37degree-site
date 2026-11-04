@@ -1,0 +1,26 @@
+{
+  "name": "Omnipair: *social* posts",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2026-09-10",
+  "client": "Omnipair",
+  "summary": "The posts that carry the brand week to week on X: milestones, launch teasers, the private beta thread, partner announcements and the quarterly update.",
+  "services": [
+    "Campaign",
+    "Branding"
+  ],
+  "photos": [
+    "assets/img/work/omnipair-social-lp-fees.jpg",
+    "assets/img/work/omnipair-social-private-beta.jpg",
+    "assets/img/work/omnipair-social-solomon.jpg",
+    "assets/img/work/omnipair-social-lp-fees-2.jpg",
+    "assets/img/work/omnipair-social-teaser-1.jpg",
+    "assets/img/work/omnipair-social-teaser-2.jpg",
+    "assets/img/work/omnipair-social-quarterly-cover.jpg",
+    "assets/img/work/omnipair-social-5m-volume.jpg"
+  ],
+  "part_of": "content/calendar/omnipair-an-oklch-brand-system-bc68.json",
+  "highlight": true,
+  "placeholder_date": true,
+  "publish": true
+}

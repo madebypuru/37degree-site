@@ -11,11 +11,12 @@
     "Branding"
   ],
   "photos": [
-    "assets/img/mock/bumblebee-1.jpg",
-    "assets/img/mock/bumblebee-2.jpg",
-    "assets/img/mock/bumblebee-3.jpg"
+    "assets/img/work/deccan-bumblebee-still.jpg"
   ],
   "highlight": true,
   "placeholder_date": false,
-  "publish": true
+  "publish": true,
+  "clips": [
+    "assets/video/work/deccan-bumblebee.mp4"
+  ]
 }

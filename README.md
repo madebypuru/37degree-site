@@ -57,6 +57,13 @@ The calendar used to come from a Notion database. That sync is gone, so edits in
 - `v1/`: the first take, kept for comparison
 - `assets/img`, `assets/video` — pulled from the current 37degr.ee case studies
 
+## Adding a client logo
+
+Logos live in `LOGOS` in `js/data.js` and scroll in one line in the sidebar, so 6 or 15 take the same room, at the same speed.
+
+1. Save a trimmed, single-colour logo on a transparent background to `assets/img/logos/`.
+2. Add `{ name, src, ar, h }`: `ar` is width ÷ height. `h` is its height in the row: set it so the letters match the other wordmarks (about 13 to 18), or about 22 for an icon-only mark.
+
 ## Editing content
 
 Cards are edited in Pages CMS (see above). Columns, all-day project bars, the minimap and the mobile agenda are all computed from them.

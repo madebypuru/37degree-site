@@ -181,15 +181,16 @@ const TESTIMONIALS = {
   shai: { name: 'Shai Krishna', role: 'Staff Product Designer @Sense', img: 'assets/img/t-shai.jpg', quote: 'I’ve had the chance to check out their design work, and it’s seriously impressive. He has a knack for understanding what users want and translating it into beautiful, functional designs. His attention to detail is remarkable.' },
 };
 
-// one-colour marks (black on transparent, trimmed). `ar` is width ÷ height, used to size them evenly;
+// one-colour marks (black on transparent, trimmed). `ar` is width ÷ height;
+// `h` is the logo's height in the Trusted by row: set it so the letters match the other wordmarks (icon-only marks ~22);
 // `mk` is how wide the symbol at the start of the wordmark is (÷ height), so a folder's avatar can show just that.
 const LOGOS = [
-  { name: 'Deccan AI', src: 'assets/img/logos/deccan.png', ar: 4.288, mk: 0.8 },
-  { name: 'Sidecar', src: 'assets/img/logos/sidecar.png', ar: 3.697, mk: 1 },
-  { name: 'Valley', src: 'assets/img/logos/valley.png', ar: 3.552 },
-  { name: 'Induced', src: 'assets/img/logos/induced.png', ar: 6.076 },
-  { name: 'Superteam', src: 'assets/img/logos/superteam.png', ar: 8.457, mk: 1.3 },
-  { name: 'Goatfish', src: 'assets/img/logos/goatfish.png', ar: 0.891, mk: 0.891 },
+  { name: 'Deccan AI', src: 'assets/img/logos/deccan.png', ar: 4.288, h: 22, mk: 0.8 },
+  { name: 'Sidecar', src: 'assets/img/logos/sidecar.png', ar: 3.697, h: 17, mk: 1 },
+  { name: 'Valley', src: 'assets/img/logos/valley.png', ar: 3.552, h: 18 },
+  { name: 'Induced', src: 'assets/img/logos/induced.png', ar: 6.076, h: 13 },
+  { name: 'Superteam', src: 'assets/img/logos/superteam.png', ar: 8.457, h: 16, mk: 1.3 },
+  { name: 'Goatfish', src: 'assets/img/logos/goatfish.png', ar: 0.891, h: 22, mk: 0.891 },
 ];
 
 const SNIPPETS = ['assets/img/snip-1.jpg', 'assets/img/snip-2.jpg', 'assets/img/snip-3.jpg', 'assets/img/snip-4.jpg'];

@@ -9,9 +9,12 @@
     "Event"
   ],
   "photos": [
-    "assets/img/mock/superteam-1.jpg",
-    "assets/img/mock/superteam-2.jpg",
-    "assets/img/mock/superteam-3.jpg"
+    "assets/img/work/superteam-au-launch-1.jpg",
+    "assets/img/work/superteam-au-poster-1.jpg",
+    "assets/img/work/superteam-au-poster-2.jpg",
+    "assets/img/work/superteam-au-launch-2.jpg",
+    "assets/img/work/superteam-au-poster-3.jpg",
+    "assets/img/work/superteam-au-poster-4.jpg"
   ],
   "highlight": false,
   "placeholder_date": false,

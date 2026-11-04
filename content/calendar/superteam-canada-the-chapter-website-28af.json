@@ -1,0 +1,26 @@
+{
+  "name": "Superteam Canada: the chapter *website*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2025-06-01",
+  "client": "Superteam Canada",
+  "summary": "Grants, events and member stories for Solana's innovation network in Canada.",
+  "services": [
+    "Website"
+  ],
+  "photos": [
+    "assets/img/work/site-st-canada-1.jpg",
+    "assets/img/work/site-st-canada-2.jpg",
+    "assets/img/work/site-st-canada-3.jpg",
+    "assets/img/work/site-st-canada-4.jpg",
+    "assets/img/work/site-st-canada-5.jpg",
+    "assets/img/work/site-st-canada-6.jpg"
+  ],
+  "industry": "Crypto · Community",
+  "stack": [
+    "Framer"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

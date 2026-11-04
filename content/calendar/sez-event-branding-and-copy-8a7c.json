@@ -8,14 +8,22 @@
   "services": [
     "Event",
     "Branding",
+    "Website",
     "Copy"
   ],
   "photos": [
-    "assets/img/mock/sez-1.jpg",
-    "assets/img/mock/sez-2.jpg",
-    "assets/img/mock/sez-3.jpg"
+    "assets/img/work/site-sez-dubai-26-1.jpg",
+    "assets/img/work/site-sez-dubai-26-2.jpg",
+    "assets/img/work/site-sez-dubai-26-3.jpg",
+    "assets/img/work/site-sez-dubai-26-4.jpg",
+    "assets/img/work/site-sez-dubai-26-5.jpg",
+    "assets/img/work/site-sez-dubai-26-6.jpg"
   ],
   "highlight": false,
   "placeholder_date": false,
-  "publish": true
+  "publish": true,
+  "live": "https://sezdubaix37.framer.website",
+  "stack": [
+    "Framer"
+  ]
 }

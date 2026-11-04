@@ -1,0 +1,26 @@
+{
+  "name": "Superteam UAE: the chapter *website*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2025-10-01",
+  "client": "Superteam UAE",
+  "summary": "The home for Solana's builders in the UAE: events, members, perks and how to join, built in Framer.",
+  "services": [
+    "Website"
+  ],
+  "photos": [
+    "assets/img/work/site-st-uae-1.jpg",
+    "assets/img/work/site-st-uae-2.jpg",
+    "assets/img/work/site-st-uae-3.jpg",
+    "assets/img/work/site-st-uae-4.jpg",
+    "assets/img/work/site-st-uae-5.jpg",
+    "assets/img/work/site-st-uae-6.jpg"
+  ],
+  "industry": "Crypto · Community",
+  "stack": [
+    "Framer"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

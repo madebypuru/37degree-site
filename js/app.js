@@ -10,7 +10,7 @@
   const now = new Date();
   const TODAY = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
   const ROWS = 7;
-  const VIEWS = ['days', 'months', 'highlights'];
+  const VIEWS = ['projects', 'timeline', 'months'];
   const MAIL = 'mailto:puru@37degr.ee?cc=haneef@37degr.ee&subject=' + encodeURIComponent('Work with 37degree');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const mq = matchMedia('(max-width: 760px)');
@@ -25,6 +25,8 @@
   const sheet = $('.sheet');
   const scrim = $('.scrim');
   const flyLayer = $('.flylayer');
+  const side = $('.side');
+  const stripFilters = $('.strip__filters');
 
   if (new URLSearchParams(location.search).has('draft')) document.body.classList.add('draft');
 
@@ -106,11 +108,15 @@
   const LOGO_BY_SRC = Object.fromEntries(LOGOS.map((l) => [l.src, l]));
   function logoHTML(src, base, label) {
     const l = LOGO_BY_SRC[src] || { ar: 4, name: label || '' };
-    const h = Math.round(base * clamp(Math.sqrt(3.5 / l.ar), 0.62, 1.5));
+    return maskLogo(src, l, Math.round(base * clamp(Math.sqrt(3.5 / l.ar), 0.62, 1.5)), label);
+  }
+  function maskLogo(src, l, h, label) {
     // absolute URL: a url() inside a custom property resolves against the stylesheet, not the page
     const abs = new URL(src, document.baseURI).href;
     return `<i class="logo" role="img" aria-label="${label || l.name}" style="--src:url('${abs}');--ar:${l.ar};height:${h}px"></i>`;
   }
+  // wall logos use their hand-set height, so the letters match from logo to logo
+  const evenLogo = (l, scale = 1) => maskLogo(l.src, l, Math.round((l.h || 16) * scale));
   // the last print in the DOM sits on top, so reverse: the first photo shows first, same as the open deck
   const prints = (ev) => (ev.photos ? `<div class="stack">${ev.photos.slice(0, 3).reverse().map((s) => `<img src="${s}" alt="" loading="lazy">`).join('')}</div>` : '');
 
@@ -173,7 +179,7 @@
         break;
       }
       case 'logos':
-        inner = `<div><div class="card__title">${ev.title}</div>${date}</div><div class="logos">${LOGOS.slice(0, 3).map((l) => logoHTML(l.src, 14)).join('')}</div>`;
+        inner = `<div><div class="card__title">${ev.title}</div>${date}</div><div class="logos">${LOGOS.slice(0, 3).map((l) => evenLogo(l, 0.8)).join('')}</div>`;
         break;
       case 'snippets':
         inner = `<div><div class="card__title">${ev.title}</div>${date}</div><div class="stack">${SNIPPETS.slice(0, 3).map((s) => `<img src="${s}" alt="" loading="lazy">`).join('')}</div>`;
@@ -224,10 +230,12 @@
   }
 
   /* ── Columns ──────────────────────────────────────── */
-  let view = 'highlights'; // open on the edited cut; Days and Months are one click away
+  // a client comes for the work, so the work opens first; ?view=timeline links straight to the story
+  const asked = new URLSearchParams(location.search).get('view');
+  let view = VIEWS.includes(asked) ? asked : 'projects';
 
   function columnsFor(v) {
-    const list = v === 'highlights' ? ALL.filter((e) => e.highlight) : ALL;
+    const list = v === 'timeline' ? ALL.filter((e) => e.highlight) : ALL;
     const keyOf = v === 'months' ? (e) => e.date.slice(0, 7) : (e) => e.date;
     const cols = [];
     for (const ev of list) {
@@ -323,12 +331,14 @@
     } else {
       const { items, lanes } = placeDay(c.events, idx);
       const gridCols = lanes > 1 ? ` style="grid-template-columns:repeat(${lanes}, minmax(0, 1fr))"` : '';
+      // a busy day gets a wider column, so its cards stay full size side by side
+      if (lanes > 1) style = ` style="flex-basis:${(view === 'timeline' ? 320 : 280) * lanes}px"`;
       body = `<div class="col-body"${gridCols}>${items.map((it) => {
         const colPos = lanes > 1 ? (it.solo ? '1 / -1' : `${it.lane + 1}`) : '1';
         return cardHTML(it.ev).replace(/^<(\w+) /, `<$1 style="grid-row:${it.row} / span ${it.span};grid-column:${colPos}" `);
       }).join('')}</div>`;
     }
-    const cls = ['col', c.isMonth && 'is-month', view === 'highlights' && 'is-highlight', c.isToday && 'col--today'].filter(Boolean).join(' ');
+    const cls = ['col', c.isMonth && 'is-month', view === 'timeline' && 'is-highlight', c.isToday && 'col--today'].filter(Boolean).join(' ');
     return `<section class="${cls}" data-date="${c.date}" data-end="${c.end}"${style}>
       ${c.isToday ? '<span class="nowline" aria-hidden="true"></span>' : ''}
       <div class="col-head">${head}</div>${body}</section>`;
@@ -347,12 +357,143 @@
     </div>`;
   }
 
+  /* ── The sidebar: who we are, the way in, who trusts us ── */
+  // one line that scrolls forever, so 6 logos or 15 take the same room. Two copies make the loop seamless;
+  // the duration comes from the strip's length, so the speed stays the same however many logos there are
+  const LOGO_GAP = 28, LOGO_SPEED = 20; // px, px per second
+  function logosHTML() {
+    const set = LOGOS.map((l) => evenLogo(l)).join('');
+    const length = LOGOS.reduce((sum, l) => sum + l.ar * (l.h || 16) + LOGO_GAP, 0);
+    return `<span class="side__label">Trusted by</span>
+      <div class="marquee" style="--gap:${LOGO_GAP}px;--dur:${Math.round(length / LOGO_SPEED)}s">
+        <div class="marquee__track"><div class="marquee__set">${set}</div><div class="marquee__set" aria-hidden="true">${set}</div></div>
+      </div>`;
+  }
+  const statement = 'Design-led growth for Tech &amp; AI <em>companies</em>.';
+  function sideHTML() {
+    const story = `<p>Our story, by the day. Notes are how we got here. Work is what we've shipped.</p><div class="legend"><span>${icon.note}Notes</span><span>${FOLDERS ? icon.folder : icon.card}Work</span></div>`;
+    return `<div class="side__top">
+        <h1>${statement}</h1>
+        <a class="btn side__cta" href="${MAIL}">Work with us ${icon.arrow}</a>
+      </div>
+      ${view === 'projects' ? '' : `<div class="side__mid">${story}</div>`}
+      <div class="side__end">${logosHTML()}</div>`;
+  }
+
+  /* ── Projects: the work on the calendar, nothing to click to see it ── */
+  // the sort of work a client looks for; each gathers the services set on a card
+  const FILTERS = [
+    { id: 'selected', label: 'Selected work' },
+    { id: 'all', label: 'All work' },
+    { id: 'case', label: 'Case studies' },
+    { id: 'web', label: 'Websites', tags: ['Website'] },
+    { id: 'brand', label: 'Branding', tags: ['Branding', 'Naming', 'Strategy'] },
+    { id: 'video', label: 'Video &amp; motion', tags: ['Video', 'Motion'] },
+    { id: 'product', label: 'Product &amp; web apps', tags: ['Product design', 'Web app'] },
+    { id: 'campaign', label: 'Campaigns &amp; events', tags: ['Campaign', 'Event', 'Print'] },
+    { id: 'deck', label: 'Pitch decks', tags: ['Pitch deck'] },
+  ];
+  // the long-form case studies live in the site code, so their services do too
+  const CASE_TAGS = { kampanion: ['Product design'], sidecar: ['Branding', 'Website', 'Event', 'Print', 'Video'], deccan: ['Website'] };
+  // "Omnipair: an OKLCH brand system" under the name Omnipair only needs the second half
+  function workTitle(title, client) {
+    const t = strip(title), at = t.indexOf(': ');
+    const head = t.slice(0, at).toLowerCase(), first = client.toLowerCase().split(/[\s,·]/)[0];
+    if (at < 0 || !head.startsWith(first) || head.includes('×')) return t;
+    const rest = t.slice(at + 2);
+    return rest[0].toUpperCase() + rest.slice(1);
+  }
+  // the first thing shown takes centre stage, so highlighted films and case studies lead, then other highlights, newest first
+  const rank = (w) => (w.ev.highlight ? (w.clip || w.isCase ? 2 : 1) : 0);
+  const PROJECTS = ALL.flatMap((ev) => {
+    if (ev.type === 'case') {
+      const C = CASES[ev.case];
+      return [{ ev, client: C.client, title: strip(C.title), tags: CASE_TAGS[ev.case] || [], pics: C.stack, isCase: true }];
+    }
+    if (ev.type !== 'project' && ev.type !== 'moment') return [];
+    const clip = ev.clips && ev.clips[0];
+    // stills only dress a clip, and assets/img/mock holds stand-ins that aren't our work, so neither earns a tile of its own
+    const pics = (ev.photos || []).filter((s) => !s.includes('/img/mock/'));
+    if (!clip && !pics.length) return [];
+    const client = ev.client || '37degree';
+    return [{ ev, client, title: workTitle(ev.title, client), tags: ev.services || [], clip, pics: clip ? pics : pics.filter((s) => !/-still\.jpg$/.test(s)), poster: pics.find((s) => /-still\.jpg$/.test(s)) }];
+  }).sort((a, b) => rank(b) - rank(a) || (a.ev.date < b.ev.date ? 1 : -1));
+
+  // Projects opens on a short, edited cut with a visible end, so nobody feels they're scrolling forever
+  let filter = 'selected';
+  const inFilter = (f, w) => f.id === 'all' || (f.id === 'selected' ? !!w.ev.highlight : f.id === 'case' ? w.isCase : w.tags.some((t) => f.tags.includes(t)));
+  // on desktop the filters fold into one quiet menu, so the work has the screen to itself
+  const filterMenuHTML = () => `<button class="fmenu__btn" aria-expanded="false" aria-haspopup="true"><span>${FILTERS.find((f) => f.id === filter).label}</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fmenu__list" hidden>${filtersHTML()}</div>`;
+  function filtersHTML() {
+    return `<div class="filters" role="group" aria-label="Filter the work">${FILTERS.map((f) => {
+      const n = PROJECTS.filter((w) => inFilter(f, w)).length;
+      return n ? `<button class="filter" data-filter="${f.id}" aria-pressed="${f.id === filter}">${f.label}</button>` : '';
+    }).join('')}</div>`;
+  }
+
+  // one project at a time, centre stage: the work, then a calm line of who, what and how to open it
+  function tileHTML(w, i) {
+    const media = w.clip
+      ? `<video src="${w.clip}" ${w.poster ? `poster="${w.poster}"` : ''} muted loop playsinline preload="metadata"></video>`
+      : w.pics.slice(0, 3).map((src) => `<img src="${src}" alt="" loading="lazy">`).join('');
+    return `<button class="wk${w.isCase ? ' wk--case' : ''}" style="--i:${Math.min(i, 3)}" data-open-id="${w.ev.id}" aria-label="${w.client}: ${w.title}">
+        <span class="wk__m">${media}</span>
+        <span class="wk__cap"><span class="wk__t"><b>${w.client}</b><span>${w.title}</span></span><span class="wk__open"><span>${w.isCase ? 'Read case study' : 'View project'}</span><i>${icon.arrow}</i></span></span>
+      </button>`;
+  }
+  const filtered = () => PROJECTS.filter((w) => inFilter(FILTERS.find((x) => x.id === filter), w));
+  // the personality from the timeline: every third project has a sticky note beside it, a client's words then a bit of our story
+  const QUOTES = ALL.filter((e) => e.type === 'testimonial');
+  const STORY = ALL.filter((e) => e.type === 'note' && e.highlight);
+  function stickyFor(i) {
+    if ((filter !== 'selected' && filter !== 'all') || i % 3 !== 1) return '';
+    const n = (i - 1) / 3, list = n % 2 ? STORY : QUOTES, ev = list[Math.floor(n / 2) % (list.length || 1)];
+    return ev ? `<div class="sticky">${cardHTML(ev)}</div>` : '';
+  }
+  // posters and square posts don't crop into a landscape tile, so they sit side by side; screens and films fill it
+  const wallClips = new IntersectionObserver((entries) => entries.forEach(({ target, isIntersecting }) => {
+    if (isIntersecting && !reduced.matches) target.play().catch(() => {}); else target.pause();
+  }), { threshold: 0.35 });
+  function shapeBlocks(root) {
+    $$('.wk__m', root).forEach((m) => {
+      const v = $('video', m);
+      if (v) return wallClips.observe(v);
+      const img = $('img', m);
+      const shape = () => m.classList.toggle('is-set', img.naturalHeight > img.naturalWidth * 0.8);
+      img.complete && img.naturalWidth ? shape() : img.addEventListener('load', shape, { once: true });
+    });
+  }
+  const moreHTML = () => (filter === 'selected' ? `<button class="wall__more" data-filter="all">See all ${PROJECTS.length} projects ${icon.arrow}</button>` : '');
+  function renderProjects() {
+    track.innerHTML = filtered().map((w, i) => {
+      const key = w.ev.date.slice(0, 7);
+      return `<section class="col col--wall" data-date="${key}-01" data-end="${key}-31">${tileHTML(w, i)}${stickyFor(i)}</section>`;
+    }).join('') + `<section class="col col--end"><div class="wall__end">${moreHTML()}${outroHTML()}</div></section>`;
+    slideIx = 0;
+    syncCount();
+    shapeBlocks(track);
+    buildMinimap();
+  }
+  function agendaProjectsHTML() {
+    return `<div class="ag-intro"><h1>${statement}</h1></div>${filtersHTML()}<div class="ag-wall">${filtered().map((w, i) => tileHTML(w, i) + stickyFor(i)).join('')}</div>${moreHTML()}<div class="ag-logos">${logosHTML()}</div><div class="ag-outro">${outroHTML()}</div>`;
+  }
+  function setFilter(id) {
+    filter = id;
+    if (mq.matches) { agenda.innerHTML = agendaProjectsHTML(); return shapeBlocks(agenda); }
+    renderProjects();
+    timeline.scrollLeft = 0;
+    stripFilters.innerHTML = filterMenuHTML();
+  }
+
   /* ── Render ───────────────────────────────────────── */
   function render() {
     closeAll(true);
+    document.body.dataset.showing = view;
     if (mq.matches) return renderAgenda();
+    side.innerHTML = sideHTML();
+    stripFilters.innerHTML = view === 'projects' ? filterMenuHTML() : '';
+    if (view === 'projects') { renderProjects(); return syncBar(); }
     track.innerHTML =
-      `<section class="col col--intro"><div class="col-head"></div><div class="intro">${introCopy}</div></section>` +
       columnsFor(view).map((c, i) => colHTML(c, i)).join('') +
       `<section class="col col--end"><div class="col-head"></div>${outroHTML()}</section>`;
     layoutBars();
@@ -362,7 +503,7 @@
 
   function layoutBars() {
     $$('.allday-bar', track).forEach((b) => b.remove());
-    if (view === 'highlights') return;
+    if (view !== 'months') return;
     const cols = $$('.col[data-date]', track);
     const lanesEnd = [];
     const depth = new Map(); // how many bar lanes cross each column
@@ -391,7 +532,8 @@
   }
 
   function renderAgenda() {
-    const list = view === 'highlights' ? ALL.filter((e) => e.highlight) : ALL;
+    if (view === 'projects') { agenda.innerHTML = agendaProjectsHTML(); agenda.scrollTop = 0; shapeBlocks(agenda); return syncBar(); }
+    const list = view === 'timeline' ? ALL.filter((e) => e.highlight) : ALL;
     let html = `<div class="ag-intro">${introCopy}</div>`;
     let month = '', day = '';
     const closeDay = () => { if (day) html += '</div></div>'; day = ''; };
@@ -410,7 +552,7 @@
       html += cardHTML(ev);
     }
     closeDay();
-    agenda.innerHTML = html + `<div class="ag-outro">${outroHTML()}</div>`;
+    agenda.innerHTML = html + `<div class="ag-logos">${logosHTML()}</div><div class="ag-outro">${outroHTML()}</div>`;
     syncBar();
   }
 
@@ -424,7 +566,7 @@
     miniTicks.innerHTML = $$('.col[data-date]', track).map((c) => {
       const x = ((c.offsetLeft / total) * W).toFixed(1);
       if (c.classList.contains('col--today')) return `<i class="is-today" style="left:${x}px"></i>`;
-      if (c.querySelector('.card--case')) return `<i class="is-case" style="left:${x}px"></i>`;
+      if (c.querySelector('.card--case, .wk--case')) return `<i class="is-case" style="left:${x}px"></i>`;
       const n = c.querySelector('.note-card');
       return `<i class="${n ? `is-note ${[...n.classList].find((k) => k.startsWith('tint-'))}` : ''}" style="left:${x}px"></i>`;
     }).join('');
@@ -445,7 +587,7 @@
   let scrubbing = false;
   mini.addEventListener('pointerdown', (e) => { scrubbing = true; mini.setPointerCapture(e.pointerId); scrubTo(e.clientX, true); });
   mini.addEventListener('pointermove', (e) => scrubbing && scrubTo(e.clientX, false));
-  mini.addEventListener('pointerup', () => (scrubbing = false));
+  mini.addEventListener('pointerup', () => { scrubbing = false; if (view === 'projects') goNearest(); });
   mini.addEventListener('keydown', (e) => {
     const by = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
     if (by) { e.preventDefault(); timeline.scrollBy({ left: by * (timeline.clientWidth - 280), behavior: 'smooth' }); }
@@ -456,6 +598,44 @@
     ticking = true;
     requestAnimationFrame(() => { ticking = false; updateMinimap(); });
   });
+
+  /* ── The side panel gets out of the way ───────────── */
+  // scrolling forward slides it off and the work runs under it; scrolling back or reaching for the left edge brings it over the work
+  const SIDE_W = () => side.offsetWidth;
+  let sideLast = 0, sideIdle = 0;
+  function showSide() {
+    document.body.classList.remove('side-hidden');
+    side.classList.toggle('is-over', timeline.scrollLeft > 8);
+  }
+  function hideSide() {
+    if (side.matches(':hover, :focus-within')) return;
+    document.body.classList.add('side-hidden');
+    side.classList.remove('is-over');
+    settleSide();
+  }
+  // never rest on the empty strip the panel left: finish the move so the work sits against the edge
+  function settleSide() {
+    if (view === 'projects') return; // projects stop on a project, never on the empty strip
+    clearTimeout(sideIdle);
+    sideIdle = setTimeout(() => {
+      if (drag || !document.body.classList.contains('side-hidden')) return;
+      if (timeline.scrollLeft < SIDE_W()) timeline.scrollTo({ left: SIDE_W(), behavior: reduced.matches ? 'auto' : 'smooth' });
+    }, 160);
+  }
+  timeline.addEventListener('scroll', () => {
+    if (mq.matches) return;
+    const x = timeline.scrollLeft, dx = x - sideLast;
+    if (x <= 8) { sideLast = x; return showSide(); }
+    if (document.body.classList.contains('side-hidden')) settleSide();
+    if (Math.abs(dx) < 6) return;
+    sideLast = x;
+    if (dx > 0) hideSide(); else showSide();
+  }, { passive: true });
+  document.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'mouse' && e.clientX <= 20 && e.clientY > 44 && document.body.classList.contains('side-hidden')) showSide();
+  });
+  side.addEventListener('pointerleave', () => { if (timeline.scrollLeft > 8 && !open) hideSide(); });
+  side.addEventListener('focusin', showSide);
 
   /* ── Light / dark ─────────────────────────────────── */
   const dark = matchMedia('(prefers-color-scheme: dark)');
@@ -468,13 +648,54 @@
 
   /* ── Moving through time ──────────────────────────── */
   function scrollToDate(date) {
+    if (view === 'projects') return; // newest first, and the sheet opens over wherever you are
     const cols = $$('.col[data-date]', track);
     const col = cols.find((c) => c.dataset.end >= date) || cols[cols.length - 1];
     if (col) timeline.scrollLeft = Math.max(0, col.offsetLeft - 40);
   }
 
+  /* ── Projects move one at a time ──────────────────── */
+  let slideIx = 0, wheelAcc = 0, wheelLocked = false, wheelAt = 0, wheelQuiet = 0;
+  const slides = () => $$('.col--wall, .col--end', track);
+  // always say how far along you are, so the end is in sight
+  function syncCount() {
+    const last = slides().length - 1;
+    $('.dyn-count').textContent = `${Math.min(slideIx + 1, last)} / ${last}`;
+    $('[data-step="-1"]').disabled = slideIx === 0;
+    $('[data-step="1"]').disabled = slideIx === last;
+  }
+  function goSlide(i, smooth = true) {
+    const list = slides();
+    slideIx = clamp(i, 0, list.length - 1);
+    syncCount();
+    const el = list[slideIx];
+    // the first sits beside the panel; the rest stop dead centre
+    const left = slideIx === 0 ? 0 : el.offsetLeft - (timeline.clientWidth - el.offsetWidth) / 2;
+    timeline.scrollTo({ left, behavior: smooth && !reduced.matches ? 'smooth' : 'auto' });
+  }
+  function goNearest() {
+    const mid = timeline.scrollLeft + timeline.clientWidth / 2;
+    const list = slides();
+    const dist = (el) => Math.abs(el.offsetLeft + el.offsetWidth / 2 - mid);
+    goSlide(timeline.scrollLeft <= 8 ? 0 : list.indexOf(list.reduce((a, b) => (dist(b) < dist(a) ? b : a))));
+  }
+  // one swipe or one notch is one project: a trackpad's momentum is ignored until it goes quiet
+  function wheelStep(e) {
+    const d = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 32 : 1);
+    clearTimeout(wheelQuiet);
+    wheelQuiet = setTimeout(() => { wheelLocked = false; wheelAcc = 0; }, 140);
+    if (wheelLocked && Date.now() - wheelAt < 1100) return;
+    wheelLocked = false;
+    wheelAcc += d;
+    if (Math.abs(wheelAcc) < 24) return;
+    goSlide(slideIx + Math.sign(wheelAcc));
+    wheelLocked = true; wheelAt = Date.now(); wheelAcc = 0;
+  }
+
   timeline.addEventListener('wheel', (e) => {
-    if (e.ctrlKey || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    if (e.ctrlKey) return;
+    if (view === 'projects') { e.preventDefault(); return wheelStep(e); }
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
     // a long month scrolls on its own; everywhere else the wheel moves through time
     const mb = e.target instanceof Element && e.target.closest('.mbody');
     if (mb && mb.scrollHeight > mb.clientHeight + 2) {
@@ -497,11 +718,15 @@
     if (!dragMoved && Math.abs(dx) > 5) { dragMoved = true; document.body.style.cursor = 'grabbing'; }
     if (dragMoved) timeline.scrollLeft = drag.sl - dx;
   });
-  addEventListener('pointerup', () => { drag = null; document.body.style.cursor = ''; setTimeout(() => (dragMoved = false), 0); });
+  addEventListener('pointerup', () => {
+    if (drag && dragMoved && view === 'projects' && !mq.matches) goNearest();
+    drag = null; document.body.style.cursor = ''; setTimeout(() => (dragMoved = false), 0);
+  });
 
   timeline.addEventListener('keydown', (e) => {
     if (e.target !== timeline) return;
     const by = { ArrowRight: 280, ArrowLeft: -280 }[e.key];
+    if (by && view === 'projects') { e.preventDefault(); return goSlide(slideIx + Math.sign(by)); }
     if (by) { e.preventDefault(); timeline.scrollBy({ left: by, behavior: 'smooth' }); }
   });
 
@@ -515,7 +740,7 @@
   }
   function setView(v) {
     if (v === view) return;
-    const anchorCol = !mq.matches && timeline.scrollLeft > 200
+    const anchorCol = !mq.matches && view !== 'projects' && v !== 'projects' && timeline.scrollLeft > 200
       ? $$('.col[data-date]', track).find((c) => c.offsetLeft >= timeline.scrollLeft - 20) : null;
     const anchor = anchorCol && anchorCol.dataset.date;
     view = v;
@@ -571,7 +796,7 @@
         return `<div class="note__body">${when}<p class="quote">“${T.quote}”</p></div>${footHTML(ev, `${T.name} · ${T.role}`)}`;
       }
       case 'logos':
-        return `<div class="note__body">${when}<h3>Team trusted by the likes of</h3><div class="logo-grid">${LOGOS.map((l) => `<div>${logoHTML(l.src, 22)}</div>`).join('')}</div></div>${footHTML(ev)}`;
+        return `<div class="note__body">${when}<h3>Team trusted by the likes of</h3><div class="logo-grid">${LOGOS.map((l) => `<div>${evenLogo(l)}</div>`).join('')}</div></div>${footHTML(ev)}`;
       case 'snippets':
         return `<div class="story">
             <div class="story__bars">${SNIPPETS.map(() => '<i><b></b></i>').join('')}</div>
@@ -682,7 +907,7 @@
   function openNote(ev, el) {
     // measure the source first: opening swaps the bar's buttons for the owner pill, which would hide a bar button
     const fromRect = el.getBoundingClientRect();
-    const pill = el.classList.contains('dyn-cta'); // from "Work with us": grow out of the pill, fade back into it
+    const pill = el.matches('.dyn-cta, .side__cta'); // from "Work with us": grow out of the pill, fade back into it
     closeAll(true);
     note.style.transform = note.style.transition = focusEl.style.opacity = '';
     const tint = tintOf(ev);
@@ -749,7 +974,7 @@
       ghost.hidden = true; focusEl.hidden = true;
     };
     if (instant || reduced.matches || !document.contains(o.el)) return finish();
-    if (o.el.classList.contains('dyn-cta')) {
+    if (o.el.matches('.dyn-cta, .side__cta')) {
       // back into "Work with us": the same card shrinks and moves back, content and all
       const r = o.el.getBoundingClientRect();
       if (!r.width) return finish();
@@ -799,7 +1024,34 @@
         `<div class="days__bar" style="grid-column:${it.from} / ${it.to + 1};animation-delay:${200 + i * 140}ms">${it.label}${it.to - it.from >= 2 ? `<span>Day ${it.from}–${it.to}</span>` : ''}</div>`).join('')}</div>
     </div>`;
   }
-  const galleryHTML = (imgs) => `<div class="pp-gallery ${imgs.length === 1 ? 'one' : imgs.length === 3 ? 'three' : 'two'}">${imgs.map((s) => `<img src="${s}" alt="" loading="lazy">`).join('')}</div>`;
+  // the work, shown the way it ships: each screen alone in a calm grey tile. Wide screens take the full width,
+  // phone screens pair up side by side, and clips loop silently while they're on screen (see shapeTiles)
+  const isClip = (src) => /\.(mp4|webm|mov)$/i.test(src);
+  const galleryHTML = (srcs) => `<div class="pp-show">${srcs.map((src) => `<figure class="pp-tile">${isClip(src)
+    ? `<video src="${src}" muted loop playsinline preload="metadata"></video>`
+    : `<img src="${src}" alt="" loading="lazy">`}</figure>`).join('')}</div>`;
+  const clipWatch = new IntersectionObserver((entries) => entries.forEach(({ target, isIntersecting }) => {
+    if (isIntersecting && !reduced.matches) target.play().catch(() => {}); else target.pause();
+  }), { root: sheet, threshold: 0.3 });
+  function shapeTiles(root) {
+    $$('.pp-show', root).forEach((show) => {
+      const tiles = $$('.pp-tile', show);
+      const sized = tiles.map((t) => new Promise((done) => {
+        const m = $('img, video', t);
+        const ready = () => { const w = m.naturalWidth || m.videoWidth, h = m.naturalHeight || m.videoHeight; t.classList.toggle('is-phone', h > w * 1.15); done(); };
+        if (m.tagName === 'VIDEO') { clipWatch.observe(m); m.readyState >= 1 ? ready() : m.addEventListener('loadedmetadata', ready, { once: true }); m.addEventListener('error', done, { once: true }); }
+        else m.complete && m.naturalWidth ? ready() : (m.addEventListener('load', ready, { once: true }), m.addEventListener('error', done, { once: true }));
+      }));
+      // phones pair up; one left over in a run sits alone at full width
+      Promise.all(sized).then(() => {
+        let run = [];
+        const close = () => { if (run.length % 2) run[run.length - 1].classList.add('is-solo'); run = []; };
+        tiles.forEach((t) => (t.classList.contains('is-phone') ? run.push(t) : close()));
+        close();
+        show.classList.add('is-shaped');
+      });
+    });
+  }
   function blockHTML(b) {
     return `<section class="pp-sec" id="sec-${b.id}">
       <h2>${b.h}</h2>
@@ -840,25 +1092,37 @@
         <span class="pp-sign__word" aria-hidden="true">Thanks</span>
       </div>`;
   }
-  // one quiet line on top: who, and when
+  // one quiet line on top: who, and when (the pill above already says who, so then only when)
   function headHTML(client, a, b, len) {
     const when = b ? fmtRange(a, b) : fullDate(a);
-    return `<p class="pp-meta"><span class="pp-client">${client}</span><span>${when}${len ? ` · ${len}` : ''}</span></p>`;
+    return `<p class="pp-meta">${client ? `<span class="pp-client">${client}</span>` : ''}<span>${when}${len ? ` · ${len}` : ''}</span></p>`;
   }
   function nextCase(C) {
     const n = CASES[CASE_ORDER[(CASE_ORDER.indexOf(C.id) + 1) % CASE_ORDER.length]];
     return { attr: `data-case-next="${n.id}"`, kind: 'case study', pic: n.cover, client: n.client, title: n.title, len: n.duration };
   }
+  const factsHTML = (facts) => `<dl class="pp-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`;
+
+  // a pill above the paper (its sibling, so it can stay outside it), pinned as you read: the work before and after this one, and whose it is
+  function navHTML(ev) {
+    const i = WORKS.indexOf(ev), at = (k) => WORKS[(i + k + WORKS.length) % WORKS.length];
+    const btn = (w, dir) => (w === ev || !w ? '' : `<button class="pp-nav__b" ${w.type === 'case' ? `data-case-next="${w.case}"` : `data-open-id="${w.id}"`}
+      aria-label="${dir < 0 ? 'Previous' : 'Next'}: ${strip(w.type === 'case' ? CASES[w.case].title : w.title)}">${icon.arrow}</button>`);
+    const name = ev.type === 'case' ? CASES[ev.case].client : ev.client || strip(ev.title);
+    return i < 0 ? '' : `<nav class="pp-nav"><div class="pp-nav__in">${btn(at(-1), -1)}<span class="pp-nav__l">${clientAvatar(name)}<b>${name}</b></span>${btn(at(1), 1)}</div></nav>`;
+  }
+
   function sheetHTML(C) {
     // the numbers row already says the result, so the list doesn't repeat it
     const facts = [...C.meta.filter(([k]) => !(C.results && k === 'Result')), ...(C.live ? [['Live', `<a href="${C.live}" target="_blank" rel="noopener">${C.live.replace(/^https?:\/\//, '')} ↗</a>`]] : [])];
-    return `<article class="paper">
-        ${headHTML(C.client, C.start, C.end, C.duration)}
+    const nav = navHTML(WORKS.find((w) => w.type === 'case' && w.case === C.id));
+    return `${nav}<article class="paper">
+        ${headHTML(nav ? '' : C.client, C.start, C.end, C.duration)}
         <header class="pp-hero">
           <h1>${strip(C.title)}</h1>
           <p class="pp-lede">${C.lede}</p>
         </header>
-        <dl class="pp-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+        ${factsHTML(facts)}
         ${C.results ? `<div class="pp-results">${C.results.map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join('')}</div>` : ''}
         ${C.blocks.map(blockHTML).join('')}
         ${endHTML(nextCase(C))}
@@ -875,20 +1139,26 @@
       : { attr: `data-open-id="${n.id}"`, kind: 'project', pic: n.photos && n.photos[0], client: n.client || '37degree', title: n.title, len: n.end ? durationOf(n.date, n.end) : fullDate(n.date) };
     const facts = [
       ['Client', ev.client],
-      ['Services', (ev.services || []).join(', ')],
+      ['Services', (ev.services || []).join('<br>')],
+      ['Industry', ev.industry],
+      ['Stack', (ev.stack || []).join('<br>')],
+      ['Year', ev.date.slice(0, 4)],
       ['Part of', parent && `<button class="linkish" data-open-id="${parent.id}">${strip(parent.title)} →</button>`],
       ['Live', ev.live && `<a href="${ev.live}" target="_blank" rel="noopener">${ev.live.replace(/^https?:\/\/(www\.)?/, '')} ↗</a>`],
     ].filter(([, v]) => v);
     const photos = ev.photos || [];
-    return `<article class="paper">
-        ${headHTML(ev.client || '37degree', ev.date, ev.end, ev.end ? durationOf(ev.date, ev.end) : '')}
+    // stills pulled from a clip only dress the folder; in the sheet the clip itself plays
+    const showcase = [...(ev.clips || []), ...photos.filter((src) => !(ev.clips || []).length || !/-still\.jpg$/.test(src))];
+    const nav = navHTML(parent || ev);
+    return `${nav}<article class="paper">
+        ${headHTML(nav ? '' : ev.client || '37degree', ev.date, ev.end, ev.end ? durationOf(ev.date, ev.end) : '')}
         <header class="pp-hero">
           <h1>${strip(ev.title)}</h1>
           ${ev.summary ? `<p class="pp-lede">${ev.summary}</p>` : ''}
         </header>
-        <dl class="pp-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
-        ${photos.length > 4 ? `<section class="pp-sec">${galleryHTML(photos.slice(4))}</section>` : ''}
+        ${factsHTML(facts)}
         ${ev.body ? `<section class="pp-sec pp-prose">${ev.body}</section>` : ''}
+        ${showcase.length ? `<section class="pp-sec pp-sec--work">${galleryHTML(showcase)}</section>` : ''}
         ${endHTML(next)}
       </article>`;
   }
@@ -903,6 +1173,7 @@
     sheet.scrollTop = sheetScroll.get(id) || 0; // only works once visible
     scrim.hidden = false;
     bar.classList.add('is-tucked');
+    shapeTiles(sheet);
     // its sections rise in one after another as the paper arrives, so nothing lands all at once
     $$('.paper > *', sheet).forEach((c, i) => c.style.setProperty('--i', Math.min(i, 6)));
     requestAnimationFrame(() => requestAnimationFrame(() => { scrim.classList.add('is-in'); sheet.classList.add('is-in'); }));
@@ -1088,7 +1359,7 @@
     closeAll(true);
     const caseCard = $(`.card--case[data-case="${id}"]`, mq.matches ? agenda : track);
     showSheet(sheetHTML(C), id);
-    const fly = opts.noFly ? null : flyOut(caseCard, C.stack);
+    const fly = opts.noFly ? null : flyOut(caseCard || srcEl, C.stack);
     open = { kind: 'sheet', id, el: srcEl || caseCard, fly };
     setOwner(C.logo ? { logo: C.logo } : { mono: C.client[0] }, C.short);
     markVisited(caseCard && caseCard.dataset.id, srcEl && srcEl.dataset.id);
@@ -1167,7 +1438,7 @@
     scrim.classList.remove('is-in');
     bar.style.left = '';
     bar.classList.remove('is-tucked');
-    $$('video', sheet).forEach((v) => v.pause());
+    $$('video', sheet).forEach((v) => { v.pause(); clipWatch.unobserve(v); });
     flyBack(o.fly, instant);
     const hide = () => {
       if (open && open.kind === 'sheet') return;
@@ -1261,15 +1532,22 @@
     const pic = open && open.kind === 'sheet' && !t.closest('.pp-next') && t.closest('.paper img, .flylayer img:not(.print-fly)');
     if (pic) return openViewer(pic.getAttribute('src'), pic);
     // "Work with us" opens the new-event invite, lifting off the bar's button; the mailto stays as the fallback
-    const cta = t.closest('.dyn-cta, .pp-btn');
+    const cta = t.closest('.dyn-cta, .side__cta, .pp-btn');
     if (cta) {
       e.preventDefault();
       const slot = ALL.find((x) => x.type === 'slot');
       closeAll(true);
-      return openNote(slot, $('.dyn-cta'));
+      return openNote(slot, $(mq.matches ? '.dyn-cta' : '.side__cta'));
     }
     const v = t.closest('[data-view]');
     if (v) return setView(v.dataset.view);
+    const f = t.closest('[data-filter]');
+    if (f) return setFilter(f.dataset.filter);
+    const menuBtn = t.closest('.fmenu__btn'), menu = $('.fmenu__list', stripFilters);
+    if (menuBtn) { menu.hidden = !menu.hidden; return menuBtn.setAttribute('aria-expanded', String(!menu.hidden)); }
+    if (menu && !menu.hidden) { menu.hidden = true; $('.fmenu__btn', stripFilters).setAttribute('aria-expanded', 'false'); }
+    const step = t.closest('[data-step]');
+    if (step) return goSlide(slideIx + Number(step.dataset.step));
     // clicking the margins around the paper puts it away
     if (t.closest('[data-close]') || t === focusEl || t === scrim || t === sheet) return closeAll();
     const nextBtn = t.closest('[data-case-next]');
@@ -1286,10 +1564,11 @@
     if (openBtn && !dragMoved) {
       const target = BY_ID[openBtn.dataset.openId];
       if (!target) return;
-      if (openBtn.classList.contains('pp-next')) sheetScroll.delete(target.type === 'case' ? target.case : target.id);
-      if (target.type === 'case') return openCase(target.case);
+      if (openBtn.closest('.pp-next, .pp-nav')) sheetScroll.delete(target.type === 'case' ? target.case : target.id);
+      const tile = openBtn.classList.contains('wk') ? openBtn : undefined;
+      if (target.type === 'case') return openCase(target.case, null, tile);
       if (open && open.kind === 'sheet' && !mq.matches) scrollToDate(target.date);
-      return requestAnimationFrame(() => openProject(target));
+      return requestAnimationFrame(() => openProject(target, tile));
     }
     const card = t.closest('button.card, button.mrow, button[data-day]');
     if (!card || dragMoved) return;
@@ -1314,9 +1593,9 @@
 
   addEventListener('resize', () => {
     if (open && open.kind === 'sheet' && open.fly) { flyBack(open.fly, true); open.fly = null; }
-    if (!mq.matches) { layoutBars(); buildMinimap(); }
+    if (!mq.matches) { layoutBars(); buildMinimap(); if (view === 'projects') goSlide(slideIx, false); }
   });
-  mq.addEventListener('change', () => { if (mq.matches && view === 'months') view = 'days'; render(); });
+  mq.addEventListener('change', () => { if (mq.matches && view === 'months') view = 'timeline'; render(); });
 
   function fromHash() {
     const m = location.hash.match(/^#work\/([\w-]+)/);

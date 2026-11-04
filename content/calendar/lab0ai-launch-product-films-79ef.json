@@ -11,12 +11,20 @@
     "Pitch deck"
   ],
   "photos": [
-    "assets/img/mock/lab0-1.jpg",
-    "assets/img/mock/lab0-2.jpg",
-    "assets/img/mock/lab0-3.jpg"
+    "assets/img/work/lab0-launch-still.jpg",
+    "assets/img/work/lab0-product-video-still.jpg",
+    "assets/img/work/lab0-discover-integration-still.jpg"
   ],
   "highlight": false,
   "placeholder_date": false,
   "order": 0,
-  "publish": true
+  "publish": true,
+  "clips": [
+    "assets/video/work/lab0-launch.mp4",
+    "assets/video/work/lab0-product-video.mp4",
+    "assets/video/work/lab0-discover-integration.mp4",
+    "assets/video/work/lab0-interview-chat.mp4",
+    "assets/video/work/lab0-artifacts.mp4",
+    "assets/video/work/lab0-founder.mp4"
+  ]
 }

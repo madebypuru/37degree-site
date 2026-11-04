@@ -1,0 +1,22 @@
+{
+  "name": "ElMuse: a creative *sanctuary* launch page",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2025-02-01",
+  "client": "ElMuse",
+  "summary": "A launch page for ElMuse, a creative sanctuary, counting down to its opening night.",
+  "services": [
+    "Website"
+  ],
+  "photos": [
+    "assets/img/work/site-elmuse-1.jpg",
+    "assets/img/work/site-elmuse-2.jpg"
+  ],
+  "industry": "Arts · Community",
+  "stack": [
+    "Framer"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}

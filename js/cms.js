@@ -79,14 +79,6 @@ window.CMS = {
    }
   },
   {
-   "id": "team-trusted-by-the-likes-of-3e10",
-   "date": "2024-10-07",
-   "highlight": true,
-   "tbc": true,
-   "type": "logos",
-   "title": "team trusted by the likes of"
-  },
-  {
    "id": "we-love-a-good-story-whats-yours-0344",
    "date": "2024-10-07",
    "tbc": true,
@@ -127,6 +119,26 @@ window.CMS = {
    "end": "2025-07-14"
   },
   {
+   "id": "elmuse-a-creative-sanctuary-launch-p-7d1e",
+   "date": "2025-02-01",
+   "tbc": true,
+   "type": "project",
+   "title": "ElMuse: a creative <em>sanctuary</em> launch page",
+   "client": "ElMuse",
+   "summary": "A launch page for ElMuse, a creative sanctuary, counting down to its opening night.",
+   "services": [
+    "Website"
+   ],
+   "photos": [
+    "assets/img/work/site-elmuse-1.jpg",
+    "assets/img/work/site-elmuse-2.jpg"
+   ],
+   "industry": "Arts · Community",
+   "stack": [
+    "Framer"
+   ]
+  },
+  {
    "id": "dont-build-a-new-destination-a229",
    "date": "2025-02-03",
    "highlight": true,
@@ -165,6 +177,30 @@ window.CMS = {
    "title": "every answer shows its sources"
   },
   {
+   "id": "superteam-canada-the-chapter-website-28af",
+   "date": "2025-06-01",
+   "tbc": true,
+   "type": "project",
+   "title": "Superteam Canada: the chapter <em>website</em>",
+   "client": "Superteam Canada",
+   "summary": "Grants, events and member stories for Solana's innovation network in Canada.",
+   "services": [
+    "Website"
+   ],
+   "photos": [
+    "assets/img/work/site-st-canada-1.jpg",
+    "assets/img/work/site-st-canada-2.jpg",
+    "assets/img/work/site-st-canada-3.jpg",
+    "assets/img/work/site-st-canada-4.jpg",
+    "assets/img/work/site-st-canada-5.jpg",
+    "assets/img/work/site-st-canada-6.jpg"
+   ],
+   "industry": "Crypto · Community",
+   "stack": [
+    "Framer"
+   ]
+  },
+  {
    "id": "motion-snippets-5e39",
    "date": "2025-06-02",
    "highlight": true,
@@ -182,6 +218,27 @@ window.CMS = {
    "case": "kampanion",
    "section": "impact",
    "client": "KAMpanion"
+  },
+  {
+   "id": "solana-stable-future-event-website-88ba",
+   "date": "2025-08-20",
+   "tbc": true,
+   "type": "project",
+   "title": "Solana Stable Future: event <em>website</em>",
+   "client": "Solana Stable Future",
+   "summary": "A summit site for Solana's stablecoin ecosystem in Seoul, with a glitchy display type and a dark terminal look.",
+   "services": [
+    "Website",
+    "Event"
+   ],
+   "photos": [
+    "assets/img/work/site-stable-future-1.jpg",
+    "assets/img/work/site-stable-future-2.jpg"
+   ],
+   "industry": "Crypto · Events",
+   "stack": [
+    "Framer"
+   ]
   },
   {
    "id": "case-sidecar",
@@ -275,6 +332,30 @@ window.CMS = {
    "client": "Sidecar × IICS 2025"
   },
   {
+   "id": "superteam-uae-the-chapter-website-fe87",
+   "date": "2025-10-01",
+   "tbc": true,
+   "type": "project",
+   "title": "Superteam UAE: the chapter <em>website</em>",
+   "client": "Superteam UAE",
+   "summary": "The home for Solana's builders in the UAE: events, members, perks and how to join, built in Framer.",
+   "services": [
+    "Website"
+   ],
+   "photos": [
+    "assets/img/work/site-st-uae-1.jpg",
+    "assets/img/work/site-st-uae-2.jpg",
+    "assets/img/work/site-st-uae-3.jpg",
+    "assets/img/work/site-st-uae-4.jpg",
+    "assets/img/work/site-st-uae-5.jpg",
+    "assets/img/work/site-st-uae-6.jpg"
+   ],
+   "industry": "Crypto · Community",
+   "stack": [
+    "Framer"
+   ]
+  },
+  {
    "id": "projects-completed-8bfb",
    "date": "2025-12-15",
    "highlight": true,
@@ -297,10 +378,14 @@ window.CMS = {
     "Website"
    ],
    "photos": [
-    "assets/img/mock/goatfish-1.jpg",
-    "assets/img/mock/goatfish-2.jpg",
-    "assets/img/mock/goatfish-3.jpg"
-   ]
+    "assets/img/work/goatfish-site-light-1.jpg",
+    "assets/img/work/goatfish-site-dark-1.jpg",
+    "assets/img/work/goatfish-site-light-2.jpg",
+    "assets/img/work/goatfish-site-dark-2.jpg",
+    "assets/img/work/goatfish-site-light-3.jpg",
+    "assets/img/work/goatfish-site-dark-3.jpg"
+   ],
+   "live": "https://www.goatfish.xyz"
   },
   {
    "id": "prado-fc94",
@@ -325,12 +410,20 @@ window.CMS = {
    "services": [
     "Event",
     "Branding",
+    "Website",
     "Copy"
    ],
    "photos": [
-    "assets/img/mock/sez-1.jpg",
-    "assets/img/mock/sez-2.jpg",
-    "assets/img/mock/sez-3.jpg"
+    "assets/img/work/site-sez-dubai-26-1.jpg",
+    "assets/img/work/site-sez-dubai-26-2.jpg",
+    "assets/img/work/site-sez-dubai-26-3.jpg",
+    "assets/img/work/site-sez-dubai-26-4.jpg",
+    "assets/img/work/site-sez-dubai-26-5.jpg",
+    "assets/img/work/site-sez-dubai-26-6.jpg"
+   ],
+   "live": "https://sezdubaix37.framer.website",
+   "stack": [
+    "Framer"
    ]
   },
   {
@@ -339,7 +432,7 @@ window.CMS = {
    "type": "project",
    "title": "Solana Ecosystem Call: marketing <em>design</em> retainer",
    "client": "Solana Ecosystem Call",
-   "summary": "An ongoing marketing design retainer since March: billboards, web apps and campaign pieces for the Solana ecosystem.",
+   "summary": "An ongoing marketing design retainer since March: a new web tool for every monthly call, plus billboards, posters and social posts for the Solana ecosystem.",
    "services": [
     "Campaign",
     "Print",
@@ -347,9 +440,9 @@ window.CMS = {
     "Motion"
    ],
    "photos": [
-    "assets/img/mock/sec-1.jpg",
-    "assets/img/mock/sec-2.jpg",
-    "assets/img/mock/sec-3.jpg"
+    "assets/img/work/sec-poster-1.jpg",
+    "assets/img/work/sec-poster-2.jpg",
+    "assets/img/work/sec-poster-3.jpg"
    ]
   },
   {
@@ -418,9 +511,17 @@ window.CMS = {
     "Pitch deck"
    ],
    "photos": [
-    "assets/img/mock/lab0-1.jpg",
-    "assets/img/mock/lab0-2.jpg",
-    "assets/img/mock/lab0-3.jpg"
+    "assets/img/work/lab0-launch-still.jpg",
+    "assets/img/work/lab0-product-video-still.jpg",
+    "assets/img/work/lab0-discover-integration-still.jpg"
+   ],
+   "clips": [
+    "assets/video/work/lab0-launch.mp4",
+    "assets/video/work/lab0-product-video.mp4",
+    "assets/video/work/lab0-discover-integration.mp4",
+    "assets/video/work/lab0-interview-chat.mp4",
+    "assets/video/work/lab0-artifacts.mp4",
+    "assets/video/work/lab0-founder.mp4"
    ]
   },
   {
@@ -434,9 +535,12 @@ window.CMS = {
     "Event"
    ],
    "photos": [
-    "assets/img/mock/superteam-1.jpg",
-    "assets/img/mock/superteam-2.jpg",
-    "assets/img/mock/superteam-3.jpg"
+    "assets/img/work/superteam-au-launch-1.jpg",
+    "assets/img/work/superteam-au-poster-1.jpg",
+    "assets/img/work/superteam-au-poster-2.jpg",
+    "assets/img/work/superteam-au-launch-2.jpg",
+    "assets/img/work/superteam-au-poster-3.jpg",
+    "assets/img/work/superteam-au-poster-4.jpg"
    ]
   },
   {
@@ -451,10 +555,11 @@ window.CMS = {
     "Product design"
    ],
    "photos": [
-    "assets/img/mock/aria-1.jpg",
-    "assets/img/mock/aria-2.jpg",
-    "assets/img/mock/aria-3.jpg"
-   ]
+    "assets/img/work/aria-onboarding.jpg",
+    "assets/img/work/aria-artist-creation.jpg",
+    "assets/img/work/aria-login.jpg"
+   ],
+   "live": "https://aria-dev.framer.website"
   },
   {
    "id": "omar-alsafadi-7e9c",
@@ -470,24 +575,88 @@ window.CMS = {
    }
   },
   {
+   "id": "kue-early-access-landing-page-9f45",
+   "date": "2026-05-15",
+   "tbc": true,
+   "type": "project",
+   "title": "Kue: early access <em>landing</em> page",
+   "client": "Kue",
+   "summary": "The early access page for Kue, which finds the right person in your network for every opportunity.",
+   "services": [
+    "Website"
+   ],
+   "photos": [
+    "assets/img/work/site-kue-1.jpg",
+    "assets/img/work/site-kue-2.jpg",
+    "assets/img/work/site-kue-3.jpg",
+    "assets/img/work/site-kue-4.jpg",
+    "assets/img/work/site-kue-5.jpg"
+   ],
+   "industry": "AI · Networking",
+   "stack": [
+    "Framer"
+   ]
+  },
+  {
+   "id": "sec-3-felt-crimes-division-ce24",
+   "date": "2026-05-25",
+   "type": "moment",
+   "title": "SEC 3: Felt Crimes <em>Division</em>",
+   "client": "Solana Ecosystem Call",
+   "summary": "A noir case-file intake: sign in with X, file your Solana crime, and get your mugshot pinned to the evidence board.",
+   "services": [
+    "Web app",
+    "Copy"
+   ],
+   "photos": [
+    "assets/img/work/sec3-felt-1.jpg",
+    "assets/img/work/sec3-felt-2.jpg",
+    "assets/img/work/sec3-felt-3.jpg",
+    "assets/img/work/sec3-felt-4.jpg",
+    "assets/img/work/sec3-felt-5.jpg"
+   ],
+   "parent": "solana-ecosystem-call-marketing-desi-f7c7"
+  },
+  {
    "id": "omnipair-an-oklch-brand-system-bc68",
    "date": "2026-06-01",
    "highlight": true,
    "type": "project",
    "title": "Omnipair: an OKLCH <em>brand</em> system",
    "client": "Omnipair",
-   "summary": "A brand retainer: an <em>OKLCH</em> gradient brand system, a brand strategy workshop, and motion videos for X (the Dusk teaser, Spot Margin, the $25k LP fee and a product explainer).",
+   "summary": "A brand retainer: the <em>OKLCH</em> gradient brand system and brand book (logo, palette, type, shaders, socials), a brand strategy workshop, and motion videos for X (the Dusk teaser, Spot Margin, the $25k LP fee and a product explainer).",
    "services": [
     "Branding",
     "Strategy",
     "Motion"
    ],
    "photos": [
-    "assets/img/mock/omnipair-1.jpg",
-    "assets/img/mock/omnipair-2.jpg",
-    "assets/img/mock/omnipair-3.jpg"
+    "assets/img/work/omnipair-brandbook-cover.jpg",
+    "assets/img/work/omnipair-logo.jpg",
+    "assets/img/work/omnipair-lockup.jpg",
+    "assets/img/work/omnipair-gradient.jpg",
+    "assets/img/work/omnipair-brand-prism.jpg",
+    "assets/img/work/omnipair-logomark-construction.jpg",
+    "assets/img/work/omnipair-palette.jpg",
+    "assets/img/work/omnipair-colour-system.jpg",
+    "assets/img/work/omnipair-typography.jpg",
+    "assets/img/work/omnipair-shaders-1.jpg",
+    "assets/img/work/omnipair-shaders-2.jpg",
+    "assets/img/work/omnipair-x-profile.jpg",
+    "assets/img/work/omnipair-discord.jpg",
+    "assets/img/work/omnipair-linkedin.jpg",
+    "assets/img/work/omnipair-dusk-teaser-still.jpg",
+    "assets/img/work/omnipair-borrow-still.jpg",
+    "assets/img/work/omnipair-spot-margin-still.jpg"
    ],
-   "end": "2026-10-15"
+   "end": "2026-10-15",
+   "clips": [
+    "assets/video/work/omnipair-dusk-teaser.mp4",
+    "assets/video/work/omnipair-spot-margin.mp4",
+    "assets/video/work/omnipair-borrow.mp4",
+    "assets/video/work/omnipair-leverage.mp4",
+    "assets/video/work/omnipair-lp-fee.mp4"
+   ]
   },
   {
    "id": "sec-4-world-cup-player-card-web-app-3b84",
@@ -501,9 +670,10 @@ window.CMS = {
     "Web app"
    ],
    "photos": [
-    "assets/img/mock/sec4-1.jpg",
-    "assets/img/mock/sec4-2.jpg",
-    "assets/img/mock/sec4-3.jpg"
+    "assets/img/work/sec4-footify-1.jpg",
+    "assets/img/work/sec4-footify-2.jpg",
+    "assets/img/work/sec4-footify-3.jpg",
+    "assets/img/work/sec4-footify-4.jpg"
    ],
    "parent": "solana-ecosystem-call-marketing-desi-f7c7"
   },
@@ -544,6 +714,30 @@ window.CMS = {
    "parent": "solana-ecosystem-call-marketing-desi-f7c7"
   },
   {
+   "id": "deccan-ai-the-website-b465",
+   "date": "2026-07-15",
+   "tbc": true,
+   "type": "moment",
+   "title": "Deccan AI: the <em>website</em>",
+   "client": "Deccan AI",
+   "summary": "Deccan AI's website: data, evals and post-training for frontier labs, set in a cinematic blue.",
+   "services": [
+    "Website"
+   ],
+   "photos": [
+    "assets/img/work/site-deccan-site-1.jpg",
+    "assets/img/work/site-deccan-site-2.jpg",
+    "assets/img/work/site-deccan-site-3.jpg",
+    "assets/img/work/site-deccan-site-4.jpg",
+    "assets/img/work/site-deccan-site-5.jpg",
+    "assets/img/work/site-deccan-site-6.jpg"
+   ],
+   "parent": "deccan-ai-the-bumblebee-launch-film-987d",
+   "stack": [
+    "Framer"
+   ]
+  },
+  {
    "id": "lab0ai-pwc-the-pitch-deck-c336",
    "date": "2026-08-01",
    "highlight": true,
@@ -555,28 +749,13 @@ window.CMS = {
     "Pitch deck"
    ],
    "photos": [
-    "assets/img/mock/lab0pwc-1.jpg",
-    "assets/img/mock/lab0pwc-2.jpg",
-    "assets/img/mock/lab0pwc-3.jpg"
+    "assets/img/work/lab0-deck-1.jpg",
+    "assets/img/work/lab0-deck-2.jpg",
+    "assets/img/work/lab0-deck-4.jpg",
+    "assets/img/work/lab0-deck-5.jpg",
+    "assets/img/work/lab0-deck-6.jpg"
    ],
    "parent": "lab0ai-launch-product-films-79ef"
-  },
-  {
-   "id": "9nidhi-naming-intro-deck-df30",
-   "date": "2026-08-01",
-   "type": "project",
-   "title": "9nidhi: <em>naming</em> + intro deck",
-   "client": "9nidhi",
-   "summary": "Naming and an intro deck.",
-   "services": [
-    "Naming",
-    "Pitch deck"
-   ],
-   "photos": [
-    "assets/img/mock/9nidhi-1.jpg",
-    "assets/img/mock/9nidhi-2.jpg",
-    "assets/img/mock/9nidhi-3.jpg"
-   ]
   },
   {
    "id": "sec-5-solana-salesmen-8986",
@@ -591,10 +770,9 @@ window.CMS = {
     "Copy"
    ],
    "photos": [
-    "assets/img/mock/sec5-1.jpg",
-    "assets/img/mock/sec5-2.jpg",
-    "assets/img/mock/sec5-3.jpg"
+    "assets/img/work/sec5-salesmen-1.jpg"
    ],
+   "live": "https://solana-salesmen.netlify.app",
    "parent": "solana-ecosystem-call-marketing-desi-f7c7"
   },
   {
@@ -610,11 +788,31 @@ window.CMS = {
     "Branding"
    ],
    "photos": [
-    "assets/img/mock/bumblebee-1.jpg",
-    "assets/img/mock/bumblebee-2.jpg",
-    "assets/img/mock/bumblebee-3.jpg"
+    "assets/img/work/deccan-bumblebee-still.jpg"
    ],
-   "end": "2026-10-15"
+   "end": "2026-10-15",
+   "clips": [
+    "assets/video/work/deccan-bumblebee.mp4"
+   ]
+  },
+  {
+   "id": "sec-6-toyify-the-breakpoint-ticket-5dab",
+   "date": "2026-08-21",
+   "type": "moment",
+   "title": "SEC 6: Toyify, the <em>Breakpoint</em> ticket",
+   "client": "Solana Ecosystem Call",
+   "summary": "Turn yourself into a boxed action figure to win a Breakpoint 2026 ticket: the toy line drop for SEC's August call.",
+   "services": [
+    "Web app",
+    "Campaign"
+   ],
+   "photos": [
+    "assets/img/work/sec6-toyify-1.jpg",
+    "assets/img/work/sec6-toyify-2.jpg",
+    "assets/img/work/sec6-toyify-3.jpg"
+   ],
+   "live": "https://madebypuru.github.io/toyify/",
+   "parent": "solana-ecosystem-call-marketing-desi-f7c7"
   },
   {
    "id": "almanac-product-launch-films-62d5",
@@ -630,11 +828,16 @@ window.CMS = {
     "Print"
    ],
    "photos": [
-    "assets/img/mock/almanac-1.jpg",
-    "assets/img/mock/almanac-2.jpg",
-    "assets/img/mock/almanac-3.jpg"
+    "assets/img/work/almanac-i-am-almanac-still.jpg",
+    "assets/img/work/almanac-nothing-left-behind-still.jpg",
+    "assets/img/work/almanac-take-a-week-off-still.jpg"
    ],
-   "end": "2026-09-10"
+   "end": "2026-09-10",
+   "clips": [
+    "assets/video/work/almanac-i-am-almanac.mp4",
+    "assets/video/work/almanac-nothing-left-behind.mp4",
+    "assets/video/work/almanac-take-a-week-off.mp4"
+   ]
   },
   {
    "id": "borderless-unp-explainer-storyboards-43f1",
@@ -664,10 +867,54 @@ window.CMS = {
     "Website"
    ],
    "photos": [
-    "assets/img/mock/devx-1.jpg",
-    "assets/img/mock/devx-2.jpg",
-    "assets/img/mock/devx-3.jpg"
+    "assets/img/work/devx-site.jpg",
+    "assets/img/work/devx-why-now.jpg",
+    "assets/img/work/devx-pixel-grid.jpg",
+    "assets/img/work/devx-hours.jpg",
+    "assets/img/work/devx-statement.jpg",
+    "assets/img/work/devx-kpi-row.jpg"
    ]
+  },
+  {
+   "id": "omnipair-social-media-posts-5e1a",
+   "date": "2026-09-10",
+   "highlight": true,
+   "tbc": true,
+   "type": "moment",
+   "title": "Omnipair: <em>social</em> posts",
+   "client": "Omnipair",
+   "summary": "The posts that carry the brand week to week on X: milestones, launch teasers, the private beta thread, partner announcements and the quarterly update.",
+   "services": [
+    "Campaign",
+    "Branding"
+   ],
+   "photos": [
+    "assets/img/work/omnipair-social-lp-fees.jpg",
+    "assets/img/work/omnipair-social-private-beta.jpg",
+    "assets/img/work/omnipair-social-solomon.jpg",
+    "assets/img/work/omnipair-social-lp-fees-2.jpg",
+    "assets/img/work/omnipair-social-teaser-1.jpg",
+    "assets/img/work/omnipair-social-teaser-2.jpg",
+    "assets/img/work/omnipair-social-quarterly-cover.jpg",
+    "assets/img/work/omnipair-social-5m-volume.jpg"
+   ],
+   "parent": "omnipair-an-oklch-brand-system-bc68"
+  },
+  {
+   "id": "sec-7-solana-high-yearbook-5ced",
+   "date": "2026-09-18",
+   "type": "moment",
+   "title": "SEC 7: Solana High <em>yearbook</em>",
+   "client": "Solana Ecosystem Call",
+   "summary": "An interactive Class of ’26 yearbook for the Solana ecosystem: find your portrait and your superlative.",
+   "services": [
+    "Web app"
+   ],
+   "photos": [
+    "assets/img/work/sec7-solhigh-1.jpg"
+   ],
+   "live": "https://madebypuru.github.io/sec-solana-high/",
+   "parent": "solana-ecosystem-call-marketing-desi-f7c7"
   },
   {
    "id": "first-light-podcast-intro-storyboard-a8ff",
@@ -684,6 +931,48 @@ window.CMS = {
     "assets/img/mock/firstlight-2.jpg",
     "assets/img/mock/firstlight-3.jpg"
    ]
+  },
+  {
+   "id": "sez-abu-dhabi-event-website-f87e",
+   "date": "2026-10-15",
+   "tbc": true,
+   "type": "project",
+   "title": "SEZ Abu Dhabi: event <em>website</em>",
+   "client": "Solana Economic Zone, Abu Dhabi",
+   "summary": "The site for the Abu Dhabi edition of the Solana Economic Zone: speakers, agenda and sponsorship for founders, investors and policy leaders.",
+   "services": [
+    "Website",
+    "Event"
+   ],
+   "photos": [
+    "assets/img/work/site-sez-abudhabi-1.jpg",
+    "assets/img/work/site-sez-abudhabi-2.jpg",
+    "assets/img/work/site-sez-abudhabi-3.jpg",
+    "assets/img/work/site-sez-abudhabi-4.jpg"
+   ],
+   "live": "https://sezabudhabi.com",
+   "industry": "Crypto · Events",
+   "stack": [
+    "Framer"
+   ]
+  },
+  {
+   "id": "sec-8-murder-board-ff3b",
+   "date": "2026-10-19",
+   "type": "moment",
+   "title": "SEC 8: Murder <em>Board</em>",
+   "client": "Solana Ecosystem Call",
+   "summary": "A Halloween murder mystery: someone killed you at the party, and two of your mutuals did it. Solve it, then share the board.",
+   "services": [
+    "Web app",
+    "Campaign"
+   ],
+   "photos": [
+    "assets/img/work/sec8-murder-1.jpg",
+    "assets/img/work/sec8-murder-2.jpg"
+   ],
+   "live": "https://mutual-suspects.netlify.app",
+   "parent": "solana-ecosystem-call-marketing-desi-f7c7"
   }
  ]
 };

@@ -1,0 +1,19 @@
+{
+  "name": "SEC 7: Solana High *yearbook*",
+  "card": "Moment",
+  "kind": "Work",
+  "date": "2026-09-18",
+  "client": "Solana Ecosystem Call",
+  "summary": "An interactive Class of ’26 yearbook for the Solana ecosystem: find your portrait and your superlative.",
+  "services": [
+    "Web app"
+  ],
+  "photos": [
+    "assets/img/work/sec7-solhigh-1.jpg"
+  ],
+  "live": "https://madebypuru.github.io/sec-solana-high/",
+  "part_of": "content/calendar/solana-ecosystem-call-marketing-desi-f7c7.json",
+  "highlight": false,
+  "placeholder_date": false,
+  "publish": true
+}

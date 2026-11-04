@@ -1,0 +1,23 @@
+{
+  "name": "Solana Stable Future: event *website*",
+  "card": "Project",
+  "kind": "Work",
+  "date": "2025-08-20",
+  "client": "Solana Stable Future",
+  "summary": "A summit site for Solana's stablecoin ecosystem in Seoul, with a glitchy display type and a dark terminal look.",
+  "services": [
+    "Website",
+    "Event"
+  ],
+  "photos": [
+    "assets/img/work/site-stable-future-1.jpg",
+    "assets/img/work/site-stable-future-2.jpg"
+  ],
+  "industry": "Crypto · Events",
+  "stack": [
+    "Framer"
+  ],
+  "highlight": false,
+  "placeholder_date": true,
+  "publish": true
+}
