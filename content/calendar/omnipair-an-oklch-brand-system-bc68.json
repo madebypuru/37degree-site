@@ -39,5 +39,11 @@
     "assets/video/work/omnipair-borrow.mp4",
     "assets/video/work/omnipair-leverage.mp4",
     "assets/video/work/omnipair-lp-fee.mp4"
+  ],
+  "facts": [
+    {
+      "label": "Built on",
+      "value": "Solana"
+    }
   ]
 }

@@ -26,5 +26,11 @@
     "assets/video/work/lab0-interview-chat.mp4",
     "assets/video/work/lab0-artifacts.mp4",
     "assets/video/work/lab0-founder.mp4"
+  ],
+  "facts": [
+    {
+      "label": "Backed by",
+      "value": "Y Combinator"
+    }
   ]
 }

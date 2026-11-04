@@ -22,5 +22,11 @@
   "part_of": "content/calendar/omnipair-an-oklch-brand-system-bc68.json",
   "highlight": true,
   "placeholder_date": true,
-  "publish": true
+  "publish": true,
+  "facts": [
+    {
+      "label": "Built on",
+      "value": "Solana"
+    }
+  ]
 }

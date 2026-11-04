@@ -114,6 +114,12 @@ window.CMS = {
    "date": "2025-01-13",
    "highlight": true,
    "tbc": true,
+   "facts": [
+    {
+     "label": "Built in",
+     "value": "6 months"
+    }
+   ],
    "type": "case",
    "case": "kampanion",
    "end": "2025-07-14"
@@ -245,6 +251,12 @@ window.CMS = {
    "date": "2025-09-08",
    "highlight": true,
    "tbc": true,
+   "facts": [
+    {
+     "label": "Result",
+     "value": "$1M+ pipeline"
+    }
+   ],
    "type": "case",
    "case": "sidecar",
    "end": "2025-09-20"
@@ -449,6 +461,20 @@ window.CMS = {
    "id": "case-deccan",
    "date": "2026-03-21",
    "highlight": true,
+   "facts": [
+    {
+     "label": "Raised",
+     "value": "$25M Series A"
+    },
+    {
+     "label": "Led by",
+     "value": "A91 Partners"
+    },
+    {
+     "label": "Also backed by",
+     "value": "Prosus, Susquehanna"
+    }
+   ],
    "type": "case",
    "case": "deccan",
    "end": "2026-03-24"
@@ -501,6 +527,12 @@ window.CMS = {
   {
    "id": "lab0ai-launch-product-films-79ef",
    "date": "2026-04-01",
+   "facts": [
+    {
+     "label": "Backed by",
+     "value": "Y Combinator"
+    }
+   ],
    "type": "project",
    "title": "lab0.ai: launch + product <em>films</em>",
    "client": "lab0.ai (YC)",
@@ -621,6 +653,12 @@ window.CMS = {
    "id": "omnipair-an-oklch-brand-system-bc68",
    "date": "2026-06-01",
    "highlight": true,
+   "facts": [
+    {
+     "label": "Built on",
+     "value": "Solana"
+    }
+   ],
    "type": "project",
    "title": "Omnipair: an OKLCH <em>brand</em> system",
    "client": "Omnipair",
@@ -741,6 +779,12 @@ window.CMS = {
    "id": "lab0ai-pwc-the-pitch-deck-c336",
    "date": "2026-08-01",
    "highlight": true,
+   "facts": [
+    {
+     "label": "Backed by",
+     "value": "Y Combinator"
+    }
+   ],
    "type": "moment",
    "title": "lab0.ai × PwC: the pitch <em>deck</em>",
    "client": "lab0.ai (YC)",
@@ -779,6 +823,20 @@ window.CMS = {
    "id": "deccan-ai-the-bumblebee-launch-film-987d",
    "date": "2026-08-15",
    "highlight": true,
+   "facts": [
+    {
+     "label": "Raised",
+     "value": "$25M Series A"
+    },
+    {
+     "label": "Led by",
+     "value": "A91 Partners"
+    },
+    {
+     "label": "Also backed by",
+     "value": "Prosus, Susquehanna"
+    }
+   ],
    "type": "project",
    "title": "Deccan AI: the Bumblebee <em>launch</em> film",
    "client": "Deccan AI",
@@ -818,6 +876,12 @@ window.CMS = {
    "id": "almanac-product-launch-films-62d5",
    "date": "2026-08-24",
    "highlight": true,
+   "facts": [
+    {
+     "label": "Backed by",
+     "value": "Y Combinator"
+    }
+   ],
    "type": "project",
    "title": "Almanac: product + launch <em>films</em>",
    "client": "Almanac (YC S26)",
@@ -880,6 +944,12 @@ window.CMS = {
    "date": "2026-09-10",
    "highlight": true,
    "tbc": true,
+   "facts": [
+    {
+     "label": "Built on",
+     "value": "Solana"
+    }
+   ],
    "type": "moment",
    "title": "Omnipair: <em>social</em> posts",
    "client": "Omnipair",

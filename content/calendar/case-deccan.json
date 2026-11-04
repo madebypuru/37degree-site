@@ -7,5 +7,19 @@
   "case_study": "deccan",
   "highlight": true,
   "placeholder_date": false,
-  "publish": true
+  "publish": true,
+  "facts": [
+    {
+      "label": "Raised",
+      "value": "$25M Series A"
+    },
+    {
+      "label": "Led by",
+      "value": "A91 Partners"
+    },
+    {
+      "label": "Also backed by",
+      "value": "Prosus, Susquehanna"
+    }
+  ]
 }

@@ -62,7 +62,7 @@ The calendar used to come from a Notion database. That sync is gone, so edits in
 Logos live in `LOGOS` in `js/data.js` and scroll in one line in the sidebar, so 6 or 15 take the same room, at the same speed.
 
 1. Save a trimmed, single-colour logo on a transparent background to `assets/img/logos/`.
-2. Add `{ name, src, ar, h }`: `ar` is width ÷ height. `h` is its height in the row: set it so the letters match the other wordmarks (about 13 to 18), or about 22 for an icon-only mark.
+2. Add `{ name, src, ar, h }`: `ar` is width ÷ height. `h` is its height in the row, set by eye so all read the same size: wordmarks 12 to 18, icon-only marks 18 to 20. Add `avatarOnly: true` for a badge too detailed for the row.
 
 ## Editing content
 
@@ -70,6 +70,8 @@ Cards are edited in Pages CMS (see above). Columns, all-day project bars, the mi
 A new long-form case study goes in `CASES` in `js/data.js`, plus one Pages CMS card with Card **Project** and its **Case study** set. Its steps are **Moment** cards with the same Case study and a **Case section**: the `id` of the block the click scrolls to.
 
 ## Before going live: confirm these
+
+**Dummy funding facts.** Most Facts on work cards (Raised, Backed by) are stand-ins for layout, tagged `"dummy": true` in `content/calendar/`. They only show on localhost, so the live site shows the real facts or the services instead. Replace each with the real one and untick Dummy in the CMS. Real so far: Deccan AI's round, Y Combinator for Almanac and lab0, Omnipair on Solana, and Sidecar's and KAMpanion's numbers from their case studies.
 
 Open `/?draft` to see every event marked `tbc: true` outlined in orange.
 

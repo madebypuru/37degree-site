@@ -43,7 +43,10 @@ function toEvent(r, byPath) {
     highlight: r.highlight || undefined,
     tbc: r.placeholder_date || undefined,
     color: r.color ? r.color.toLowerCase() : undefined,
+    // stand-in facts never reach the site, even if one is marked in the CMS
+    facts: (r.facts || []).filter((f) => f.label && f.value && !f.dummy).map((f) => ({ label: rich(f.label), value: rich(f.value) })),
   };
+  if (!base.facts.length) delete base.facts;
   switch (r.card) {
     case 'Quote': return { ...base, type: 'quote', title };
     case 'Note': return { ...base, type: 'note', title, detail: summary, photos: pics };

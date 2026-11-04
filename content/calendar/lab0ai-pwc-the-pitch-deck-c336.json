@@ -19,5 +19,11 @@
   "highlight": true,
   "placeholder_date": false,
   "order": 0,
-  "publish": true
+  "publish": true,
+  "facts": [
+    {
+      "label": "Backed by",
+      "value": "Y Combinator"
+    }
+  ]
 }

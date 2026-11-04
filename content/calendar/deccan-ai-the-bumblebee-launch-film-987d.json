@@ -18,5 +18,19 @@
   "publish": true,
   "clips": [
     "assets/video/work/deccan-bumblebee.mp4"
+  ],
+  "facts": [
+    {
+      "label": "Raised",
+      "value": "$25M Series A"
+    },
+    {
+      "label": "Led by",
+      "value": "A91 Partners"
+    },
+    {
+      "label": "Also backed by",
+      "value": "Prosus, Susquehanna"
+    }
   ]
 }

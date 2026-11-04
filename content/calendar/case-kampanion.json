@@ -7,5 +7,11 @@
   "case_study": "kampanion",
   "highlight": true,
   "placeholder_date": true,
-  "publish": true
+  "publish": true,
+  "facts": [
+    {
+      "label": "Built in",
+      "value": "6 months"
+    }
+  ]
 }

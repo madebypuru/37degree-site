@@ -182,15 +182,26 @@ const TESTIMONIALS = {
 };
 
 // one-colour marks (black on transparent, trimmed). `ar` is width ÷ height;
-// `h` is the logo's height in the Trusted by row: set it so the letters match the other wordmarks (icon-only marks ~22);
-// `mk` is how wide the symbol at the start of the wordmark is (÷ height), so a folder's avatar can show just that.
+// `h` is the logo's height in the Trusted by row, set by eye so all read the same size: wordmarks 12 to 18, icon-only marks 18 to 20;
+// `mk` is how wide the symbol at the start of the wordmark is (÷ height), so a folder's avatar can show just that;
+// `avatarOnly` keeps a badge too detailed for the Trusted by row out of it; `match` is the start of the client's name, when their first word alone would match someone else too.
 const LOGOS = [
-  { name: 'Deccan AI', src: 'assets/img/logos/deccan.png', ar: 4.288, h: 22, mk: 0.8 },
+  { name: 'Deccan AI', src: 'assets/img/logos/deccan.png', ar: 4.288, h: 18, mk: 0.8 },
   { name: 'Sidecar', src: 'assets/img/logos/sidecar.png', ar: 3.697, h: 17, mk: 1 },
-  { name: 'Valley', src: 'assets/img/logos/valley.png', ar: 3.552, h: 18 },
-  { name: 'Induced', src: 'assets/img/logos/induced.png', ar: 6.076, h: 13 },
-  { name: 'Superteam', src: 'assets/img/logos/superteam.png', ar: 8.457, h: 16, mk: 1.3 },
-  { name: 'Goatfish', src: 'assets/img/logos/goatfish.png', ar: 0.891, h: 22, mk: 0.891 },
+  { name: 'Valley', src: 'assets/img/logos/valley.png', ar: 3.552, h: 17 },
+  { name: 'Induced', src: 'assets/img/logos/induced.png', ar: 6.076, h: 12 },
+  { name: 'Superteam', src: 'assets/img/logos/superteam.png', ar: 8.457, h: 12, mk: 1.3 },
+  { name: 'Goatfish', src: 'assets/img/logos/goatfish.png', ar: 0.891, h: 20, mk: 0.891 },
+  { name: 'Omnipair', src: 'assets/img/logos/omnipair.png', ar: 5.312, h: 14, mk: 0.979 },
+  { name: 'Almanac', src: 'assets/img/logos/almanac.png', ar: 1, h: 20, mk: 1 },
+  { name: 'lab0.ai', src: 'assets/img/logos/lab0.png', ar: 1.115, h: 18, mk: 1.115 },
+  { name: 'DevX Labs', src: 'assets/img/logos/devx.png', ar: 6.323, h: 12 },
+  { name: 'DemandFarm', src: 'assets/img/logos/demandfarm.png', ar: 4.76, h: 18, mk: 0.688 },
+  { name: 'Kue', src: 'assets/img/logos/kue.png', ar: 1.219, h: 18, mk: 1.219 },
+  { name: 'Aria Music', src: 'assets/img/logos/aria.png', ar: 1.021, h: 20, mk: 1.021 },
+  { name: 'ElMuse', src: 'assets/img/logos/elmuse.png', ar: 4.771, h: 15 },
+  { name: 'Solana Economic Zone', match: 'solana economic', src: 'assets/img/logos/sez.png', ar: 1.01, h: 20, mk: 1.01 },
+  { name: 'Solana Ecosystem Call', match: 'solana ecosystem', src: 'assets/img/logos/sec.png', ar: 1, h: 20, mk: 1, avatarOnly: true },
 ];
 
 const SNIPPETS = ['assets/img/snip-1.jpg', 'assets/img/snip-2.jpg', 'assets/img/snip-3.jpg', 'assets/img/snip-4.jpg'];

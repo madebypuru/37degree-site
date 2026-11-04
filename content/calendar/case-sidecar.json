@@ -8,5 +8,11 @@
   "highlight": true,
   "placeholder_date": true,
   "order": 0,
-  "publish": true
+  "publish": true,
+  "facts": [
+    {
+      "label": "Result",
+      "value": "$1M+ pipeline"
+    }
+  ]
 }

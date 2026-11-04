@@ -23,5 +23,11 @@
     "assets/video/work/almanac-i-am-almanac.mp4",
     "assets/video/work/almanac-nothing-left-behind.mp4",
     "assets/video/work/almanac-take-a-week-off.mp4"
+  ],
+  "facts": [
+    {
+      "label": "Backed by",
+      "value": "Y Combinator"
+    }
   ]
 }

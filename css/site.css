@@ -979,7 +979,23 @@ body.sheet-center .pp-nav { width: clamp(520px, 50vw, 760px); margin: 0 auto 14p
   .track { padding-left: var(--side); }
   .dynbar { left: calc(50% + var(--side) / 2); }
   body.side-hidden .dynbar { left: 50%; }
-  .dyn-cta, .dyn-cta + .dyn-div { display: none; }
+  /* the sidebar holds the way in; the moment it slides away, the same button springs up beside the bar, so there's always one */
+  .dyn-cta + .dyn-div { display: none; }
+  .dyn-cta {
+    position: absolute; left: calc(100% + 8px); top: 50%;
+    display: flex; align-items: center; height: 40px; padding: 0 16px;
+    box-shadow: 0 6px 20px rgba(18, 18, 18, .16);
+    /* out: tucks back toward the bar, quicker than it arrived */
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateY(-50%) translateX(-18px) scale(.78); transform-origin: left center;
+    transition: opacity .16s ease-in, transform .22s cubic-bezier(.4, 0, 1, 1), visibility 0s .22s, background .2s, color .2s;
+  }
+  /* in: slides out from the bar's edge on a soft spring, just after the sidebar starts to leave */
+  body.side-hidden .dyn-cta {
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: translateY(-50%);
+    transition: opacity .2s ease-out .1s, transform .55s var(--spring) .1s, visibility 0s, background .2s, color .2s;
+  }
   .side {
     position: fixed; inset: var(--top) auto 0 0; z-index: 30; width: var(--side);
     display: flex; flex-direction: column; gap: 40px; padding: 32px 32px 32px 18px;
@@ -990,14 +1006,13 @@ body.sheet-center .pp-nav { width: clamp(520px, 50vw, 760px); margin: 0 auto 14p
   .side.is-over { box-shadow: 18px 0 48px -24px rgba(18, 18, 18, .22); }
   body.side-hidden .side { transform: translateX(-100%); }
 }
-.side__top { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
-.side h1 { margin: 0; font: 300 24px/1.16 var(--font-sans); letter-spacing: -0.02em; }
+.side__top { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; padding-top: 8px; }
+.side h1 { margin: 0; font: 300 30px/1.1 var(--font-sans); letter-spacing: -0.025em; text-wrap: balance; }
 .side__mid { display: flex; flex-direction: column; gap: 12px; }
 .side__mid p { margin: 0; font: 400 13px/1.55 var(--font-sans); color: var(--muted); }
 .side__cta { padding: 10px 14px; font-size: 13px; }
 .side__cta svg { width: 13px; height: 13px; }
-.side__end { margin-top: auto; }
-.side__label { display: block; margin-bottom: 18px; font: 400 12px/1 var(--font-sans); color: var(--muted); }
+.side__label { display: block; margin-bottom: 12px; font: 400 12px/1 var(--font-sans); color: var(--muted); }
 .marquee {
   overflow: hidden; color: var(--ink);
   -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
@@ -1034,17 +1049,54 @@ body.side-hidden .strip__filters { left: 128px; }
   --stage-h: calc(100vh - var(--top) - 92px);
   --slide-w: min(calc(var(--stage-h) * .68 * 1.6), calc(100vw - var(--side) - 180px));
 }
-.col--wall { flex: 0 0 auto; display: flex; align-items: center; gap: 56px; height: var(--stage-h); margin-right: 140px; border-right: 0; }
-.col--wall > .wk { flex: 0 0 var(--slide-w); width: var(--slide-w); }
-body[data-showing="projects"] .side { border-right: 0; }
-.col--wall:first-child { margin-left: calc((100vw - var(--side) - var(--slide-w)) / 2); }
-body[data-showing="projects"] .col--end { display: flex; align-items: center; flex: 0 0 auto; height: var(--stage-h); margin-right: calc((100vw - 340px) / 2); }
+/* the timeline's ruled lines, with the client where the date would be, lined up with the left edge of the work */
+.col--wall { --slide-pad: 72px; flex: 0 0 auto; }
+.col--wall:first-child { --slide-pad: calc((100vw - var(--side) - var(--slide-w)) / 2); }
+.col--wall .col-head { flex-direction: row; justify-content: flex-start; gap: 10px; padding-left: calc(var(--slide-pad) + 2px); }
+.col--wall .col-head b { font: 500 15px/1.25 var(--font-sans); letter-spacing: -0.01em; white-space: nowrap; }
+.col--wall .col-head .fold__av, .wk__who .fold__av { width: 26px; height: 26px; flex: none; font-size: 11px; color: var(--paper-2); background: var(--ink); box-shadow: none; }
+.col--wall .col-head .fold__mk, .wk__who .fold__mk { height: 12px; width: calc(12px * var(--mk)); }
+.slide { display: flex; align-items: center; gap: 56px; height: calc(var(--stage-h) - var(--head)); padding: 0 72px 0 var(--slide-pad, 72px); }
+.slide > .wk { flex: 0 0 var(--slide-w); width: var(--slide-w); }
+body[data-showing="projects"] .col--end { flex: 0 0 auto; margin-right: calc((100vw - 504px) / 2); }
+body[data-showing="projects"] .col--end .col-head { margin-right: calc((504px - 100vw) / 2); }
 /* sticky notes from the timeline, set down in the white space beside the work */
 .sticky { flex: 0 0 264px; width: 264px; transform: rotate(-2deg); transition: transform .3s var(--ease); }
 .col--wall:nth-child(even) .sticky { transform: rotate(1.6deg); }
 .sticky:hover { transform: none !important; }
 .sticky .card { width: 100%; min-height: 230px; margin: 0; }
 .sticky .card:has(.stack) { min-height: 290px; }
+/* the sidebar's proof: two numbers and a client's words */
+/* the foot of the sidebar: one column of proof, ruled like the calendar */
+.side__proof { display: flex; flex-direction: column; margin-top: auto; }
+.side__proof > * { padding: 20px 0; border-top: 1px solid var(--line-2); }
+.side__proof > :last-child { padding-bottom: 0; }
+/* the testimonial is tucked behind a pane of frosted glass, like the folders: the words peek out, the rest shows through,
+   its author rises into view as you reach for it, and a click opens it */
+.side__proof > .side__peek { position: relative; z-index: 0; margin: 0 6px -88px; padding: 0; border: 0; transform: rotate(-1deg); transform-origin: 50% 100%; transition: transform .35s var(--spring); }
+.side__peek:hover, .side__peek:focus-within { transform: translateY(-86px) rotate(0deg); }
+.side__peek .card { width: 100%; min-height: 176px; margin: 0; }
+/* one pane of glass, edge to edge across the panel and down to its foot */
+.side__proof > .side__pocket {
+  position: relative; z-index: 1; margin: 0 -32px -32px -18px; padding: 22px 32px 32px 18px; border: 0;
+  background: color-mix(in srgb, var(--paper) 58%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25); backdrop-filter: blur(18px) saturate(1.25);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper-2) 80%, transparent), 0 -1px 0 color-mix(in srgb, var(--ink) 5%, transparent), 0 -14px 30px -24px rgba(18, 18, 18, .16);
+}
+.side__trust { margin-top: 30px; }
+/* the note's colour carries on behind the glass, so the frost reads all the way down to the logos */
+.side__peek .card { position: relative; overflow: visible; }
+.side__peek .card::after { content: ''; position: absolute; left: 0; right: 0; top: calc(100% - 1px); height: 112px; background: linear-gradient(var(--bg), transparent); pointer-events: none; }
+/* the logos run the full width of the panel and fade out at its edges */
+.side__trust .marquees { margin: 0 -32px 0 -18px; gap: 16px; }
+.side__trust .marquee__set { height: 22px; opacity: .55; }
+@media (max-height: 760px) { .side__proof > .side__peek { display: none; } }
+.marquees { display: flex; flex-direction: column; gap: 10px; }
+.marquee--rev .marquee__track { animation-direction: reverse; }
+.side__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0; }
+.side__stats div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; }
+.side__stats dd { margin: 0; font: 300 28px/1 var(--font-sans); letter-spacing: -0.03em; }
+.side__stats dt { font: 400 12px/1.35 var(--font-sans); color: var(--muted); }
 .wk { display: flex; flex-direction: column; width: 100%; min-width: 0; text-align: left; animation: rise .5s var(--ease) both; animation-delay: calc(var(--i) * 40ms); }
 .wk__m { position: relative; display: block; flex: none; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 20px; background: color-mix(in srgb, var(--ink) 5%, var(--paper-2)); }
 .wk__m::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 6%, transparent); pointer-events: none; }
@@ -1063,10 +1115,18 @@ body[data-showing="projects"] .col--end { display: flex; align-items: center; fl
 .wk .wk__m.is-set img:first-of-type:nth-last-of-type(2) { left: 7%; width: 41%; }
 .wk .wk__m.is-set img:nth-of-type(2):last-of-type { left: 52%; width: 41%; }
 .wk .wk__m.is-set img:only-of-type { left: 10%; width: 80%; }
-.wk__cap { display: flex; flex: none; align-items: flex-start; justify-content: space-between; gap: 24px; min-width: 0; padding: 20px 2px 0; }
-.wk__t { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; font: 400 14px/1.3 var(--font-sans); color: var(--muted); }
-.wk__t b { font-weight: 500; font-size: 15px; letter-spacing: -0.01em; color: var(--ink); }
-.wk__t b, .wk__t span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wk__cap { display: flex; flex: none; align-items: flex-start; justify-content: space-between; gap: 40px; min-width: 0; padding: 24px 2px 0; }
+/* left: what it is and how to open it. right: two figures, large enough to read at a glance */
+.wk__about { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; }
+.wk__title { font: 500 16px/1.3 var(--font-sans); letter-spacing: -0.015em; color: var(--ink); text-wrap: balance; }
+.wk__figs { display: flex; flex: none; gap: 48px; }
+.wk__fig { display: flex; flex-direction: column; gap: 6px; }
+.wk__fig i { font: 400 12px/1.2 var(--font-sans); color: var(--muted); }
+.wk__fig b { font: 300 22px/1.15 var(--font-sans); letter-spacing: -0.025em; color: var(--ink); white-space: nowrap; }
+/* where there's no header band above the work (phones, the board), the client sits on the block itself */
+.wk__who { display: flex; flex: none; align-items: center; gap: 8px; padding: 0 2px 12px; }
+.wk__who b { font: 500 14px/1.25 var(--font-sans); letter-spacing: -0.01em; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.col--wall .wk__who { display: none; }
 /* every card says it opens, in words and an arrow that fills as you reach for it */
 .wk__open { display: flex; flex: none; align-items: center; gap: 8px; font: 400 13px/1.5 var(--font-sans); color: var(--muted); white-space: nowrap; transition: color .2s; }
 .wk__open i { display: grid; place-items: center; transition: transform .25s var(--ease); }
@@ -1087,7 +1147,11 @@ body[data-showing="projects"] .col--end { display: flex; align-items: center; fl
 .dyn-step { display: none; align-items: center; gap: 2px; padding-right: 2px; }
 .dyn-count { min-width: 46px; font: 400 13px/1 var(--font-sans); font-variant-numeric: tabular-nums; color: var(--muted); text-align: center; }
 .dyn-step button:disabled { opacity: .3; cursor: default; background: none; }
-.wall__end { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
+.wall__end { display: flex; flex-direction: column; align-items: flex-start; }
+.outro__go { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 6px 0 14px; }
+.outro__cta { padding: 11px 16px; font-size: 13px; }
+.outro__cta svg { width: 13px; height: 13px; transition: transform .25s var(--ease); }
+.outro__cta:hover svg { transform: translateX(3px); }
 .wall__end .outro { padding: 0; }
 .wall__more { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: var(--r-pill); font: 500 13px/1 var(--font-sans); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); transition: background .2s, color .2s, box-shadow .2s; }
 .wall__more:hover { color: var(--paper-2); background: var(--ink); box-shadow: none; }
@@ -1101,9 +1165,10 @@ body[data-showing="projects"] .col--end { display: flex; align-items: center; fl
 }
 @media (max-width: 760px) {
   .ag-wall .sticky { justify-self: center; }
-  .agenda > .wall__more { margin: 30px 0 0; }
-  .ag-wall .wk__cap { padding-top: 14px; }
+  .ag-wall .wk__cap { flex-direction: column; gap: 18px; padding-top: 14px; }
+  .ag-wall .wk__figs { gap: 32px; }
+  .ag-wall .wk__fig b { font-size: 19px; }
 }
 /* the sign-off's text style was reaching into its avatars; keep their initials centred and legible */
 .outro .who a .avatar { display: grid; place-items: center; font: 600 12px/1 var(--font-sans); color: var(--paper-2); }
-.wall__end { max-width: 340px; }
+.wall__end { max-width: 360px; }

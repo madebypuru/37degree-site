@@ -94,6 +94,22 @@ content:
           media: clips
           multiple: true
           path: assets/video/uploads
+      - name: facts
+        label: Facts
+        type: object
+        list: true
+        description: Shown under the work on Projects, e.g. Raised / $25M Series A, Led by / A91 Partners. Public, checkable facts only. Leave empty to show the services.
+        fields:
+          - name: label
+            label: Label
+            type: string
+          - name: value
+            label: Value
+            type: string
+          - name: dummy
+            label: Dummy
+            type: boolean
+            description: A stand-in, not a real fact. It is left out of the site completely.
       - name: industry
         label: Industry
         type: string

@@ -127,7 +127,7 @@
   const isFolder = (ev) => FOLDERS && (ev.type === 'case' || ev.type === 'slot' || (ev.type === 'project' && ev.photos));
   // the client on the folder: the symbol from their logo if we have one (a client whose name starts with it), else their initial
   function clientAvatar(client) {
-    const l = LOGOS.find((x) => x.mk && client.toLowerCase().startsWith(x.name.split(' ')[0].toLowerCase()));
+    const l = LOGOS.find((x) => x.mk && client.toLowerCase().startsWith(x.match || x.name.split(' ')[0].toLowerCase()));
     if (!l) return `<span class="fold__av">${client.trim()[0] || '·'}</span>`;
     const abs = new URL(l.src, document.baseURI).href;
     return `<span class="fold__av"><i class="fold__mk" role="img" aria-label="${l.name}" style="--src:url('${abs}');--mk:${l.mk}"></i></span>`;
@@ -352,6 +352,7 @@
     const row = (P) => `<a href="${P.links[0].href}"><span class="avatar avatar--md">${P.mono}</span><span><b>${P.links[0].label}</b><span>${P.role}</span></span></a>`;
     return `<div class="outro">
       <h2>This could be the start of something incredibly <em>special</em>.</h2>
+      <div class="outro__go"><a class="btn outro__cta" href="${MAIL}">Work with us ${icon.arrow}</a>${moreHTML()}</div>
       <div class="who">${row(PEOPLE.puru)}${row(PEOPLE.haneef)}</div>
       <small><a href="https://x.com/madebypuru" target="_blank" rel="noopener">X</a> · <a href="https://www.linkedin.com/company/107024182" target="_blank" rel="noopener">LinkedIn</a> · © ${now.getFullYear()} 37degree</small>
     </div>`;
@@ -361,15 +362,31 @@
   // one line that scrolls forever, so 6 logos or 15 take the same room. Two copies make the loop seamless;
   // the duration comes from the strip's length, so the speed stays the same however many logos there are
   const LOGO_GAP = 28, LOGO_SPEED = 20; // px, px per second
-  function logosHTML() {
-    const set = LOGOS.map((l) => evenLogo(l)).join('');
-    const length = LOGOS.reduce((sum, l) => sum + l.ar * (l.h || 16) + LOGO_GAP, 0);
-    return `<span class="side__label">Trusted by</span>
-      <div class="marquee" style="--gap:${LOGO_GAP}px;--dur:${Math.round(length / LOGO_SPEED)}s">
+  const TRUSTED = LOGOS.filter((l) => !l.avatarOnly);
+  // two rows drifting opposite ways, each at the same speed however many logos it holds
+  function logoRow(list, reverse) {
+    const set = list.map((l) => evenLogo(l)).join('');
+    const length = list.reduce((sum, l) => sum + l.ar * (l.h || 16) + LOGO_GAP, 0);
+    return `<div class="marquee${reverse ? ' marquee--rev' : ''}" style="--gap:${LOGO_GAP}px;--dur:${Math.round(length / LOGO_SPEED)}s">
         <div class="marquee__track"><div class="marquee__set">${set}</div><div class="marquee__set" aria-hidden="true">${set}</div></div>
       </div>`;
   }
+  function logosHTML() {
+    return `<span class="side__label">Trusted by</span>
+      <div class="marquees">${logoRow(TRUSTED.filter((_, i) => i % 2 === 0))}${logoRow(TRUSTED.filter((_, i) => i % 2), true)}</div>`;
+  }
   const statement = 'Design-led growth for Tech &amp; AI <em>companies</em>.';
+  // what the sidebar stands on: two numbers and a client in their own words, all from the calendar's cards
+  const PROOF = ALL.filter((e) => e.type === 'milestone' && ['$1M+', '50+'].includes(e.metric));
+  const SIDE_QUOTE = ALL.find((e) => e.type === 'testimonial' && e.who && e.who.name === 'Sudhanshu');
+  // the sidebar in two halves: the pitch up top with room to breathe, and everything that backs it up together at the foot
+  const proofHTML = () => `<div class="side__proof">
+      ${SIDE_QUOTE ? `<div class="side__peek">${cardHTML(SIDE_QUOTE)}</div>` : ''}
+      <div class="side__pocket">
+        <dl class="side__stats">${PROOF.map((e) => `<div><dt>${strip(e.title)}</dt><dd>${e.metric}</dd></div>`).join('')}</dl>
+        <div class="side__trust">${logosHTML()}</div>
+      </div>
+    </div>`;
   function sideHTML() {
     const story = `<p>Our story, by the day. Notes are how we got here. Work is what we've shipped.</p><div class="legend"><span>${icon.note}Notes</span><span>${FOLDERS ? icon.folder : icon.card}Work</span></div>`;
     return `<div class="side__top">
@@ -377,7 +394,7 @@
         <a class="btn side__cta" href="${MAIL}">Work with us ${icon.arrow}</a>
       </div>
       ${view === 'projects' ? '' : `<div class="side__mid">${story}</div>`}
-      <div class="side__end">${logosHTML()}</div>`;
+      ${proofHTML()}`;
   }
 
   /* ── Projects: the work on the calendar, nothing to click to see it ── */
@@ -431,19 +448,27 @@
     }).join('')}</div>`;
   }
 
-  // one project at a time, centre stage: the work, then a calm line of who, what and how to open it
+  // what sits under the work: public facts about the client when we have them (who backs them, what they raised), else what we did
+  // stand-in facts live in a git-ignored file that only localhost loads, so they can't reach the live site or its source
+  function factsOf(w) {
+    const facts = [...(w.ev.facts || []), ...((window.DUMMY_FACTS || {})[w.ev.id] || [])];
+    // two at most: this is a line to glance at, and the sheet can hold the rest
+    return facts.length ? facts.slice(0, 2) : w.tags.length ? [{ label: 'Scope', value: w.tags.slice(0, 2).join(', ') }] : [];
+  }
+  // one project at a time, centre stage: who it's for above the work, then the facts and how to open it below
   function tileHTML(w, i) {
     const media = w.clip
       ? `<video src="${w.clip}" ${w.poster ? `poster="${w.poster}"` : ''} muted loop playsinline preload="metadata"></video>`
       : w.pics.slice(0, 3).map((src) => `<img src="${src}" alt="" loading="lazy">`).join('');
     return `<button class="wk${w.isCase ? ' wk--case' : ''}" style="--i:${Math.min(i, 3)}" data-open-id="${w.ev.id}" aria-label="${w.client}: ${w.title}">
+        <span class="wk__who">${clientAvatar(w.client)}<b>${w.client}</b></span>
         <span class="wk__m">${media}</span>
-        <span class="wk__cap"><span class="wk__t"><b>${w.client}</b><span>${w.title}</span></span><span class="wk__open"><span>${w.isCase ? 'Read case study' : 'View project'}</span><i>${icon.arrow}</i></span></span>
+        <span class="wk__cap"><span class="wk__about"><span class="wk__title">${w.title}</span><span class="wk__open"><span>${w.isCase ? 'Read case study' : 'View project'}</span><i>${icon.arrow}</i></span></span><span class="wk__figs">${factsOf(w).map((f) => `<span class="wk__fig"><i>${f.label}</i><b>${f.value}</b></span>`).join('')}</span></span>
       </button>`;
   }
   const filtered = () => PROJECTS.filter((w) => inFilter(FILTERS.find((x) => x.id === filter), w));
   // the personality from the timeline: every third project has a sticky note beside it, a client's words then a bit of our story
-  const QUOTES = ALL.filter((e) => e.type === 'testimonial');
+  const QUOTES = ALL.filter((e) => e.type === 'testimonial' && e !== SIDE_QUOTE);
   const STORY = ALL.filter((e) => e.type === 'note' && e.highlight);
   function stickyFor(i) {
     if ((filter !== 'selected' && filter !== 'all') || i % 3 !== 1) return '';
@@ -463,19 +488,22 @@
       img.complete && img.naturalWidth ? shape() : img.addEventListener('load', shape, { once: true });
     });
   }
-  const moreHTML = () => (filter === 'selected' ? `<button class="wall__more" data-filter="all">See all ${PROJECTS.length} projects ${icon.arrow}</button>` : '');
+  const moreHTML = () => (view === 'projects' && filter === 'selected' ? `<button class="wall__more" data-filter="all">See all ${PROJECTS.length} projects ${icon.arrow}</button>` : '');
   function renderProjects() {
     track.innerHTML = filtered().map((w, i) => {
       const key = w.ev.date.slice(0, 7);
-      return `<section class="col col--wall" data-date="${key}-01" data-end="${key}-31">${tileHTML(w, i)}${stickyFor(i)}</section>`;
-    }).join('') + `<section class="col col--end"><div class="wall__end">${moreHTML()}${outroHTML()}</div></section>`;
+      return `<section class="col col--wall" data-date="${key}-01" data-end="${key}-31">
+        <div class="col-head">${clientAvatar(w.client)}<b>${w.client}</b></div>
+        <div class="slide">${tileHTML(w, i)}${stickyFor(i)}</div>
+      </section>`;
+    }).join('') + `<section class="col col--end"><div class="col-head"></div><div class="slide"><div class="wall__end">${outroHTML()}</div></div></section>`;
     slideIx = 0;
     syncCount();
     shapeBlocks(track);
     buildMinimap();
   }
   function agendaProjectsHTML() {
-    return `<div class="ag-intro"><h1>${statement}</h1></div>${filtersHTML()}<div class="ag-wall">${filtered().map((w, i) => tileHTML(w, i) + stickyFor(i)).join('')}</div>${moreHTML()}<div class="ag-logos">${logosHTML()}</div><div class="ag-outro">${outroHTML()}</div>`;
+    return `<div class="ag-intro"><h1>${statement}</h1></div>${filtersHTML()}<div class="ag-wall">${filtered().map((w, i) => tileHTML(w, i) + stickyFor(i)).join('')}</div><div class="ag-logos">${logosHTML()}</div><div class="ag-outro">${outroHTML()}</div>`;
   }
   function setFilter(id) {
     filter = id;
@@ -587,7 +615,7 @@
   let scrubbing = false;
   mini.addEventListener('pointerdown', (e) => { scrubbing = true; mini.setPointerCapture(e.pointerId); scrubTo(e.clientX, true); });
   mini.addEventListener('pointermove', (e) => scrubbing && scrubTo(e.clientX, false));
-  mini.addEventListener('pointerup', () => { scrubbing = false; if (view === 'projects') goNearest(); });
+  mini.addEventListener('pointerup', () => (scrubbing = false));
   mini.addEventListener('keydown', (e) => {
     const by = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
     if (by) { e.preventDefault(); timeline.scrollBy({ left: by * (timeline.clientWidth - 280), behavior: 'smooth' }); }
@@ -596,7 +624,7 @@
   timeline.addEventListener('scroll', () => {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(() => { ticking = false; updateMinimap(); });
+    requestAnimationFrame(() => { ticking = false; updateMinimap(); followScroll(); });
   });
 
   /* ── The side panel gets out of the way ───────────── */
@@ -615,7 +643,6 @@
   }
   // never rest on the empty strip the panel left: finish the move so the work sits against the edge
   function settleSide() {
-    if (view === 'projects') return; // projects stop on a project, never on the empty strip
     clearTimeout(sideIdle);
     sideIdle = setTimeout(() => {
       if (drag || !document.body.classList.contains('side-hidden')) return;
@@ -654,8 +681,8 @@
     if (col) timeline.scrollLeft = Math.max(0, col.offsetLeft - 40);
   }
 
-  /* ── Projects move one at a time ──────────────────── */
-  let slideIx = 0, wheelAcc = 0, wheelLocked = false, wheelAt = 0, wheelQuiet = 0;
+  /* ── Projects scroll freely; the arrows are a shortcut, and the counter follows along ── */
+  let slideIx = 0, steppingUntil = 0;
   const slides = () => $$('.col--wall, .col--end', track);
   // always say how far along you are, so the end is in sight
   function syncCount() {
@@ -667,35 +694,23 @@
   function goSlide(i, smooth = true) {
     const list = slides();
     slideIx = clamp(i, 0, list.length - 1);
+    steppingUntil = Date.now() + 800;
     syncCount();
     const el = list[slideIx];
     // the first sits beside the panel; the rest stop dead centre
     const left = slideIx === 0 ? 0 : el.offsetLeft - (timeline.clientWidth - el.offsetWidth) / 2;
     timeline.scrollTo({ left, behavior: smooth && !reduced.matches ? 'smooth' : 'auto' });
   }
-  function goNearest() {
-    const mid = timeline.scrollLeft + timeline.clientWidth / 2;
-    const list = slides();
+  function followScroll() {
+    if (view !== 'projects' || mq.matches || Date.now() < steppingUntil) return;
+    const mid = timeline.scrollLeft + timeline.clientWidth / 2, list = slides();
     const dist = (el) => Math.abs(el.offsetLeft + el.offsetWidth / 2 - mid);
-    goSlide(timeline.scrollLeft <= 8 ? 0 : list.indexOf(list.reduce((a, b) => (dist(b) < dist(a) ? b : a))));
-  }
-  // one swipe or one notch is one project: a trackpad's momentum is ignored until it goes quiet
-  function wheelStep(e) {
-    const d = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 32 : 1);
-    clearTimeout(wheelQuiet);
-    wheelQuiet = setTimeout(() => { wheelLocked = false; wheelAcc = 0; }, 140);
-    if (wheelLocked && Date.now() - wheelAt < 1100) return;
-    wheelLocked = false;
-    wheelAcc += d;
-    if (Math.abs(wheelAcc) < 24) return;
-    goSlide(slideIx + Math.sign(wheelAcc));
-    wheelLocked = true; wheelAt = Date.now(); wheelAcc = 0;
+    const at = timeline.scrollLeft <= 8 ? 0 : list.indexOf(list.reduce((a, b) => (dist(b) < dist(a) ? b : a)));
+    if (at !== slideIx && at >= 0) { slideIx = at; syncCount(); }
   }
 
   timeline.addEventListener('wheel', (e) => {
-    if (e.ctrlKey) return;
-    if (view === 'projects') { e.preventDefault(); return wheelStep(e); }
-    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    if (e.ctrlKey || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
     // a long month scrolls on its own; everywhere else the wheel moves through time
     const mb = e.target instanceof Element && e.target.closest('.mbody');
     if (mb && mb.scrollHeight > mb.clientHeight + 2) {
@@ -719,7 +734,6 @@
     if (dragMoved) timeline.scrollLeft = drag.sl - dx;
   });
   addEventListener('pointerup', () => {
-    if (drag && dragMoved && view === 'projects' && !mq.matches) goNearest();
     drag = null; document.body.style.cursor = ''; setTimeout(() => (dragMoved = false), 0);
   });
 
@@ -907,7 +921,7 @@
   function openNote(ev, el) {
     // measure the source first: opening swaps the bar's buttons for the owner pill, which would hide a bar button
     const fromRect = el.getBoundingClientRect();
-    const pill = el.matches('.dyn-cta, .side__cta'); // from "Work with us": grow out of the pill, fade back into it
+    const pill = el.matches('.dyn-cta, .side__cta, .outro__cta'); // from "Work with us": grow out of the pill, fade back into it
     closeAll(true);
     note.style.transform = note.style.transition = focusEl.style.opacity = '';
     const tint = tintOf(ev);
@@ -974,7 +988,7 @@
       ghost.hidden = true; focusEl.hidden = true;
     };
     if (instant || reduced.matches || !document.contains(o.el)) return finish();
-    if (o.el.matches('.dyn-cta, .side__cta')) {
+    if (o.el.matches('.dyn-cta, .side__cta, .outro__cta')) {
       // back into "Work with us": the same card shrinks and moves back, content and all
       const r = o.el.getBoundingClientRect();
       if (!r.width) return finish();
@@ -1532,12 +1546,14 @@
     const pic = open && open.kind === 'sheet' && !t.closest('.pp-next') && t.closest('.paper img, .flylayer img:not(.print-fly)');
     if (pic) return openViewer(pic.getAttribute('src'), pic);
     // "Work with us" opens the new-event invite, lifting off the bar's button; the mailto stays as the fallback
-    const cta = t.closest('.dyn-cta, .side__cta, .pp-btn');
+    const cta = t.closest('.dyn-cta, .side__cta, .outro__cta, .pp-btn');
     if (cta) {
       e.preventDefault();
       const slot = ALL.find((x) => x.type === 'slot');
       closeAll(true);
-      return openNote(slot, $(mq.matches ? '.dyn-cta' : '.side__cta'));
+      // it grows out of whichever button is on screen: the sidebar's, or the bar's once the sidebar has gone
+      const sideGone = mq.matches || document.body.classList.contains('side-hidden') || !$('.side__cta') || !$('.side__cta').offsetParent;
+      return openNote(slot, cta.matches('.outro__cta') ? cta : $(sideGone ? '.dyn-cta' : '.side__cta'));
     }
     const v = t.closest('[data-view]');
     if (v) return setView(v.dataset.view);
